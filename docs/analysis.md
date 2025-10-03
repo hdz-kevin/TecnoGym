@@ -1,8 +1,8 @@
 # TecnoGym - Análisis de la aplicación
 
 TecnoGym es una aplicación que ayudará al dueño del gimnasio TecnoGym de teziutlán a gestionar
-fácilmente las partes más importantes de su negocio como los socios, membresías, visitas, venta/compra de productos,
-ingresos y egresos, balances, etc.
+fácilmente las partes más importantes de su negocio como los socios, membresías, visitas, venta/compra
+de productos, ingresos y egresos, balances, etc.
 
 **Nota**: Las entidades y módulos descritos a continuación son los necesarios para sacar el MVP (Minimum Viable Product) de la aplicación, el cual se enfocará en la gestión de socios, membresías y visitas.
 

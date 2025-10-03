@@ -4,9 +4,8 @@ namespace App\Enums;
 
 enum MemberGender: string
 {
-    case MALE = 'male';
-    case FEMALE = 'female';
-    case OTHER = 'other';
+    case MALE = 'M';
+    case FEMALE = 'F';
 
     public static function values(): array
     {
