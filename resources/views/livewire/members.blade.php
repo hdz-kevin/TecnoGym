@@ -32,7 +32,7 @@
             <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
-                        <div class="h-12 w-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                             AR
                         </div>
                         <div>
@@ -61,7 +61,7 @@
             <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
-                        <div class="h-12 w-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                             CD
                         </div>
                         <div>
@@ -90,7 +90,7 @@
             <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
-                        <div class="h-12 w-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                             LM
                         </div>
                         <div>
@@ -149,7 +149,7 @@
             <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
-                        <div class="h-12 w-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                             MR
                         </div>
                         <div>
@@ -179,7 +179,7 @@
             <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow opacity-75">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
-                        <div class="h-12 w-12 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                             PG
                         </div>
                         <div>
