@@ -23,6 +23,9 @@
                     <flux:select.option value="date">Ordenar por fecha</flux:select.option>
                     <flux:select.option value="status">Ordenar por estado</flux:select.option>
                 </flux:select>
+                <flux:button variant="primary" icon="plus" class="ml-5" wire:click="createMember">
+                    Nuevo socio
+                </flux:button>
             </div>
         </div>
 
