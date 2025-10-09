@@ -19,7 +19,6 @@ class MemberFactory extends Factory
     {
         return [
             'name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
             'gender' => fake()->randomElement(MemberGender::values()),
             'birth_date' => fake()->date(),
             'photo' => null,
