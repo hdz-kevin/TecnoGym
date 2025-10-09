@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Member;
+use App\Enums\MemberGender;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,10 +17,53 @@ class Members extends Component
     public $status = '';
     public $membership = '';
 
+    // Modal state
+    public $showCreateModal = false;
+
+    // Member properties
+    public $name = '';
+    public $gender = '';
+    public $birth_date = '';
+
+    protected $rules = [
+        'name' => 'required|string|max:255',
+        'gender' => 'required|in:M,F',
+        'birth_date' => 'nullable|date',
+    ];
+
     public function createMember()
     {
-        // Lógica para crear nuevo miembro
-        session()->flash('message', 'Redirigiendo a crear nuevo socio...');
+        $this->showCreateModal = true;
+        $this->resetForm();
+    }
+
+    public function closeModal()
+    {
+        $this->showCreateModal = false;
+        $this->resetForm();
+        $this->resetValidation();
+    }
+
+    public function saveMember()
+    {
+        $this->birth_date = $this->birth_date ?: null;
+        $this->validate();
+
+        Member::create([
+            'name' => $this->name,
+            'gender' => MemberGender::from($this->gender),
+            'birth_date' => $this->birth_date,
+        ]);
+
+        $this->closeModal();
+        session()->flash('message', 'Socio creado exitosamente.');
+    }
+
+    private function resetForm()
+    {
+        $this->name = '';
+        $this->gender = '';
+        $this->birth_date = '';
     }
 
     public function assignMembership()
