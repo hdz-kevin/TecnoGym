@@ -29,7 +29,7 @@
         <!-- Members Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Member Card 1 - Ana Ramirez -->
-            <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            {{-- <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
                         <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
@@ -55,10 +55,41 @@
                     <flux:button variant="ghost" size="sm" class="text-xs">Registrar visita</flux:button>
                     <flux:button variant="primary" size="sm" class="text-xs">Asignar membresía</flux:button>
                 </div>
-            </div>
+            </div> --}}
+
+            @foreach ($members as $member)
+                <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                AR
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 text-[18px]">{{ $member->name }} {{ $member->last_name }}</h3>
+                                <p class="text-sm text-gray-500">ID: {{ $member->id }}</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
+                            Sin membresía
+                        </span>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Sin visitas registradas</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2">
+                        <flux:button variant="ghost" size="sm" class="text-sm border">Ver</flux:button>
+                        <flux:button variant="ghost" size="sm" class="text-sm border">Editar</flux:button>
+                        <flux:button variant="ghost" size="sm" class="text-sm border">Registrar visita</flux:button>
+                        <flux:button variant="ghost" size="sm" class="text-sm border">Asignar membresía</flux:button>
+                    </div>
+                </div>
+
+            @endforeach
 
             <!-- Member Card 2 - Carlos Duarte -->
-            <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            {{-- <div class="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center space-x-3">
                         <div class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
@@ -203,7 +234,7 @@
                     <flux:button variant="ghost" size="sm" class="text-xs" disabled>Registrar visita</flux:button>
                     <flux:button variant="primary" size="sm" class="text-xs">Reactivar</flux:button>
                 </div>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Pagination -->

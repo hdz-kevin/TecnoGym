@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Member;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -34,6 +35,8 @@ class Members extends Component
 
     public function render()
     {
-        return view('livewire.members');
+        $members = Member::all()->take(9);
+
+        return view('livewire.members', compact('members'));
     }
 }
