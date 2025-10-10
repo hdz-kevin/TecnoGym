@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Member;
 use App\Enums\MemberGender;
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,23 +14,26 @@ class Members extends Component
 {
     use WithPagination;
 
-    public $search = '';
-    public $status = '';
-    public $membership = '';
+    // Properties
+    #[Rule('required', message: 'El nombre es obligatorio')]
+    #[Rule('string')]
+    #[Rule('max:255', message: 'El nombre es muy largo')]
+    public $name = '';
+
+    #[Rule('required', message: 'Elige un genero')]
+    #[Rule('in:M,F', message: 'Elige un genero válido')]
+    public $gender = '';
+
+    #[Rule('nullable')]
+    #[Rule('date', message: 'Formato de fecha invalido')]
+    public $birth_date = '';
 
     // Modal state
     public $showCreateModal = false;
 
-    // Member properties
-    public $name = '';
-    public $gender = '';
-    public $birth_date = '';
-
-    protected $rules = [
-        'name' => 'required|string|max:255',
-        'gender' => 'required|in:M,F',
-        'birth_date' => 'nullable|date',
-    ];
+    public $search = '';
+    public $status = '';
+    public $membership = '';
 
     public function createMember()
     {
@@ -79,7 +83,7 @@ class Members extends Component
 
     public function render()
     {
-        $members = Member::all()->take(9);
+        $members = Member::all();
 
         return view('livewire.members', compact('members'));
     }
