@@ -25,8 +25,13 @@ class Members extends Component
     public $gender = '';
 
     #[Rule('nullable')]
-    #[Rule('date', message: 'Formato de fecha invalido')]
+    #[Rule('date', message: 'La fecha no es válida')]
     public $birth_date = '';
+
+    // Birth date parts
+    public $birth_day = '';
+    public $birth_month = '';
+    public $birth_year = '';
 
     // Modal state
     public $showCreateModal = false;
@@ -48,9 +53,18 @@ class Members extends Component
         $this->resetValidation();
     }
 
+    /**
+     * Save a new member to the database.
+     */
     public function saveMember()
     {
-        $this->birth_date = $this->birth_date ?: null;
+        // If at least one part of the date is set, construct the full date
+        if ($this->birth_day || $this->birth_month || $this->birth_year) {
+            $this->birth_date = sprintf('%04d-%02d-%02d', $this->birth_year, $this->birth_month, $this->birth_day);
+        } else {
+            $this->birth_date = null;
+        }
+
         $this->validate();
 
         Member::create([

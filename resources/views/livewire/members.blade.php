@@ -127,12 +127,42 @@
                   </flux:field>
                 </div>
 
-                <!-- Date of Birth -->
+                <!-- Replace the date input with three separate selects -->
                 <div>
                   <flux:field>
-                    <flux:label for="birth_date">Fecha de nacimiento</flux:label>
-                    <flux:input wire:model="birth_date" id="birth_date" type="date" />
-                    <flux:error name="birth_date" />
+                      <flux:label>Fecha de nacimiento</flux:label>
+                      <div class="grid grid-cols-3 gap-2">
+                          <!-- Day -->
+                          <flux:select wire:model="birth_day" placeholder="Día">
+                              @for($i = 1; $i <= 31; $i++)
+                                  <flux:select.option value="{{ $i }}">{{ $i }}</flux:select.option>
+                              @endfor
+                          </flux:select>
+
+                          <!-- Month -->
+                          <flux:select wire:model="birth_month" placeholder="Mes">
+                              <flux:select.option value="1">Enero</flux:select.option>
+                              <flux:select.option value="2">Febrero</flux:select.option>
+                              <flux:select.option value="3">Marzo</flux:select.option>
+                              <flux:select.option value="4">Abril</flux:select.option>
+                              <flux:select.option value="5">Mayo</flux:select.option>
+                              <flux:select.option value="6">Junio</flux:select.option>
+                              <flux:select.option value="7">Julio</flux:select.option>
+                              <flux:select.option value="8">Agosto</flux:select.option>
+                              <flux:select.option value="9">Septiembre</flux:select.option>
+                              <flux:select.option value="10">Octubre</flux:select.option>
+                              <flux:select.option value="11">Noviembre</flux:select.option>
+                              <flux:select.option value="12">Diciembre</flux:select.option>
+                          </flux:select>
+
+                          <!-- Year -->
+                          <flux:select wire:model="birth_year" placeholder="Año">
+                              @for($year = date('Y'); $year >= 1930; $year--)
+                                  <flux:select.option value="{{ $year }}">{{ $year }}</flux:select.option>
+                              @endfor
+                          </flux:select>
+                      </div>
+                      <flux:error name="birth_date" />
                   </flux:field>
                 </div>
               </form>
