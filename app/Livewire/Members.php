@@ -26,7 +26,7 @@ class Members extends Component
 
     #[Rule('nullable')]
     #[Rule('date', message: 'La fecha no es válida')]
-    public $birth_date = '';
+    public $birth_date = null;
 
     // Birth date parts
     public $birth_day = '';
@@ -34,10 +34,10 @@ class Members extends Component
     public $birth_year = '';
 
     // Modal state
-    public $showCreateModal = false;
+    public $showModal = false;
 
-    public $search = '';
-    public $status = '';
+    /** Updating member instance or null (no updating by default) */
+    public Member|null $updatingMember = null;
 
     /**
      * Save a new member to the database.
@@ -47,46 +47,73 @@ class Members extends Component
         // If at least one part of the date is set, construct the full date
         if ($this->birth_day || $this->birth_month || $this->birth_year) {
             $this->birth_date = sprintf('%04d-%02d-%02d', $this->birth_year, $this->birth_month, $this->birth_day);
-        } else {
-            $this->birth_date = null;
         }
 
-        $this->validate();
+        $validated = $this->validate();
 
-        Member::create([
-            'name' => $this->name,
-            'gender' => MemberGender::from($this->gender),
-            'birth_date' => $this->birth_date,
-        ]);
+        if ($this->updatingMember) {
+            $this->updatingMember->update($validated);
+            $flashMessage = 'Socio actualizado exitosamente.';
+        } else {
+            Member::create([
+                'name' => $this->name,
+                'gender' => MemberGender::from($this->gender),
+                'birth_date' => $this->birth_date,
+            ]);
+            $flashMessage = 'Socio creado exitosamente.';
+        }
 
         $this->closeModal();
-        session()->flash('message', 'Socio creado exitosamente.');
-    }
-
-    private function resetForm()
-    {
-        $this->name = '';
-        $this->gender = '';
-        $this->birth_date = '';
-        $this->birth_day = '';
-        $this->birth_month = '';
-        $this->birth_year = '';
+        session()->flash('message', $flashMessage);
     }
 
     /**
      * Show the create member modal.
      */
-    public function createMember()
+    public function createMemberModal()
     {
-        $this->showCreateModal = true;
-        $this->resetForm();
+        $this->showModal = true;
     }
 
+    /**
+     * Show the update member modal.
+     */
+    public function updateMemberModal(Member $member)
+    {
+        $this->updatingMember = $member;
+        $this->showModal = true;
+
+        $this->name = $member->name;
+        $this->gender = $member->gender;
+        if ($member->birth_date) {
+            $this->birth_day = $member->birth_date?->format('d') ?? '';
+            $this->birth_month = $member->birth_date?->format('m') ?? '';
+            $this->birth_year = $member->birth_date?->format('Y') ?? '';
+        }
+    }
+
+    /**
+     * Close the modal and reset form state.
+     */
     public function closeModal()
     {
-        $this->showCreateModal = false;
+        $this->showModal = false;
+        $this->updatingMember = null;
         $this->resetForm();
         $this->resetValidation();
+    }
+
+    /**
+     * Reset the form fields to their default state.
+     */
+    private function resetForm()
+    {
+        $this->name = '';
+        $this->gender = '';
+        $this->birth_date = null;
+        $this->birth_day = '';
+        $this->birth_month = '';
+        $this->birth_year = '';
     }
 
     public function render()

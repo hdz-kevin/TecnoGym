@@ -15,4 +15,8 @@ class Member extends Model
         'birth_date',
         'photo',
     ];
+
+    protected $casts = [
+        'birth_date' => 'date',
+    ];
 }

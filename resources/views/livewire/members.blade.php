@@ -19,7 +19,7 @@
           <flux:select.option value="date">Ordenar por fecha</flux:select.option>
           <flux:select.option value="status">Ordenar por estado</flux:select.option>
         </flux:select>
-        <flux:button class="cursor-pointer" variant="primary" icon="plus" wire:click="createMember">
+        <flux:button class="cursor-pointer" variant="primary" icon="plus" wire:click="createMemberModal">
           Nuevo socio
         </flux:button>
       </div>
@@ -61,7 +61,7 @@
 
           <div class="flex flex-wrap gap-2">
             <flux:button variant="ghost" size="sm" class="text-sm border">Ver</flux:button>
-            <flux:button variant="ghost" size="sm" class="text-sm border">Editar</flux:button>
+            <flux:button variant="ghost" size="sm" class="text-sm border" wire:click="updateMemberModal({{ $member->id }})">Editar</flux:button>
             <flux:button variant="ghost" size="sm" class="text-sm border">Registrar visita</flux:button>
             <flux:button variant="ghost" size="sm" class="text-sm border">Asignar membresía</flux:button>
           </div>
@@ -84,7 +84,7 @@
   </div>
 
   <!-- Create Form Modal -->
-  @if ($showCreateModal)
+  @if ($showModal)
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-md transition-opacity z-50" wire:click="closeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -141,15 +141,15 @@
 
                           <!-- Month -->
                           <flux:select wire:model="birth_month" placeholder="Mes">
-                              <flux:select.option value="1">Enero</flux:select.option>
-                              <flux:select.option value="2">Febrero</flux:select.option>
-                              <flux:select.option value="3">Marzo</flux:select.option>
-                              <flux:select.option value="4">Abril</flux:select.option>
-                              <flux:select.option value="5">Mayo</flux:select.option>
-                              <flux:select.option value="6">Junio</flux:select.option>
-                              <flux:select.option value="7">Julio</flux:select.option>
-                              <flux:select.option value="8">Agosto</flux:select.option>
-                              <flux:select.option value="9">Septiembre</flux:select.option>
+                              <flux:select.option value="01">Enero</flux:select.option>
+                              <flux:select.option value="02">Febrero</flux:select.option>
+                              <flux:select.option value="03">Marzo</flux:select.option>
+                              <flux:select.option value="04">Abril</flux:select.option>
+                              <flux:select.option value="05">Mayo</flux:select.option>
+                              <flux:select.option value="06">Junio</flux:select.option>
+                              <flux:select.option value="07">Julio</flux:select.option>
+                              <flux:select.option value="08">Agosto</flux:select.option>
+                              <flux:select.option value="09">Septiembre</flux:select.option>
                               <flux:select.option value="10">Octubre</flux:select.option>
                               <flux:select.option value="11">Noviembre</flux:select.option>
                               <flux:select.option value="12">Diciembre</flux:select.option>
@@ -172,8 +172,8 @@
             <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <flux:button wire:click="saveMember" variant="primary" class="w-full sm:ml-3 sm:w-auto"
                 wire:loading.attr="disabled">
-                <span wire:loading.remove>Crear Socio</span>
-                <span wire:loading>Creando...</span>
+                <span wire:loading.remove>{{ $updatingMember ? "Guardar Cambios" : "Crear Socio" }}</span>
+                <span wire:loading>{{ $updatingMember ? "Guardando..." : "Creando..." }}</span>
               </flux:button>
               <flux:button wire:click="closeModal" variant="ghost" class="mt-3 w-full sm:mt-0 sm:w-auto">
                 Cancelar
