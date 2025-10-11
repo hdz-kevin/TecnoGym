@@ -38,20 +38,6 @@ class Members extends Component
 
     public $search = '';
     public $status = '';
-    public $membership = '';
-
-    public function createMember()
-    {
-        $this->showCreateModal = true;
-        $this->resetForm();
-    }
-
-    public function closeModal()
-    {
-        $this->showCreateModal = false;
-        $this->resetForm();
-        $this->resetValidation();
-    }
 
     /**
      * Save a new member to the database.
@@ -82,17 +68,25 @@ class Members extends Component
         $this->name = '';
         $this->gender = '';
         $this->birth_date = '';
+        $this->birth_day = '';
+        $this->birth_month = '';
+        $this->birth_year = '';
     }
 
-    public function assignMembership()
+    /**
+     * Show the create member modal.
+     */
+    public function createMember()
     {
-        // Lógica para asignar membresía
-        session()->flash('message', 'Abriendo modal de asignación de membresía...');
+        $this->showCreateModal = true;
+        $this->resetForm();
     }
 
-    public function updatingSearch()
+    public function closeModal()
     {
-        $this->resetPage();
+        $this->showCreateModal = false;
+        $this->resetForm();
+        $this->resetValidation();
     }
 
     public function render()
