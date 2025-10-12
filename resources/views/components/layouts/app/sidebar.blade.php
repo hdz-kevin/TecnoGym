@@ -18,8 +18,9 @@
                     <flux:navlist.item icon="credit-card" :href="route('dashboard')" :current="request()->routeIs('/')" wire:navigate>{{ __('Membresías') }}</flux:navlist.item>
                     <flux:navlist.item icon="calendar-days" :href="route('dashboard')" :current="request()->routeIs('/')" wire:navigate>{{ __('Visitas') }}</flux:navlist.item>
                 </flux:navlist.group>
-                    <flux:navlist.group :heading="__('Configuración')" class="grid">
-                    <flux:navlist.item icon="tag" :href="route('dashboard')" :current="request()->routeIs('/')" wire:navigate>{{ __('Tipos de Membresía') }}</flux:navlist.item>
+
+                <flux:navlist.group :heading="__('Configuración')" class="grid">
+                    <flux:navlist.item icon="tag" :href="route('membership-types.index')" :current="request()->routeIs('membership-types.index')" wire:navigate>{{ __('Tipos de Membresía') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
