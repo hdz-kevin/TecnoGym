@@ -1,4 +1,4 @@
-<x-slot:subtitle>Configura los tipos de membresía y sus periodos</x-slot:subtitle>
+<x-slot:subtitle>Configura los tipos de membresía y sus periodos de tiempo</x-slot:subtitle>
 
 <div>
   <div class="p-6 pt-4 space-y-6">
@@ -130,25 +130,22 @@
               </button>
             </div>
 
-            <!-- Modal Body -->
-            <div class="px-6 py-4">
-              <flux:field>
-                <flux:label for="typeName">Nombre</flux:label>
-                <flux:input wire:model="typeName" id="typeName" placeholder="Ej: General, Estudiante, Premium" />
-                <flux:error name="typeName" />
-              </flux:field>
-            </div>
+            <form wire:submit.prevent="saveType">
+              <!-- Modal Body -->
+              <div class="px-6 py-4">
+                <flux:field>
+                  <flux:label for="typeName">Nombre</flux:label>
+                  <flux:input wire:model="typeName" id="typeName" placeholder="Ej: General, Estudiante, Premium" />
+                  <flux:error name="typeName" />
+                </flux:field>
+              </div>
 
-            <!-- Modal Footer -->
-            <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-              <flux:button variant="ghost" wire:click="closeTypeModal">
-                Cancelar
-              </flux:button>
-              <flux:button variant="primary" wire:click="saveType" wire:loading.attr="disabled">
-                <span wire:loading.remove>{{ $editingType ? 'Actualizar' : 'Crear' }}</span>
-                <span wire:loading>{{ $editingType ? 'Actualizando...' : 'Creando...' }}</span>
-              </flux:button>
-            </div>
+              <!-- Modal Footer -->
+              <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
+                <flux:button variant="ghost" wire:click="closeTypeModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingType ? 'Actualizar' : 'Crear' }}</flux:button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -164,7 +161,7 @@
             class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
             wire:click.stop>
 
-            <!-- Modal Header -->
+            <!-- Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
                 {{ $editingPeriod ? 'Editar Periodo' : 'Nuevo Periodo' }}
@@ -179,54 +176,51 @@
               </button>
             </div>
 
-            <!-- Modal Body -->
-            <div class="px-6 py-4 space-y-4">
+            <form wire:submit.prevent="savePeriod">
+              <!-- Body -->
+              <div class="px-6 py-4 space-y-4">
               <!-- Name -->
-              <flux:field>
-                <flux:label for="periodName">Nombre del periodo *</flux:label>
-                <flux:input wire:model="periodName" id="periodName" placeholder="Ej: Mensual, Semanal, Anual" />
-                <flux:error name="periodName" />
-              </flux:field>
-
-              <!-- Duration -->
-              <div class="grid grid-cols-2 gap-4">
                 <flux:field>
-                  <flux:label for="durationValue">Duración *</flux:label>
-                  <flux:input wire:model="durationValue" id="durationValue" type="number" min="1"
-                    placeholder="1" />
-                  <flux:error name="durationValue" />
+                  <flux:label for="periodName">Nombre del periodo *</flux:label>
+                  <flux:input wire:model="periodName" id="periodName" placeholder="Ej: Mensual, Semanal, Anual" />
+                  <flux:error name="periodName" />
                 </flux:field>
 
+              <!-- Duration -->
+                <div class="grid grid-cols-2 gap-4">
+                  <flux:field>
+                    <flux:label for="durationValue">Duración *</flux:label>
+                    <flux:input wire:model="durationValue" id="durationValue" type="number" min="1"
+                      placeholder="1" />
+                    <flux:error name="durationValue" />
+                  </flux:field>
+
+                  <flux:field>
+                    <flux:label for="durationUnit">Unidad *</flux:label>
+                    <flux:select wire:model="durationUnit" id="durationUnit" placeholder="Seleccionar">
+                      <flux:select.option value="day">Día(s)</flux:select.option>
+                      <flux:select.option value="week">Semana(s)</flux:select.option>
+                      <flux:select.option value="month">Mes(es)</flux:select.option>
+                      <flux:select.option value="year">Año(s)</flux:select.option>
+                    </flux:select>
+                    <flux:error name="durationUnit" />
+                  </flux:field>
+                </div>
+
+              <!-- Price -->
                 <flux:field>
-                  <flux:label for="durationUnit">Unidad *</flux:label>
-                  <flux:select wire:model="durationUnit" id="durationUnit" placeholder="Seleccionar">
-                    <flux:select.option value="day">Día(s)</flux:select.option>
-                    <flux:select.option value="week">Semana(s)</flux:select.option>
-                    <flux:select.option value="month">Mes(es)</flux:select.option>
-                    <flux:select.option value="year">Año(s)</flux:select.option>
-                  </flux:select>
-                  <flux:error name="durationUnit" />
+                  <flux:label for="price">Precio (MXN) *</flux:label>
+                  <flux:input wire:model="price" id="price" type="number" min="1" placeholder="400" />
+                  <flux:error name="price" />
                 </flux:field>
               </div>
 
-              <!-- Price -->
-              <flux:field>
-                <flux:label for="price">Precio (MXN) *</flux:label>
-                <flux:input wire:model="price" id="price" type="number" min="1" placeholder="400" />
-                <flux:error name="price" />
-              </flux:field>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-              <flux:button variant="ghost" wire:click="closePeriodModal">
-                Cancelar
-              </flux:button>
-              <flux:button variant="primary" wire:click="savePeriod" wire:loading.attr="disabled">
-                <span wire:loading.remove>{{ $editingPeriod ? 'Actualizar' : 'Crear' }}</span>
-                <span wire:loading>{{ $editingPeriod ? 'Actualizando...' : 'Creando...' }}</span>
-              </flux:button>
-            </div>
+              <!-- Footer -->
+              <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
+                <flux:button variant="ghost" wire:click="closePeriodModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingPeriod ? 'Actualizar' : 'Crear' }}</flux:button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
