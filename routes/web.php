@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Members;
+use App\Livewire\MembershipTypes;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -22,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 
     Route::get('members', Members::class)->name('members.index');
+    Route::get('membership-types', MembershipTypes::class)->name('membership-types.index');
 });
 
 require __DIR__.'/auth.php';

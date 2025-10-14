@@ -83,9 +83,9 @@
     </div>
   </div>
 
-  <!-- Create Form Modal -->
+  <!-- Create/Edit Form Modal -->
   @if ($showModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-md transition-opacity z-50" wire:click="closeModal">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div
@@ -170,8 +170,7 @@
 
             <!-- Modal Footer -->
             <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <flux:button wire:click="saveMember" variant="primary" class="w-full sm:ml-3 sm:w-auto"
-                wire:loading.attr="disabled">
+              <flux:button wire:click="saveMember" variant="primary" class="w-full sm:ml-3 sm:w-auto" wire:loading.attr="disabled">
                 <span wire:loading.remove>{{ $updatingMember ? "Guardar Cambios" : "Crear Socio" }}</span>
                 <span wire:loading>{{ $updatingMember ? "Guardando..." : "Creando..." }}</span>
               </flux:button>
