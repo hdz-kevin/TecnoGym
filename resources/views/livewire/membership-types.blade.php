@@ -2,11 +2,13 @@
 
 <div>
   <div class="p-6 pt-4 space-y-6">
-    <div class="flex justify-end">
-      <flux:button variant="primary" icon="plus" wire:click="createType">
-        Tipo de Membresía
-      </flux:button>
-    </div>
+    @if ($membershipTypes->count() > 0)
+      <div class="flex justify-end">
+        <flux:button variant="primary" icon="plus" wire:click="createType">
+          Tipo de Membresía
+        </flux:button>
+      </div>
+    @endif
 
     <!-- Membership Types Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -16,20 +18,24 @@
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-lg font-medium text-gray-900">{{ $type->name }}</h3>
-                <p class="text-sm text-gray-500">
-                  {{ $type->periods->count() }} {{ $type->periods->count() === 1 ? 'periodo' : 'periodos' }}
-                </p>
+                <h3 class="text-[19px] font-medium text-gray-900">{{ $type->name }}</h3>
               </div>
               <div class="flex items-center gap-2">
-                <flux:button class="border !text-indigo-600 hover:!bg-indigo-50 hover:!text-indigo-700" size="sm"
-                  variant="ghost" wire:click="editType({{ $type->id }})" icon="pencil">
+                <flux:button
+                  class="border !text-[16px] !text-indigo-600 hover:!bg-indigo-50 hover:!text-indigo-700"
+                  variant="ghost"
+                  wire:click="editType({{ $type->id }})" icon="pencil"
+                >
                   Editar
                 </flux:button>
                 @if ($type->periods->count() === 0)
-                  <flux:button size="sm" variant="ghost" wire:click="deleteType({{ $type->id }})"
-                    wire:confirm="¿Estás seguro de eliminar este tipo de membresía?" icon="trash"
-                    class="border !text-red-600 hover:!text-red-700 hover:!bg-red-50">
+                  <flux:button
+                    class="border !text-[16px] !text-red-600 hover:!text-red-700 hover:!bg-red-50"
+                    variant="ghost"
+                    icon="trash"
+                    wire:click="deleteType({{ $type->id }})"
+                    wire:confirm="¿Estás seguro de eliminar este tipo de membresía?"
+                  >
                     Eliminar
                   </flux:button>
                 @endif
@@ -40,22 +46,18 @@
           <!-- Membership Type Periods -->
           <div class="p-6">
             @if ($type->periods->count() > 0)
-              <div class="space-y-3 mb-4">
+              <div class="space-y-3 mb-5">
                 @foreach ($type->periods as $period)
                   <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div class="flex-1">
-                      <div class="flex items-center gap-3">
-                        <div>
+                      <div class="flex items-center gap-2">
                           <h3 class="font-medium text-gray-900">{{ $period->name }}</h3>
-                          <p class="text-sm text-gray-600">
-                            {{ $period->duration_value }} {{ $period->duration_unit->value }}
-                          </p>
-                        </div>
-                        <div class="text-right">
+                          <p>-</p>
                           <p class="text-lg font-semibold text-gray-900">${{ number_format($period->price) }}</p>
-                          <p class="text-xs text-gray-500">MXN</p>
-                        </div>
                       </div>
+                      <p class="text-sm text-gray-600">
+                        {{ $period->duration_value }} {{ $period->duration_unit->label($period->duration_value) }}
+                      </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
                       <flux:button size="sm" variant="filled" wire:click="editPeriod({{ $period->id }})"
@@ -72,14 +74,14 @@
                 @endforeach
               </div>
             @else
-              <div class="text-center py-8">
+              <div class="text-center py-6">
                 <div class="text-gray-400 mb-2">
                   <svg class="mx-auto h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <p class="text-sm text-gray-500 mb-3">No hay periodos configurados</p>
+                <p class="text-sm text-gray-500 mb-3">No hay periodos de tiempo configurados</p>
               </div>
             @endif
 
@@ -102,7 +104,7 @@
           <h3 class="text-lg font-medium text-gray-900 mb-1">No hay tipos de membresía</h3>
           <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de membresía</p>
           <flux:button variant="primary" icon="plus" wire:click="createType">
-            Crear Primer Tipo
+            Crear Uno
           </flux:button>
         </div>
       @endforelse
