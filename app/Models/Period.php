@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\DurationUnit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Period extends Model
 {
@@ -26,5 +27,13 @@ class Period extends Model
     public function membershipType(): BelongsTo
     {
         return $this->belongsTo(MembershipType::class);
+    }
+
+    /**
+     * Get the memberships for the period.
+     */
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(Membership::class);
     }
 }

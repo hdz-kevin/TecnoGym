@@ -16,4 +16,12 @@ class MembershipType extends Model
     {
         return $this->hasMany(Period::class);
     }
+
+    /**
+     * Get the memberships for the membership type.
+     */
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(Membership::class);
+    }
 }
