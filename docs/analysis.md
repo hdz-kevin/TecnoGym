@@ -46,9 +46,9 @@ de productos, ingresos y egresos, balances, etc.
   - tipo de membresía (el tipo específico que se contrata)
   - período contratado (ej: 1 mes, 3 meses)
   - precio pagado
+  - estado (activo/vencido)
   - fecha de inicio
   - fecha de vencimiento
-  - estado (activo/vencido)
 - **Cómo se relaciona**: Cada membresía pertenece a un tipo de membresía y a un socio específico
 
 ### VisitType
