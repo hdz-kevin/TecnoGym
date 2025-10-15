@@ -22,8 +22,6 @@ class Membership extends Model
         'status' => MembershipStatus::class,
     ];
 
-    // Relationships
-
     /**
      * Get the member that owns the membership.
      */
