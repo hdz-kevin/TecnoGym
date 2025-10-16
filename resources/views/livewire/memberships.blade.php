@@ -82,311 +82,66 @@
 
     <!-- Lista de membresías en grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        @foreach ($memberships as $membership)
+            <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
+                <div class="absolute top-4 right-4">
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $membership->status === \App\Enums\MembershipStatus::ACTIVE ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+                    >
+                        {{ $membership->status }}
+                    </span>
+                </div>
 
-        <!-- Membresía activa -->
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-            <!-- Badge de estado -->
-            <div class="absolute top-4 right-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                    Activa
-                </span>
-            </div>
-
-            <div class="p-6">
-                <div class="space-y-4">
-                    <!-- Info del socio -->
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-lg font-semibold text-gray-800">JD</span>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                <span class="text-lg font-semibold text-gray-800">
+                                    {{ $membership->member->name[0] }}
+                                </span>
+                            </div>
+                            <div>
+                                <h3 class="text-[19px] font-medium text-gray-900">{{ $membership->member->name }}</h3>
+                                <p class="text-sm text-gray-600">{{ $membership->membershipType->name }} • {{ $membership->period->name }}</p>
+                            </div>
                         </div>
+
+                        <!-- Información de período -->
                         <div>
-                            <h3 class="text-[19px] font-medium text-gray-900">Juan Domínguez</h3>
-                            <p class="text-sm text-gray-600">General • Mensual</p>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-500">Inicio</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $membership->start_date->format('d M Y') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm text-gray-500">Vencimiento</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $membership->end_date->format('d M Y') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Estado</span>
+                                <span class="text-sm font-medium">15 días restantes</span>
+                            </div>
+                            {{-- <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-500">Estado</span>
+                                <span class="text-sm font-medium text-red-600">Vencida hace 35 días</span>
+                            </div> --}}
                         </div>
-                    </div>
 
-                    <!-- Información de período -->
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Inicio</span>
-                            <span class="text-sm font-medium text-gray-900">15 Sep 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Vencimiento</span>
-                            <span class="text-sm font-medium text-gray-900">15 Oct 2025</span>
-                        </div>
+                        <!-- Precio y acciones -->
                         <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Estado</span>
-                            <span class="text-sm font-medium text-green-600">15 días restantes</span>
-                        </div>
-                    </div>
-
-                    <!-- Precio y acciones -->
-                    <div class="flex items-center justify-between">
-                        <p class="text-2xl font-bold text-gray-900">$400</p>
-                        <div class="flex gap-2">
-                            <flux:button size="sm" variant="outline">
-                                Historial
-                            </flux:button>
-                            <flux:button size="sm" variant="primary">
-                                Renovar
-                            </flux:button>
+                            <p class="text-2xl font-bold text-gray-900">${{ $membership->price }}</p>
+                            <div class="flex gap-2">
+                                <flux:button size="sm" variant="outline">
+                                    Historial
+                                </flux:button>
+                                <flux:button size="sm" variant="primary">
+                                    Renovar
+                                </flux:button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Membresía activa 2 -->
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-            <!-- Badge de estado -->
-            <div class="absolute top-4 right-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                    Activa
-                </span>
-            </div>
-
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-lg font-semibold text-gray-800">LG</span>
-                        </div>
-                        <div>
-                            <h3 class="text-[19px] font-medium text-gray-900">Luis García</h3>
-                            <p class="text-sm text-gray-600">General • Semestral</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Inicio</span>
-                            <span class="text-sm font-medium text-gray-900">01 Jul 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Vencimiento</span>
-                            <span class="text-sm font-medium text-gray-900">01 Ene 2026</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Estado</span>
-                            <span class="text-sm font-medium text-green-600">78 días restantes</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <p class="text-2xl font-bold text-gray-900">$2,000</p>
-                        <div class="flex gap-2">
-                            <flux:button size="sm" variant="outline">
-                                Historial
-                            </flux:button>
-                            <flux:button size="sm" variant="primary">
-                                Renovar
-                            </flux:button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Membresía vencida -->
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-            <!-- Badge de estado -->
-            <div class="absolute top-4 right-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                    Vencida
-                </span>
-            </div>
-
-            <div class="p-6">
-                <div class="space-y-4">
-                    <!-- Info del socio -->
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-lg font-semibold text-gray-800">MP</span>
-                        </div>
-                        <div>
-                            <h3 class="text-[19px] font-medium text-gray-900">María Pérez</h3>
-                            <p class="text-sm text-gray-600">Estudiante • Mensual</p>
-                        </div>
-                    </div>
-
-                    <!-- Información de período -->
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Inicio</span>
-                            <span class="text-sm font-medium text-gray-900">10 Ago 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Venció</span>
-                            <span class="text-sm font-medium text-gray-900">10 Sep 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Estado</span>
-                            <span class="text-sm font-medium text-red-600">Vencida hace 35 días</span>
-                        </div>
-                    </div>
-
-                    <!-- Precio y acciones -->
-                    <div class="flex items-center justify-between">
-                        <p class="text-2xl font-bold text-gray-900">$350</p>
-                        <div class="flex gap-2">
-                            <flux:button size="sm" variant="outline">
-                                Historial
-                            </flux:button>
-                            <flux:button size="sm" variant="primary">
-                                Renovar
-                            </flux:button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Membresía activa 3 -->
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-            <!-- Badge de estado -->
-            <div class="absolute top-4 right-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                    Activa
-                </span>
-            </div>
-
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-lg font-semibold text-gray-800">AR</span>
-                        </div>
-                        <div>
-                            <h3 class="text-[19px] font-medium text-gray-900">Ana Rodríguez</h3>
-                            <p class="text-sm text-gray-600">Estudiante • Mensual</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Inicio</span>
-                            <span class="text-sm font-medium text-gray-900">01 Oct 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Vencimiento</span>
-                            <span class="text-sm font-medium text-gray-900">01 Nov 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Estado</span>
-                            <span class="text-sm font-medium text-green-600">17 días restantes</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <p class="text-2xl font-bold text-gray-900">$350</p>
-                        <div class="flex gap-2">
-                            <flux:button size="sm" variant="outline">
-                                Historial
-                            </flux:button>
-                            <flux:button size="sm" variant="primary">
-                                Renovar
-                            </flux:button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Membresía vencida 2 -->
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-            <!-- Badge de estado -->
-            <div class="absolute top-4 right-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                    Vencida
-                </span>
-            </div>
-
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-lg font-semibold text-gray-800">CT</span>
-                        </div>
-                        <div>
-                            <h3 class="text-[19px] font-medium text-gray-900">Carlos Torres</h3>
-                            <p class="text-sm text-gray-600">General • Anual</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Inicio</span>
-                            <span class="text-sm font-medium text-gray-900">01 Ene 2024</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Venció</span>
-                            <span class="text-sm font-medium text-gray-900">01 Ene 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Estado</span>
-                            <span class="text-sm font-medium text-red-600">Vencida hace 287 días</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <p class="text-2xl font-bold text-gray-900">$4,000</p>
-                        <div class="flex gap-2">
-                            <flux:button size="sm" variant="outline">
-                                Historial
-                            </flux:button>
-                            <flux:button size="sm" variant="primary">
-                                Renovar
-                            </flux:button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Membresía activa 4 -->
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-            <!-- Badge de estado -->
-            <div class="absolute top-4 right-4">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                    Activa
-                </span>
-            </div>
-
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span class="text-lg font-semibold text-gray-800">SM</span>
-                        </div>
-                        <div>
-                            <h3 class="text-[19px] font-medium text-gray-900">Sofia Martín</h3>
-                            <p class="text-sm text-gray-600">General • Trimestral</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Inicio</span>
-                            <span class="text-sm font-medium text-gray-900">15 Ago 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm text-gray-500">Vencimiento</span>
-                            <span class="text-sm font-medium text-gray-900">15 Nov 2025</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Estado</span>
-                            <span class="text-sm font-medium text-green-600">31 días restantes</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <p class="text-2xl font-bold text-gray-900">$1,100</p>
-                        <div class="flex gap-2">
-                            <flux:button size="sm" variant="outline">
-                                Historial
-                            </flux:button>
-                            <flux:button size="sm" variant="primary">
-                                Renovar
-                            </flux:button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        @endforeach
     </div>
 
     <!-- Paginación -->

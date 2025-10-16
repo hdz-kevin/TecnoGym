@@ -21,8 +21,8 @@ class Membership extends Model
 
     protected $casts = [
         'status' => MembershipStatus::class,
-        'start_date' => Carbon::class,
-        'end_date' => Carbon::class,
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 
     /**
