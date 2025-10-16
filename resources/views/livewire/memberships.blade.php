@@ -7,7 +7,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Membresías Activas</p>
-                    <p class="text-3xl font-bold text-gray-900">18</p>
+                    <p class="text-3xl font-bold text-gray-900">{{ $active->count() }}</p>
                 </div>
                 <div class="h-12 w-12 bg-green-50 rounded-xl flex items-center justify-center">
                     <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,7 +21,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Membresías Vencidas</p>
-                    <p class="text-3xl font-bold text-gray-900">14</p>
+                    <p class="text-3xl font-bold text-gray-900">{{ $expired->count() }}</p>
                 </div>
                 <div class="h-12 w-12 bg-red-50 rounded-xl flex items-center justify-center">
                     <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
