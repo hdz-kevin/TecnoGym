@@ -2,14 +2,52 @@
 
 <div>
     <div class="p-6 pt-4 space-y-6">
-        <!-- Header con botón -->
-        <div class="flex justify-end">
-            <flux:button variant="primary" icon="plus">
-                Nueva Membresía
-            </flux:button>
+        <!-- Estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Membresías Activas</p>
+                        <p class="text-3xl font-bold text-gray-900">18</p>
+                    </div>
+                    <div class="h-12 w-12 bg-green-50 rounded-xl flex items-center justify-center">
+                        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Membresías Vencidas</p>
+                        <p class="text-3xl font-bold text-gray-900">14</p>
+                    </div>
+                    <div class="h-12 w-12 bg-red-50 rounded-xl flex items-center justify-center">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Socios</p>
+                        <p class="text-3xl font-bold text-gray-900">32</p>
+                    </div>
+                    <div class="h-12 w-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                        <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Filtros y búsqueda -->
+        <!-- Filtros y búsqueda con botón -->
         <div class="flex flex-col lg:flex-row lg:items-center gap-4">
             <div class="flex-1">
                 <flux:input placeholder="Buscar por nombre..." class="w-full" />
@@ -25,45 +63,9 @@
                     <flux:select.option value="general">General</flux:select.option>
                     <flux:select.option value="estudiante">Estudiante</flux:select.option>
                 </flux:select>
-            </div>
-        </div>
-
-        <!-- Estadísticas -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Membresías Activas</p>
-                        <p class="text-2xl font-bold text-gray-900">18</p>
-                    </div>
-                    <div class="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
-                        <div class="h-3 w-3 bg-green-500 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Membresías Vencidas</p>
-                        <p class="text-2xl font-bold text-gray-900">14</p>
-                    </div>
-                    <div class="h-8 w-8 bg-red-100 rounded-lg flex items-center justify-center">
-                        <div class="h-3 w-3 bg-red-500 rounded-full"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Total Socios</p>
-                        <p class="text-2xl font-bold text-gray-900">32</p>
-                    </div>
-                    <div class="h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <div class="h-3 w-3 bg-blue-500 rounded-full"></div>
-                    </div>
-                </div>
+                <flux:button variant="primary" icon="plus">
+                    Nueva Membresía
+                </flux:button>
             </div>
         </div>
 
