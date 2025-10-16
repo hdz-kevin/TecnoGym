@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MembershipStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -20,6 +21,8 @@ class Membership extends Model
 
     protected $casts = [
         'status' => MembershipStatus::class,
+        'start_date' => Carbon::class,
+        'end_date' => Carbon::class,
     ];
 
     /**
