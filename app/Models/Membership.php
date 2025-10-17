@@ -32,7 +32,8 @@ class Membership extends Model
     public function daysUntilExpiration(): int
     {
         if ($this->status === MembershipStatus::ACTIVE) {
-            return ceil($this->end_date->diffInDays(now(), true));
+            // Peding: ask about rounding preference to client
+            return ceil(now()->diffInDays($this->end_date) + 1);
         }
 
         return floor(now()->diffInDays($this->end_date, true));

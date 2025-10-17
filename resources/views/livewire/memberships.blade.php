@@ -1,6 +1,6 @@
 <x-slot:subtitle>Administra las membresías activas y vencidas de tus socios</x-slot:subtitle>
 
-<div class="p-6 pt-4 space-y-7">
+<div class="p-6 pt-3 space-y-6">
   <!-- Statistics -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
@@ -87,8 +87,10 @@
       <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
         <div class="absolute top-4 right-4">
           <span
-            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $membership->status === \App\Enums\MembershipStatus::ACTIVE ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-            {{ $membership->status }}
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium
+              {{ $membership->status === \App\Enums\MembershipStatus::ACTIVE ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
+          >
+            {{ $membership->status->label() }}
           </span>
         </div>
 
@@ -101,33 +103,36 @@
                 </span>
               </div>
               <div>
-                <h3 class="text-[19px] font-medium text-gray-900">{{ $membership->member->name }}</h3>
-                <p class="text-sm text-gray-600">{{ $membership->membershipType->name }} •
-                  {{ $membership->period->name }}</p>
+                <h3 class="text-lg font-medium text-gray-900">
+                  {{ $membership->member->name }}
+                </h3>
+                <p class="text-gray-700">
+                  {{ $membership->membershipType->name }} • {{ $membership->period->name }}
+                </p>
               </div>
             </div>
 
             <!-- Period Information -->
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-gray-500">Inicio</span>
+                <span class="text-sm text-gray-600">Inicio</span>
                 <span class="text-sm font-medium text-gray-900">{{ $membership->start_date->format('d M Y') }}</span>
               </div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-gray-500">Vencimiento</span>
+                <span class="text-sm text-gray-600">Vencimiento</span>
                 <span class="text-sm font-medium text-gray-900">{{ $membership->end_date->format('d M Y') }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500">Estado</span>
+                <span class="text-sm text-gray-600">Estado</span>
+                    @php $days = $membership->daysUntilExpiration() @endphp
 
                 @if ($membership->status == \App\Enums\MembershipStatus::ACTIVE)
                   <span class="text-sm font-medium text-green-600">
-                    @php $days = $membership->daysUntilExpiration() @endphp
                     {{ $days == 1 ?  '1 día restante' : $days.' días restantes' }}
                   </span>
                 @elseif ($membership->status == \App\Enums\MembershipStatus::EXPIRED)
                   <span class="text-sm font-medium text-red-600">
-                    Vencida hace {{ $membership->daysUntilExpiration() }} días
+                    Vencida hace {{ $days }} @choice('día|días', $days)
                   </span>
                 @endif
               </div>
