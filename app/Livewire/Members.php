@@ -118,7 +118,7 @@ class Members extends Component
 
     public function render()
     {
-        $members = Member::all();
+        $members = Member::all()->take(9);
 
         return view('livewire.members', compact('members'));
     }

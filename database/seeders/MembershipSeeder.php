@@ -18,7 +18,7 @@ class MembershipSeeder extends Seeder
      */
     public function run(): void
     {
-        $members = Member::all()->take(7);
+        $members = Member::all()->take(8);
 
         // Membership Types
         $general = MembershipType::where('name', 'general')->first();
@@ -79,11 +79,17 @@ class MembershipSeeder extends Seeder
             [
                 'member_id' => $members[5]->id,
                 'period' => $stuBiweekly,
-                'start_date' => Carbon::now()->subDays(12),
+                'start_date' => Carbon::now()->subDays(13),
                 'status' => MembershipStatus::ACTIVE,
             ],
             [
                 'member_id' => $members[6]->id,
+                'period' => $genMonthly,
+                'start_date' => Carbon::now()->subDays(6),
+                'status' => MembershipStatus::ACTIVE,
+            ],
+            [
+                'member_id' => $members[7]->id,
                 'period' => $stuBiweekly,
                 'start_date' => Carbon::now()->subDays(15),
                 'status' => MembershipStatus::EXPIRED,

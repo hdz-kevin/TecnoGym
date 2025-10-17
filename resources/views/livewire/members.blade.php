@@ -2,7 +2,7 @@
 
 <div>
   <!-- Content -->
-  <div class="p-6 pt-4 space-y-6">
+  <div class="p-6 pt-3 space-y-6">
     <!-- Search and Filters -->
     <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
       <div class="flex-1 max-w-md">
