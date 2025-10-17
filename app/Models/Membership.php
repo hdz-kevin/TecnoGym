@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\MembershipStatus;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,6 +23,20 @@ class Membership extends Model
         'start_date' => 'date',
         'end_date' => 'date',
     ];
+
+    /**
+     * Calculate days until or since expiration.
+     *
+     * @return int
+     */
+    public function daysUntilExpiration(): int
+    {
+        if ($this->status === MembershipStatus::ACTIVE) {
+            return ceil($this->end_date->diffInDays(now(), true));
+        }
+
+        return floor(now()->diffInDays($this->end_date, true));
+    }
 
     /**
      * Get the member that owns the membership.

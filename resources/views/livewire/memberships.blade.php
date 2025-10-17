@@ -1,156 +1,163 @@
 <x-slot:subtitle>Administra las membresías activas y vencidas de tus socios</x-slot:subtitle>
 
 <div class="p-6 pt-4 space-y-7">
-    <!-- Estadísticas -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+  <!-- Statistics -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Membresías Activas</p>
+          <p class="text-3xl font-bold text-gray-900">{{ $active->count() }}</p>
+        </div>
+        <div class="h-12 w-12 bg-green-50 rounded-xl flex items-center justify-center">
+          <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Membresías Vencidas</p>
+          <p class="text-3xl font-bold text-gray-900">{{ $expired->count() }}</p>
+        </div>
+        <div class="h-12 w-12 bg-red-50 rounded-xl flex items-center justify-center">
+          <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Socios</p>
+          <p class="text-3xl font-bold text-gray-900">32</p>
+        </div>
+        <div class="h-12 w-12 bg-blue-50 rounded-xl flex items-center justify-center">
+          <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div class="flex-1 max-w-3xl">
+      {{-- <flux:input placeholder="Buscar por nombre..." class="w-full !placeholder-gray-700" icon="magnifying-glass" /> --}}
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+        <input type="text" placeholder="Buscar por nombre..."
+          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <flux:select placeholder="Estado" class="min-w-40">
+        <flux:select.option value="all">Todos los estados</flux:select.option>
+        <flux:select.option value="active">Activas</flux:select.option>
+        <flux:select.option value="expired">Vencidas</flux:select.option>
+      </flux:select>
+      <flux:select placeholder="Tipo" class="min-w-40">
+        <flux:select.option value="all">Todos los tipos</flux:select.option>
+        <flux:select.option value="general">General</flux:select.option>
+        <flux:select.option value="estudiante">Estudiante</flux:select.option>
+      </flux:select>
+      <flux:button variant="primary" icon="plus">
+        Nueva Membresía
+      </flux:button>
+    </div>
+  </div>
+
+  <!-- Memberships grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    @foreach ($memberships as $membership)
+      <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
+        <div class="absolute top-4 right-4">
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $membership->status === \App\Enums\MembershipStatus::ACTIVE ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+            {{ $membership->status }}
+          </span>
+        </div>
+
+        <div class="p-6">
+          <div class="space-y-4">
+            <div class="flex items-center space-x-4">
+              <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
+                <span class="text-lg font-semibold text-gray-800">
+                  {{ $membership->member->name[0] }}
+                </span>
+              </div>
+              <div>
+                <h3 class="text-[19px] font-medium text-gray-900">{{ $membership->member->name }}</h3>
+                <p class="text-sm text-gray-600">{{ $membership->membershipType->name }} •
+                  {{ $membership->period->name }}</p>
+              </div>
+            </div>
+
+            <!-- Period Information -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Inicio</span>
+                <span class="text-sm font-medium text-gray-900">{{ $membership->start_date->format('d M Y') }}</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Vencimiento</span>
+                <span class="text-sm font-medium text-gray-900">{{ $membership->end_date->format('d M Y') }}</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-500">Estado</span>
+
+                @if ($membership->status == \App\Enums\MembershipStatus::ACTIVE)
+                  <span class="text-sm font-medium text-green-600">
+                    @php $days = $membership->daysUntilExpiration() @endphp
+                    {{ $days == 1 ?  '1 día restante' : $days.' días restantes' }}
+                  </span>
+                @elseif ($membership->status == \App\Enums\MembershipStatus::EXPIRED)
+                  <span class="text-sm font-medium text-red-600">
+                    Vencida hace {{ $membership->daysUntilExpiration() }} días
+                  </span>
+                @endif
+              </div>
+            </div>
+
+            <!-- Price and Actions -->
             <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Membresías Activas</p>
-                    <p class="text-3xl font-bold text-gray-900">{{ $active->count() }}</p>
-                </div>
-                <div class="h-12 w-12 bg-green-50 rounded-xl flex items-center justify-center">
-                    <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
+              <p class="text-2xl font-bold text-gray-900">${{ $membership->price }}</p>
+              <div class="flex gap-2">
+                <flux:button size="sm" variant="outline">
+                  Historial
+                </flux:button>
+                <flux:button size="sm" variant="primary">
+                  Renovar
+                </flux:button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    @endforeach
+  </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Membresías Vencidas</p>
-                    <p class="text-3xl font-bold text-gray-900">{{ $expired->count() }}</p>
-                </div>
-                <div class="h-12 w-12 bg-red-50 rounded-xl flex items-center justify-center">
-                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm font-medium text-gray-500">Total Socios</p>
-                    <p class="text-3xl font-bold text-gray-900">32</p>
-                </div>
-                <div class="h-12 w-12 bg-blue-50 rounded-xl flex items-center justify-center">
-                    <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                </div>
-            </div>
-        </div>
+  <!-- Pagination -->
+  <div class="flex justify-center mt-8">
+    <div class="flex items-center space-x-2">
+      <flux:button size="sm" variant="outline">Anterior</flux:button>
+      <span class="text-sm text-gray-500 px-4">Página 1 de 3</span>
+      <flux:button size="sm" variant="outline">Siguiente</flux:button>
     </div>
-
-    <!-- Filtros y búsqueda con botón -->
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div class="flex-1 max-w-3xl">
-            {{-- <flux:input placeholder="Buscar por nombre..." class="w-full !placeholder-gray-700" icon="magnifying-glass" /> --}}
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
-                </div>
-                <input
-                    type="text"
-                    placeholder="Buscar por nombre..."
-                    class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500"
-                />
-            </div>
-        </div>
-        <div class="flex gap-3">
-            <flux:select placeholder="Estado" class="min-w-40">
-                <flux:select.option value="all">Todos los estados</flux:select.option>
-                <flux:select.option value="active">Activas</flux:select.option>
-                <flux:select.option value="expired">Vencidas</flux:select.option>
-            </flux:select>
-            <flux:select placeholder="Tipo" class="min-w-40">
-                <flux:select.option value="all">Todos los tipos</flux:select.option>
-                <flux:select.option value="general">General</flux:select.option>
-                <flux:select.option value="estudiante">Estudiante</flux:select.option>
-            </flux:select>
-            <flux:button variant="primary" icon="plus">
-                Nueva Membresía
-            </flux:button>
-        </div>
-    </div>
-
-    <!-- Lista de membresías en grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        @foreach ($memberships as $membership)
-            <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
-                <div class="absolute top-4 right-4">
-                    <span
-                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium {{ $membership->status === \App\Enums\MembershipStatus::ACTIVE ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
-                    >
-                        {{ $membership->status }}
-                    </span>
-                </div>
-
-                <div class="p-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span class="text-lg font-semibold text-gray-800">
-                                    {{ $membership->member->name[0] }}
-                                </span>
-                            </div>
-                            <div>
-                                <h3 class="text-[19px] font-medium text-gray-900">{{ $membership->member->name }}</h3>
-                                <p class="text-sm text-gray-600">{{ $membership->membershipType->name }} • {{ $membership->period->name }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Información de período -->
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-sm text-gray-500">Inicio</span>
-                                <span class="text-sm font-medium text-gray-900">{{ $membership->start_date->format('d M Y') }}</span>
-                            </div>
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-sm text-gray-500">Vencimiento</span>
-                                <span class="text-sm font-medium text-gray-900">{{ $membership->end_date->format('d M Y') }}</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Estado</span>
-                                <span class="text-sm font-medium">15 días restantes</span>
-                            </div>
-                            {{-- <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500">Estado</span>
-                                <span class="text-sm font-medium text-red-600">Vencida hace 35 días</span>
-                            </div> --}}
-                        </div>
-
-                        <!-- Precio y acciones -->
-                        <div class="flex items-center justify-between">
-                            <p class="text-2xl font-bold text-gray-900">${{ $membership->price }}</p>
-                            <div class="flex gap-2">
-                                <flux:button size="sm" variant="outline">
-                                    Historial
-                                </flux:button>
-                                <flux:button size="sm" variant="primary">
-                                    Renovar
-                                </flux:button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-    <!-- Paginación -->
-    <div class="flex justify-center mt-8">
-        <div class="flex items-center space-x-2">
-            <flux:button size="sm" variant="outline">Anterior</flux:button>
-            <span class="text-sm text-gray-500 px-4">Página 1 de 3</span>
-            <flux:button size="sm" variant="outline">Siguiente</flux:button>
-        </div>
-    </div>
+  </div>
 
 </div>

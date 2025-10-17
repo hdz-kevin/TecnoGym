@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Membership;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class Memberships extends Component
@@ -14,6 +13,9 @@ class Memberships extends Component
         $active = $memberships->where('status', 'active');
         $expired = $memberships->where('status', 'expired');
 
-        return view('livewire.memberships', compact('memberships', 'active', 'expired'));
+        return view(
+            'livewire.memberships',
+            compact('memberships', 'active', 'expired'),
+        );
     }
 }
