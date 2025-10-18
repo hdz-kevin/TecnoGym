@@ -18,7 +18,7 @@ class MembershipSeeder extends Seeder
      */
     public function run(): void
     {
-        $members = Member::all()->take(8);
+        $members = Member::all();
 
         // Membership Types
         $general = MembershipType::where('name', 'general')->first();
@@ -58,38 +58,38 @@ class MembershipSeeder extends Seeder
                 'status' => MembershipStatus::ACTIVE,
             ],
             [
-                'member_id' => $members[2]->id,
+                'member_id' => $members[4]->id,
                 'period' => $genBiweekly,
                 'start_date' => Carbon::now()->subDays(1),
                 'status' => MembershipStatus::ACTIVE,
             ],
             [
-                'member_id' => $members[3]->id,
+                'member_id' => $members[5]->id,
                 'period' => $genMonthly,
                 'start_date' => Carbon::now()->subDays(45),
                 'status' => MembershipStatus::EXPIRED,
             ],
             // Student
+            // [
+            //     'member_id' => $members[4]->id,
+            //     'period' => $stuMonthly,
+            //     'start_date' => Carbon::now()->subDays(7),
+            //     'status' => MembershipStatus::ACTIVE,
+            // ],
             [
-                'member_id' => $members[4]->id,
-                'period' => $stuMonthly,
-                'start_date' => Carbon::now()->subDays(7),
-                'status' => MembershipStatus::ACTIVE,
-            ],
-            [
-                'member_id' => $members[5]->id,
+                'member_id' => $members[6]->id,
                 'period' => $stuBiweekly,
                 'start_date' => Carbon::now()->subDays(13),
                 'status' => MembershipStatus::ACTIVE,
             ],
+            // [
+            //     'member_id' => $members[6]->id,
+            //     'period' => $genMonthly,
+            //     'start_date' => Carbon::now()->subDays(6),
+            //     'status' => MembershipStatus::ACTIVE,
+            // ],
             [
-                'member_id' => $members[6]->id,
-                'period' => $genMonthly,
-                'start_date' => Carbon::now()->subDays(6),
-                'status' => MembershipStatus::ACTIVE,
-            ],
-            [
-                'member_id' => $members[7]->id,
+                'member_id' => $members[8]->id,
                 'period' => $stuBiweekly,
                 'start_date' => Carbon::now()->subDays(15),
                 'status' => MembershipStatus::EXPIRED,

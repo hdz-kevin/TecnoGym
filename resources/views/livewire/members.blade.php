@@ -19,7 +19,7 @@
           <flux:select.option value="date">Ordenar por fecha</flux:select.option>
           <flux:select.option value="status">Ordenar por estado</flux:select.option>
         </flux:select>
-        <flux:button class="cursor-pointer" variant="primary" icon="plus" wire:click="createMemberModal">
+        <flux:button variant="primary" icon="plus" wire:click="createMemberModal">
           Nuevo socio
         </flux:button>
       </div>
@@ -33,7 +33,7 @@
             <div class="flex items-center space-x-3">
               <div
                 class="h-12 w-12 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                AR
+                {{ $member->initials() }}
               </div>
               <div>
                 <h3 class="font-semibold text-gray-900 text-[18px]">{{ $member->name }}</h3>
@@ -43,16 +43,22 @@
             {{-- <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
                             Sin membresía
                         </span> --}}
-            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-              Premium
+            @if ($member->memberships->count() > 0)
+            <span class="px-2 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">
+              {{ $member->memberships->last()->membershipType->name }}
             </span>
+            @else
+            <span class="px-2 py-1 text-sm font-medium bg-gray-100 text-gray-800 rounded-full">
+              Sin membresía
+            </span>
+            @endif
             {{-- <span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
                             VIP
                         </span> --}}
           </div>
 
           <div class="mb-4">
-            <p class="text-sm text-gray-500">Sin visitas registradas</p>
+            <p class="text-base text-gray-500">Sin visitas registradas</p>
           </div>
           {{-- <div class="mb-4">
                         <p class="text-sm text-gray-500">Última visita: Hace 2 días</p>
@@ -60,10 +66,10 @@
                     </div> --}}
 
           <div class="flex flex-wrap gap-2">
-            <flux:button variant="ghost" size="sm" class="text-sm border">Ver</flux:button>
-            <flux:button variant="ghost" size="sm" class="text-sm border" wire:click="updateMemberModal({{ $member->id }})">Editar</flux:button>
-            <flux:button variant="ghost" size="sm" class="text-sm border">Registrar visita</flux:button>
-            <flux:button variant="ghost" size="sm" class="text-sm border">Asignar membresía</flux:button>
+            <flux:button variant="ghost"  class="text-sm border">Ver</flux:button>
+            <flux:button variant="ghost"  class="text-sm border" wire:click="updateMemberModal({{ $member->id }})">Editar</flux:button>
+            <flux:button variant="ghost"  class="text-sm border">Registrar visita</flux:button>
+            <flux:button variant="ghost"  class="text-sm border">Asignar membresía</flux:button>
           </div>
         </div>
       @endforeach
@@ -185,10 +191,10 @@
   @endif
 
   <!-- Flash Messages -->
-  @if (session()->has('message'))
+  {{-- @if (session()->has('message'))
     <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50"
       x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
       {{ session('message') }}
     </div>
-  @endif
+  @endif --}}
 </div>

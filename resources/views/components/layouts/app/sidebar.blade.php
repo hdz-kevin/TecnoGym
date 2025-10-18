@@ -19,12 +19,12 @@
           {{ __('Dashboard') }}
         </flux:navlist.item>
 
-        <flux:navlist.item icon="users" :href="route('members.index')" :current="request()->routeIs('members.index')" wire:navigate>
-          {{ __('Socios') }}
-        </flux:navlist.item>
-
         <flux:navlist.item icon="credit-card" :href="route('memberships.index')" :current="request()->routeIs('memberships.index')" wire:navigate>
           {{ __('Membresías') }}
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="users" :href="route('members.index')" :current="request()->routeIs('members.index')" wire:navigate>
+          {{ __('Socios') }}
         </flux:navlist.item>
 
         <flux:navlist.item icon="calendar-days" :href="route('dashboard')" :current="request()->routeIs('/')" wire:navigate>
@@ -142,7 +142,7 @@
   </flux:header>
 
   {{-- Top Header --}}
-  <section class="bg-white shadow-sm border-b border-gray-200 px-8 py-6">
+  <section class="bg-white shadow-sm border-b border-gray-200 px-8 py-5">
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-semibold text-gray-900">{{ $title ?? 'Dashboard' }}</h1>
