@@ -36,7 +36,7 @@ class Membership extends Model
             // return ceil(now()->diffInDays($this->end_date)) + 1;
         }
 
-        return floor(now()->diffInDays($this->end_date, true));
+        return floor(now()->diffInDays($this->end_date) * -1);
     }
 
     /**
