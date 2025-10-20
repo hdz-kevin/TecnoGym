@@ -48,7 +48,7 @@ class MembershipSeeder extends Seeder
             [
                 'member_id' => $members[0]->id,
                 'period' => $genMonthly,
-                'start_date' => Carbon::now()->subDays(10),
+                'start_date' => Carbon::now()->subMonth(),
                 'status' => MembershipStatus::ACTIVE,
             ],
             [
@@ -70,24 +70,24 @@ class MembershipSeeder extends Seeder
                 'status' => MembershipStatus::EXPIRED,
             ],
             // Student
-            // [
-            //     'member_id' => $members[4]->id,
-            //     'period' => $stuMonthly,
-            //     'start_date' => Carbon::now()->subDays(7),
-            //     'status' => MembershipStatus::ACTIVE,
-            // ],
+            [
+                'member_id' => $members[4]->id,
+                'period' => $stuMonthly,
+                'start_date' => Carbon::now()->subDays(7),
+                'status' => MembershipStatus::ACTIVE,
+            ],
             [
                 'member_id' => $members[6]->id,
                 'period' => $stuBiweekly,
                 'start_date' => Carbon::now()->subDays(13),
                 'status' => MembershipStatus::ACTIVE,
             ],
-            // [
-            //     'member_id' => $members[6]->id,
-            //     'period' => $genMonthly,
-            //     'start_date' => Carbon::now()->subDays(6),
-            //     'status' => MembershipStatus::ACTIVE,
-            // ],
+            [
+                'member_id' => $members[6]->id,
+                'period' => $genMonthly,
+                'start_date' => Carbon::now()->subDays(6),
+                'status' => MembershipStatus::ACTIVE,
+            ],
             [
                 'member_id' => $members[8]->id,
                 'period' => $stuBiweekly,
