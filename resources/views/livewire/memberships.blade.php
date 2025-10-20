@@ -138,7 +138,11 @@
                   </span>
                 @else
                   <span class="text-sm font-medium text-red-600">
-                    Vencida hace {{ $days }} @choice('día|días', $days)
+                    @if ($days == 0)
+                      Vencida hoy
+                    @else
+                      Vencida hace {{ $days }} @choice('día|días', $days)
+                    @endif
                   </span>
                 @endif
               </div>
