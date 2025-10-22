@@ -12,8 +12,8 @@ Artisan::command('inspire', function () {
 
 Schedule::call(function () {
     Membership::whereDate('end_date', '<=', now())
-                ->where('status', MembershipStatus::ACTIVE->value)
-                ->update(['status' => MembershipStatus::EXPIRED->value]);
+              ->where('status', MembershipStatus::ACTIVE->value)
+              ->update(['status' => MembershipStatus::EXPIRED->value]);
 })
     ->daily()
     ->timezone(config('app.timezone'));

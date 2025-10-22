@@ -33,7 +33,6 @@ class Membership extends Model
     {
         if ($this->status === MembershipStatus::ACTIVE) {
             return ceil(now()->diffInDays($this->end_date));
-            // return ceil(now()->diffInDays($this->end_date)) + 1;
         }
 
         return floor(now()->diffInDays($this->end_date) * -1);
