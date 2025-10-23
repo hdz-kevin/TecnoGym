@@ -79,7 +79,7 @@
         <flux:select.option value="general">General</flux:select.option>
         <flux:select.option value="estudiante">Estudiante</flux:select.option>
       </flux:select>
-      <flux:button variant="primary" icon="plus" wire:click="createMembership">
+      <flux:button variant="primary" icon="plus" wire:click="openFormModal">
         Nueva Membresía
       </flux:button>
     </div>
@@ -156,7 +156,7 @@
                   Historial
                 </flux:button>
                 @if ($membership->status == MembershipStatus::ACTIVE)
-                  <flux:button size="sm" variant="primary">
+                  <flux:button size="sm" variant="primary" wire:click="openFormModal({{ $membership->id }})">
                     Editar
                   </flux:button>
                 @else

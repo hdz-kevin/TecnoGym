@@ -16,13 +16,7 @@ use Carbon\Carbon;
 #[Title('Membresías')]
 class Memberships extends Component
 {
-    // Modal state
-    public $showMembershipModal = false;
-
-    // Editing state
-    public Membership|null $editingMembership = null;
-
-    // Form fields
+    // Properties
     #[Rule('required', message: 'El socio es obligatorio')]
     public $memberId = '';
 
@@ -36,16 +30,26 @@ class Memberships extends Component
     #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
     public $startDate = '';
 
+    // Modal state
+    public $showMembershipModal = false;
+
+    /** Updating membership instance or null (no updating by default) */
+    public Membership|null $updatingMembership = null;
+
     // Available periods for selected membership type
     public $availablePeriods = [];
 
     /**
-     * Create new membership
+     * Open create/update membership form modal
      */
-    public function createMembership()
+    public function openFormModal(Membership $membership)
     {
-        $this->showMembershipModal = true;
-        $this->startDate = now()->format('Y-m-d');
+        if ($membership->exists) {
+            $this->updatingMembership = $membership;
+        } else {
+            $this->showMembershipModal = true;
+            $this->startDate = now()->format('Y-m-d');
+        }
     }
 
     /**
@@ -81,8 +85,8 @@ class Memberships extends Component
             'status' => $endDate->isFuture() ? MembershipStatus::ACTIVE : MembershipStatus::EXPIRED,
         ];
 
-        if ($this->editingMembership) {
-            $this->editingMembership->update($membershipData);
+        if ($this->updatingMembership) {
+            $this->updatingMembership->update($membershipData);
             $message = 'Membresía actualizada exitosamente.';
         } else {
             Membership::create($membershipData);
@@ -113,7 +117,7 @@ class Memberships extends Component
     public function closeMembershipModal()
     {
         $this->showMembershipModal = false;
-        $this->editingMembership = null;
+        $this->updatingMembership = null;
         $this->resetMembershipForm();
         $this->resetValidation();
     }
