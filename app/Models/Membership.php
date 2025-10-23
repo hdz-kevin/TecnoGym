@@ -29,11 +29,11 @@ class Membership extends Model
      *
      * @return int
      */
-    public function daysUntilExpiration(): float|int
+    public function daysUntilExpiration(): int
     {
         if ($this->status === MembershipStatus::ACTIVE) {
             return ceil(now()->diffInDays($this->end_date));
-            // return ceil(now()->diffInDays($this->end_date)) + 1;
+            // return ceil($this->start_date->diffInDays($this->end_date));
         }
 
         return floor(now()->diffInDays($this->end_date) * -1);
