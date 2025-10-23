@@ -44,9 +44,7 @@ class Memberships extends Component
      */
     public function createMembership()
     {
-        $this->editingMembership = null;
         $this->showMembershipModal = true;
-        $this->resetMembershipForm();
         $this->startDate = now()->format('Y-m-d');
     }
 
@@ -135,17 +133,15 @@ class Memberships extends Component
     public function render()
     {
         $memberships = Membership::with(['member', 'membershipType', 'period'])->get();
-        $active = $memberships->where('status', 'active');
-        $expired = $memberships->where('status', 'expired');
-        $membersCount = Member::count();
+        $activeCount = $memberships->where('status', 'active')->count();
+        $expiredCount = $memberships->where('status', 'expired')->count();
 
-        // Data for form
         $members = Member::orderBy('name')->get();
         $membershipTypes = MembershipType::with('periods')->orderBy('name')->get();
 
         return view(
             'livewire.memberships',
-            compact('memberships', 'active', 'expired', 'membersCount', 'members', 'membershipTypes'),
+            compact('memberships', 'activeCount', 'expiredCount', 'members', 'membershipTypes'),
         );
     }
 }
