@@ -18,20 +18,20 @@ class Memberships extends Component
 {
     // Properties
     #[Rule('required', message: 'El socio es obligatorio')]
-    public $memberId = '';
+    public $member_id = '';
 
     #[Rule('required', message: 'El tipo de membresía es obligatorio')]
-    public $membershipTypeId = '';
+    public $membership_type_id = '';
 
     #[Rule('required', message: 'El período es obligatorio')]
-    public $periodId = '';
+    public $period_id = '';
 
     #[Rule('required', message: 'La fecha de inicio es obligatoria')]
     #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
     public $start_date = '';
 
     // Modal state
-    public $showMembershipModal = false;
+    public $showModal = false;
 
     /** Updating membership instance or null (no updating by default) */
     public Membership|null $updatingMembership = null;
@@ -42,17 +42,17 @@ class Memberships extends Component
     /**
      * Open create/update membership form modal
      */
-    public function openFormModal(Membership $membership)
+    public function openModal(Membership $membership)
     {
-        $this->showMembershipModal = true;
+        $this->showModal = true;
 
         if ($membership->exists) {
             $this->availablePeriods = Period::where('membership_type_id', $membership->membership_type_id)->get();
 
             $this->updatingMembership = $membership;
-            $this->memberId = $membership->member_id;
-            $this->membershipTypeId = $membership->membership_type_id;
-            $this->periodId = $membership->period_id;
+            $this->member_id = $membership->member_id;
+            $this->membership_type_id = $membership->membership_type_id;
+            $this->period_id = $membership->period_id;
             $this->start_date = $membership->start_date->format('Y-m-d');
         } else {
             $this->start_date = now()->format('Y-m-d');
@@ -65,13 +65,13 @@ class Memberships extends Component
     public function saveMembership()
     {
         $this->validate([
-            'memberId' => 'required|exists:members,id',
-            'membershipTypeId' => 'required|exists:membership_types,id',
-            'periodId' => 'required|exists:periods,id',
+            'member_id' => 'required|exists:members,id',
+            'membership_type_id' => 'required|exists:membership_types,id',
+            'period_id' => 'required|exists:periods,id',
             'start_date' => 'required|date',
         ]);
 
-        $period = Period::find($this->periodId);
+        $period = Period::find($this->period_id);
         $startDate = Carbon::parse($this->start_date);
 
         // Calculate end date based on period duration
@@ -83,9 +83,9 @@ class Memberships extends Component
         };
 
         $membershipData = [
-            'member_id' => $this->memberId,
-            'membership_type_id' => $this->membershipTypeId,
-            'period_id' => $this->periodId,
+            'member_id' => $this->member_id,
+            'membership_type_id' => $this->membership_type_id,
+            'period_id' => $this->period_id,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'price' => $period->price,
@@ -109,12 +109,12 @@ class Memberships extends Component
      */
     public function updatedMembershipTypeId()
     {
-        if ($this->membershipTypeId) {
-            $this->availablePeriods = Period::where('membership_type_id', $this->membershipTypeId)->get();
-            $this->periodId = '';
+        if ($this->membership_type_id) {
+            $this->availablePeriods = Period::where('membership_type_id', $this->membership_type_id)->get();
+            $this->period_id = '';
         } else {
             $this->availablePeriods = [];
-            $this->periodId = '';
+            $this->period_id = '';
         }
     }
 
@@ -123,7 +123,7 @@ class Memberships extends Component
      */
     public function closeMembershipModal()
     {
-        $this->showMembershipModal = false;
+        $this->showModal = false;
         $this->updatingMembership = null;
         $this->resetMembershipForm();
         $this->resetValidation();
@@ -134,9 +134,9 @@ class Memberships extends Component
      */
     private function resetMembershipForm()
     {
-        $this->memberId = '';
-        $this->membershipTypeId = '';
-        $this->periodId = '';
+        $this->member_id = '';
+        $this->membership_type_id = '';
+        $this->period_id = '';
         $this->start_date = '';
         $this->availablePeriods = [];
     }

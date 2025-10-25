@@ -79,7 +79,7 @@
         <flux:select.option value="general">General</flux:select.option>
         <flux:select.option value="estudiante">Estudiante</flux:select.option>
       </flux:select>
-      <flux:button variant="primary" icon="plus" wire:click="openFormModal">
+      <flux:button variant="primary" icon="plus" wire:click="openModal">
         Nueva Membresía
       </flux:button>
     </div>
@@ -156,7 +156,7 @@
                   Historial
                 </flux:button>
                 @if ($membership->status == MembershipStatus::ACTIVE)
-                  <flux:button size="sm" variant="primary" wire:click="openFormModal({{ $membership->id }})">
+                  <flux:button size="sm" variant="primary" wire:click="openModal({{ $membership->id }})">
                     Editar
                   </flux:button>
                 @else
@@ -182,7 +182,7 @@
   </div>
 
   <!-- Membership Modal -->
-  @if ($showMembershipModal)
+  @if ($showModal)
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeMembershipModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -205,38 +205,38 @@
               <div class="px-6 py-4 space-y-4">
                 <!-- Member Selection -->
                 <flux:field>
-                  <flux:label for="memberId">Socio *</flux:label>
-                  <flux:select wire:model="memberId" id="memberId" placeholder="Seleccionar socio">
+                  <flux:label for="member_id">Socio *</flux:label>
+                  <flux:select wire:model="member_id" id="member_id" placeholder="Seleccionar socio">
                     @foreach ($members as $member)
                       <flux:select.option value="{{ $member->id }}">{{ $member->name }}</flux:select.option>
                     @endforeach
                   </flux:select>
-                  <flux:error name="memberId" />
+                  <flux:error name="member_id" />
                 </flux:field>
 
                 <!-- Membership Type Selection -->
                 <flux:field>
-                  <flux:label for="membershipTypeId">Tipo de Membresía *</flux:label>
-                  <flux:select wire:model.live="membershipTypeId" id="membershipTypeId" placeholder="Seleccionar tipo">
+                  <flux:label for="membership_type_id">Tipo de Membresía *</flux:label>
+                  <flux:select wire:model.live="membership_type_id" id="membership_type_id" placeholder="Seleccionar tipo">
                     @foreach ($membershipTypes as $type)
                       <flux:select.option value="{{ $type->id }}">{{ $type->name }}</flux:select.option>
                     @endforeach
                   </flux:select>
-                  <flux:error name="membershipTypeId" />
+                  <flux:error name="membership_type_id" />
                 </flux:field>
 
                 <!-- Period Selection -->
                 <flux:field>
-                  <flux:label for="periodId">Período *</flux:label>
-                  <flux:select wire:model="periodId" id="periodId" placeholder="Seleccionar período" :disabled="empty($availablePeriods)">
+                  <flux:label for="period_id">Período *</flux:label>
+                  <flux:select wire:model="period_id" id="period_id" placeholder="Seleccionar período" :disabled="empty($availablePeriods)">
                     @foreach ($availablePeriods as $period)
                       <flux:select.option value="{{ $period->id }}">
                         {{ $period->name }} - ${{ number_format($period->price) }}
                       </flux:select.option>
                     @endforeach
                   </flux:select>
-                  <flux:error name="periodId" />
-                  @if (empty($availablePeriods) && $membershipTypeId)
+                  <flux:error name="period_id" />
+                  @if (empty($availablePeriods) && $membership_type_id)
                     <p class="text-sm text-amber-600 mt-1">No hay períodos disponibles para este tipo de membresía.</p>
                   @endif
                 </flux:field>
