@@ -191,7 +191,7 @@
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingMembership ? 'Editar Membresía' : 'Nueva Membresía' }}
+                {{ $updatingMembership ? 'Editar Membresía' : 'Nueva Membresía' }}
               </h3>
               <button wire:click="closeMembershipModal" class="text-gray-400 hover:text-gray-600">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -232,7 +232,6 @@
                     @foreach ($availablePeriods as $period)
                       <flux:select.option value="{{ $period->id }}">
                         {{ $period->name }} - ${{ number_format($period->price) }}
-                        ({{ $period->duration_value }} {{ $period->duration_unit->label($period->duration_value) }})
                       </flux:select.option>
                     @endforeach
                   </flux:select>
@@ -244,16 +243,16 @@
 
                 <!-- Start Date -->
                 <flux:field>
-                  <flux:label for="startDate">Fecha de Inicio *</flux:label>
-                  <flux:input wire:model="startDate" id="startDate" type="date" />
-                  <flux:error name="startDate" />
+                  <flux:label for="start_date">Fecha de Inicio *</flux:label>
+                  <flux:input wire:model="start_date" id="start_date" type="date" />
+                  <flux:error name="start_date" />
                 </flux:field>
               </div>
 
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeMembershipModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $editingMembership ? 'Actualizar' : 'Crear' }}</flux:button>
+                <flux:button type="submit" variant="primary">{{ $updatingMembership ? 'Actualizar' : 'Crear' }}</flux:button>
               </div>
             </form>
           </div>
@@ -263,7 +262,7 @@
   @endif
 
   <!-- Flash Messages -->
-  {{-- @if (session()->has('message'))
+  @if (session()->has('message'))
     <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50"
       x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
       {{ session('message') }}
@@ -275,6 +274,6 @@
       x-show="show" x-init="setTimeout(() => show = false, 5000)">
       {{ session('error') }}
     </div>
-  @endif --}}
+  @endif
 
 </div>

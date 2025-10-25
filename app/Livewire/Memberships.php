@@ -28,7 +28,7 @@ class Memberships extends Component
 
     #[Rule('required', message: 'La fecha de inicio es obligatoria')]
     #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
-    public $startDate = '';
+    public $start_date = '';
 
     // Modal state
     public $showMembershipModal = false;
@@ -44,11 +44,18 @@ class Memberships extends Component
      */
     public function openFormModal(Membership $membership)
     {
+        $this->showMembershipModal = true;
+
         if ($membership->exists) {
+            $this->availablePeriods = Period::where('membership_type_id', $membership->membership_type_id)->get();
+
             $this->updatingMembership = $membership;
+            $this->memberId = $membership->member_id;
+            $this->membershipTypeId = $membership->membership_type_id;
+            $this->periodId = $membership->period_id;
+            $this->start_date = $membership->start_date->format('Y-m-d');
         } else {
-            $this->showMembershipModal = true;
-            $this->startDate = now()->format('Y-m-d');
+            $this->start_date = now()->format('Y-m-d');
         }
     }
 
@@ -61,11 +68,11 @@ class Memberships extends Component
             'memberId' => 'required|exists:members,id',
             'membershipTypeId' => 'required|exists:membership_types,id',
             'periodId' => 'required|exists:periods,id',
-            'startDate' => 'required|date',
+            'start_date' => 'required|date',
         ]);
 
         $period = Period::find($this->periodId);
-        $startDate = Carbon::parse($this->startDate);
+        $startDate = Carbon::parse($this->start_date);
 
         // Calculate end date based on period duration
         $endDate = match($period->duration_unit) {
@@ -104,7 +111,7 @@ class Memberships extends Component
     {
         if ($this->membershipTypeId) {
             $this->availablePeriods = Period::where('membership_type_id', $this->membershipTypeId)->get();
-            $this->periodId = ''; // Reset period selection
+            $this->periodId = '';
         } else {
             $this->availablePeriods = [];
             $this->periodId = '';
@@ -130,7 +137,7 @@ class Memberships extends Component
         $this->memberId = '';
         $this->membershipTypeId = '';
         $this->periodId = '';
-        $this->startDate = '';
+        $this->start_date = '';
         $this->availablePeriods = [];
     }
 
