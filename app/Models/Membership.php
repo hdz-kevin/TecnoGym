@@ -32,8 +32,9 @@ class Membership extends Model
     public function daysUntilExpiration(): int
     {
         if ($this->status === MembershipStatus::ACTIVE) {
-            return ceil(now()->diffInDays($this->end_date));
-            // return ceil($this->start_date->diffInDays($this->end_date));
+            return (now() < $this->start_date)
+                    ? ceil($this->start_date->diffInDays($this->end_date))
+                    : ceil(now()->diffInDays($this->end_date));
         }
 
         return floor(now()->diffInDays($this->end_date) * -1);
