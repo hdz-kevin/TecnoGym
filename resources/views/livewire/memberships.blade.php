@@ -206,7 +206,7 @@
                 <!-- Member Selection -->
                 <flux:field>
                   <flux:label for="member_id">Socio *</flux:label>
-                  <flux:select wire:model="member_id" id="member_id" placeholder="Seleccionar socio">
+                  <flux:select wire:model.live="member_id" id="member_id" placeholder="Seleccionar socio">
                     @foreach ($members as $member)
                       <flux:select.option value="{{ $member->id }}">{{ $member->name }}</flux:select.option>
                     @endforeach
@@ -228,7 +228,7 @@
                 <!-- Period Selection -->
                 <flux:field>
                   <flux:label for="period_id">Período *</flux:label>
-                  <flux:select wire:model="period_id" id="period_id" placeholder="Seleccionar período" :disabled="empty($availablePeriods)">
+                  <flux:select wire:model.live="period_id" id="period_id" placeholder="Seleccionar período" :disabled="empty($availablePeriods)">
                     @foreach ($availablePeriods as $period)
                       <flux:select.option value="{{ $period->id }}">
                         {{ $period->name }} - ${{ number_format($period->price) }}

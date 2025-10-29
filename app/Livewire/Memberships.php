@@ -8,26 +8,29 @@ use App\Models\Membership;
 use App\Models\MembershipType;
 use App\Models\Period;
 use App\Enums\MembershipStatus;
-use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Carbon\Carbon;
+use Livewire\Attributes\Validate;
 
 #[Title('Membresías')]
 class Memberships extends Component
 {
     // Properties
-    #[Rule('required', message: 'El socio es obligatorio')]
+    #[Validate('required', message: 'Elige un socio')]
+    #[Validate('exists:members,id', message: 'Elige un socio válido')]
     public $member_id = '';
 
-    #[Rule('required', message: 'El tipo de membresía es obligatorio')]
+    #[Validate('required', message: 'Elige un tipo de membresía')]
+    #[Validate('exists:membership_types,id', message: 'Elige un tipo de membresía válido')]
     public $membership_type_id = '';
 
-    #[Rule('required', message: 'El período es obligatorio')]
+    #[Validate('required', message: 'Elige un período')]
+    #[Validate('exists:periods,id', message: 'Elige un período de tiempo válido')]
     public $period_id = '';
 
-    #[Rule('required', message: 'La fecha de inicio es obligatoria')]
-    #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
+    #[Validate('required', message: 'La fecha de inicio es obligatoria')]
+    #[Validate('date', message: 'La fecha de inicio debe ser una fecha válida')]
     public $start_date = '';
 
     // Modal state
@@ -64,12 +67,7 @@ class Memberships extends Component
      */
     public function saveMembership()
     {
-        $this->validate([
-            'member_id' => 'required|exists:members,id',
-            'membership_type_id' => 'required|exists:membership_types,id',
-            'period_id' => 'required|exists:periods,id',
-            'start_date' => 'required|date',
-        ]);
+        $this->validate();
 
         $period = Period::find($this->period_id);
         $startDate = Carbon::parse($this->start_date);
