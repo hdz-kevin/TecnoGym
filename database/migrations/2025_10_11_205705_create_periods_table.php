@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->string('name');
             $table->integer('duration_value');
-            $table->enum('duration_unit', DurationUnit::values()); // day, week, month, year
+            $table->enum('duration_unit', DurationUnit::values()); // day, week, month
             $table->integer('price');
             $table->timestamps();
         });

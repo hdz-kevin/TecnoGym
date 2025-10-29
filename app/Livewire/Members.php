@@ -80,8 +80,8 @@ class Members extends Component
      */
     public function updateMemberModal(Member $member)
     {
-        $this->updatingMember = $member;
         $this->showModal = true;
+        $this->updatingMember = $member;
 
         $this->name = $member->name;
         $this->gender = $member->gender;

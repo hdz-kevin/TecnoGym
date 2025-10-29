@@ -7,7 +7,6 @@ enum DurationUnit: string
     case DAY = 'day';
     case WEEK = 'week';
     case MONTH = 'month';
-    case YEAR = 'year';
 
     /**
      * Get all enum values as an array
@@ -26,7 +25,6 @@ enum DurationUnit: string
             self::DAY => $quantity === 1 ? 'Día' : 'Días',
             self::WEEK => $quantity === 1 ? 'Semana' : 'Semanas',
             self::MONTH => $quantity === 1 ? 'Mes' : 'Meses',
-            self::YEAR => $quantity === 1 ? 'Año' : 'Años',
         };
     }
 }
