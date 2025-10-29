@@ -77,7 +77,6 @@ class Memberships extends Component
             DurationUnit::DAY => $startDate->copy()->addDays($period->duration_value),
             DurationUnit::WEEK => $startDate->copy()->addWeeks($period->duration_value),
             DurationUnit::MONTH => $startDate->copy()->addMonths($period->duration_value),
-            DurationUnit::YEAR => $startDate->copy()->addYears($period->duration_value),
         };
 
         $membershipData = [

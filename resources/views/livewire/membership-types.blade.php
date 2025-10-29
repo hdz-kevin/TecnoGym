@@ -203,7 +203,6 @@
                       <flux:select.option value="day">Día(s)</flux:select.option>
                       <flux:select.option value="week">Semana(s)</flux:select.option>
                       <flux:select.option value="month">Mes(es)</flux:select.option>
-                      <flux:select.option value="year">Año(s)</flux:select.option>
                     </flux:select>
                     <flux:error name="durationUnit" />
                   </flux:field>
