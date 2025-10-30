@@ -53,10 +53,12 @@
           <div class="space-y-4">
             <!-- Member Info -->
             <div class="flex items-center space-x-4">
-              <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                <span class="text-lg font-semibold text-gray-800">
-                  {{ $member->initials() }}
-                </span>
+              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">
+                  <img
+                    class="h-full w-full object-cover"
+                    src="{{ asset('storage/member-photos/' . ($member->photo ?? 'default.png')) }}"
+                    alt="{{ $member->name }}"
+                  >
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
