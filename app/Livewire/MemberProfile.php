@@ -43,7 +43,7 @@ class MemberProfile extends Component
             return null;
         }
 
-        return now()->diffInYears($this->member->birth_date);
+        return ceil(now()->diffInYears($this->member->birth_date, true));
     }
 
     public function getMemberInitialsProperty()
