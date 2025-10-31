@@ -59,12 +59,18 @@
             <div class="flex items-center space-x-4">
               <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200
                 cursor-pointer transition-all"
-                onclick="openImageModal('{{ $photoUrl }}', '{{ $member->name }}')">
-                <img
-                  src="{{ $photoUrl }}"
-                  class="h-full w-full object-cover"
-                  alt="{{ $member->name }}"
-                />
+                wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
+                @if($member->photo)
+                  <img
+                    src="{{ $photoUrl }}"
+                    class="h-full w-full object-cover"
+                    alt="{{ $member->name }}"
+                  />
+                @else
+                  <span class="text-xl font-semibold text-gray-600">
+                    {{ collect(explode(' ', $member->name))->map(fn($name) => strtoupper(substr($name, 0, 1)))->take(2)->join('') }}
+                  </span>
+                @endif
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
@@ -93,7 +99,7 @@
             <!-- Actions -->
             <div class="flex items-center justify-between">
               <div class="flex gap-2">
-                <flux:button size="sm" variant="outline">
+                <flux:button size="sm" variant="outline" wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
                   Ver
                 </flux:button>
                 <flux:button size="sm" variant="outline" wire:click="updateMemberModal({{ $member->id }})">
@@ -123,7 +129,7 @@
 
   <!-- Create/Edit Form Modal -->
   @if ($showModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
+    <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div
@@ -204,8 +210,6 @@
                 <flux:button variant="ghost" wire:click="closeModal">Cancelar</flux:button>
                 <flux:button type="submit" variant="primary">{{ $updatingMember ? "Actualizar" : "Crear" }}</flux:button>
               </div>
-              <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-              </div>
             </form>
           </div>
         </div>
@@ -228,69 +232,8 @@
     </div>
   @endif
 
-  <!-- Image Modal -->
-  <div id="image-modal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50 m-0 hidden" onclick="closeImageModal()">
-    <div class="fixed inset-0 z-50 overflow-y-auto">
-      <div class="flex min-h-full items-center justify-center p-4">
-        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all max-w-2xl w-full" onclick="event.stopPropagation()">
-          <!-- Modal Header -->
-          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h3 id="image-modal-title" class="text-lg font-medium text-gray-900"></h3>
-            <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <!-- Modal Body -->
-          <div class="px-6 py-4">
-            <div class="flex items-center justify-center">
-              <img id="image-modal-img" src="" alt="" class="max-w-full max-h-96 object-contain rounded-lg shadow-sm">
-            </div>
-          </div>
-
-          <!-- Modal Footer -->
-          <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-            <button onclick="closeImageModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Member Profile Modal Component -->
+  {{-- <livewire:member-profile /> --}}
+  @livewire('member-profile')
 
 </div>
-
-@push('scripts')
-  <script>
-    const modal = document.getElementById('image-modal');
-
-    function openImageModal(imageSrc, memberName) {
-      const img = document.getElementById('image-modal-img');
-      const title = document.getElementById('image-modal-title');
-
-      img.src = imageSrc;
-      img.alt = `${memberName}'s Photo`;
-      title.textContent = `${memberName}`;
-
-      modal.classList.remove('hidden');
-      // Prevent background scrolling
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeImageModal() {
-      modal.classList.add('hidden');
-      // Restore background scrolling
-      document.body.style.overflow = '';
-    }
-
-    // Close modal on Escape key press
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeImageModal();
-      }
-    });
-  </script>
-@endpush
