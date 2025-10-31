@@ -11,7 +11,7 @@
               d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
         </div>
-        <input type="text" wire:model.live.debounce.300ms="search" placeholder="Buscar por nombre..."
+        <input type="text" placeholder="Buscar por nombre..."
           class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
       </div>
     </div>
@@ -53,12 +53,13 @@
           <div class="space-y-4">
             <!-- Member Info -->
             <div class="flex items-center space-x-4">
-              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">
-                  <img
-                    class="h-full w-full object-cover"
-                    src="{{ asset('storage/member-photos/' . ($member->photo ?? 'default.png')) }}"
-                    alt="{{ $member->name }}"
-                  >
+              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 cursor-pointer transition-all"
+                onclick="openImageModal('{{ asset('storage/member-photos/' . ($member->photo ?? 'default.png')) }}', '{{ $member->name }}')">
+                <img
+                  src="{{ asset('storage/member-photos/' . ($member->photo ?? 'default.png')) }}"
+                  class="h-full w-full object-cover"
+                  alt="{{ $member->name }}"
+                />
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
@@ -114,6 +115,7 @@
       <flux:button size="sm" variant="outline">Siguiente</flux:button>
     </div>
   </div>
+
   <!-- Create/Edit Form Modal -->
   @if ($showModal)
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
@@ -221,4 +223,70 @@
     </div>
   @endif
 
+  <!-- Image Modal -->
+  <div id="imageModal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50 m-0 hidden" onclick="closeImageModal()">
+    <div class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all max-w-2xl w-full" onclick="event.stopPropagation()">
+          <!-- Modal Header -->
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <h3 id="imageModalTitle" class="text-lg font-medium text-gray-900"></h3>
+            <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="px-6 py-4">
+            <div class="flex items-center justify-center">
+              <img id="imageModalImg" src="" alt="" class="max-w-full max-h-96 object-contain rounded-lg shadow-sm">
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
+            <button onclick="closeImageModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+@push('scripts')
+  <script>
+    function openImageModal(imageSrc, memberName) {
+      // Solo abrir modal si hay imagen
+      if (!imageSrc) return;
+
+      const modal = document.getElementById('imageModal');
+      const img = document.getElementById('imageModalImg');
+      const title = document.getElementById('imageModalTitle');
+
+      img.src = imageSrc;
+      img.alt = `${memberName}`;
+      title.textContent = `${memberName}`;
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = ''; // Restaurar scroll del body
+    }
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeImageModal();
+      }
+    });
+  </script>
+@endpush
