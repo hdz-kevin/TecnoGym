@@ -49,14 +49,19 @@
           @endif
         </div>
 
+        @php
+          $photoUrl = Storage::url('member-photos/' . ($member->photo ?? 'default.png'));
+        @endphp
+
         <div class="p-6">
           <div class="space-y-4">
             <!-- Member Info -->
             <div class="flex items-center space-x-4">
-              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 cursor-pointer transition-all"
-                onclick="openImageModal('{{ asset('storage/member-photos/' . ($member->photo ?? 'default.png')) }}', '{{ $member->name }}')">
+              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200
+                cursor-pointer transition-all"
+                onclick="openImageModal('{{ $photoUrl }}', '{{ $member->name }}')">
                 <img
-                  src="{{ asset('storage/member-photos/' . ($member->photo ?? 'default.png')) }}"
+                  src="{{ $photoUrl }}"
                   class="h-full w-full object-cover"
                   alt="{{ $member->name }}"
                 />
@@ -224,13 +229,13 @@
   @endif
 
   <!-- Image Modal -->
-  <div id="imageModal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50 m-0 hidden" onclick="closeImageModal()">
+  <div id="image-modal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50 m-0 hidden" onclick="closeImageModal()">
     <div class="fixed inset-0 z-50 overflow-y-auto">
       <div class="flex min-h-full items-center justify-center p-4">
         <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all max-w-2xl w-full" onclick="event.stopPropagation()">
           <!-- Modal Header -->
           <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <h3 id="imageModalTitle" class="text-lg font-medium text-gray-900"></h3>
+            <h3 id="image-modal-title" class="text-lg font-medium text-gray-900"></h3>
             <button onclick="closeImageModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -241,7 +246,7 @@
           <!-- Modal Body -->
           <div class="px-6 py-4">
             <div class="flex items-center justify-center">
-              <img id="imageModalImg" src="" alt="" class="max-w-full max-h-96 object-contain rounded-lg shadow-sm">
+              <img id="image-modal-img" src="" alt="" class="max-w-full max-h-96 object-contain rounded-lg shadow-sm">
             </div>
           </div>
 
@@ -260,29 +265,28 @@
 
 @push('scripts')
   <script>
-    function openImageModal(imageSrc, memberName) {
-      // Solo abrir modal si hay imagen
-      if (!imageSrc) return;
+    const modal = document.getElementById('image-modal');
 
-      const modal = document.getElementById('imageModal');
-      const img = document.getElementById('imageModalImg');
-      const title = document.getElementById('imageModalTitle');
+    function openImageModal(imageSrc, memberName) {
+      const img = document.getElementById('image-modal-img');
+      const title = document.getElementById('image-modal-title');
 
       img.src = imageSrc;
-      img.alt = `${memberName}`;
+      img.alt = `${memberName}'s Photo`;
       title.textContent = `${memberName}`;
 
       modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+      // Prevent background scrolling
+      document.body.style.overflow = 'hidden';
     }
 
     function closeImageModal() {
-      const modal = document.getElementById('imageModal');
       modal.classList.add('hidden');
-      document.body.style.overflow = ''; // Restaurar scroll del body
+      // Restore background scrolling
+      document.body.style.overflow = '';
     }
 
-    // Cerrar modal con tecla Escape
+    // Close modal on Escape key press
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') {
         closeImageModal();
