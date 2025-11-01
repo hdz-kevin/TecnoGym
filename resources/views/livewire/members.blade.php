@@ -225,8 +225,6 @@
     </div>
   @endif
 
-  <!-- Member Profile Modal Component -->
-  {{-- <livewire:member-profile /> --}}
-  @livewire('member-profile')
+  <livewire:member-profile />
 
 </div>

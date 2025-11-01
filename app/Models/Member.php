@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MemberGender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -20,10 +21,47 @@ class Member extends Model
 
     protected $casts = [
         'birth_date' => 'date',
+        'gender' => MemberGender::class,
     ];
 
     /**
-     * Get the user's initials
+     * Get the active membership for the member.
+     *
+     * @return Membership|null If no active membership, returns null.
+     */
+    public function activeMembership(): Membership|null
+    {
+        return $this->memberships()->where('status', 'ACTIVE')->with('membershipType')->latest('created_at')->first();
+    }
+
+    /**
+     * Get the most recent membership for the member.
+     *
+     * @return Membership|null If no memberships, returns null.
+     */
+    public function latestMembership(): Membership|null
+    {
+        return $this->memberships()->with('membershipType')->latest('created_at')->first();
+    }
+
+    /**
+     * Get the member's age.
+     *
+     * @return int|null If birth_date is null, returns null.
+     */
+    public function getAge(): int|null
+    {
+        if (!$this->birth_date) {
+            return null;
+        }
+
+        return floor($this->birth_date->diffInYears(now()));
+    }
+
+    /**
+     * Get the initials of the member.
+     *
+     * @return string
      */
     public function initials(): string
     {
@@ -36,6 +74,8 @@ class Member extends Model
 
     /**
      * Get the memberships for the member.
+     *
+     * @return HasMany
      */
     public function memberships(): HasMany
     {

@@ -8,8 +8,8 @@ use Livewire\Component;
 
 class MemberProfile extends Component
 {
-    public $member = null;
-    public $show = false;
+    public Member|null $member = null;
+    public bool $show = false;
 
     #[On('show-member-profile')]
     public function showProfile($memberId)
@@ -18,45 +18,10 @@ class MemberProfile extends Component
         $this->show = true;
     }
 
-    public function close()
+    public function close(): void
     {
-        $this->show = false;
         $this->member = null;
-    }
-
-    public function getActiveMembershipProperty()
-    {
-        if (!$this->member) {
-            return null;
-        }
-
-        // Get the most recent membership
-        return $this->member->memberships()
-            ->with('membershipType')
-            ->latest('created_at')
-            ->first();
-    }
-
-    public function getMemberAgeProperty()
-    {
-        if (!$this->member || !$this->member->birth_date) {
-            return null;
-        }
-
-        return ceil(now()->diffInYears($this->member->birth_date, true));
-    }
-
-    public function getMemberInitialsProperty()
-    {
-        if (!$this->member) {
-            return '?';
-        }
-
-        $names = explode(' ', $this->member->name);
-        return collect($names)
-            ->map(fn($name) => strtoupper(substr($name, 0, 1)))
-            ->take(2)
-            ->join('');
+        $this->show = false;
     }
 
     public function render()

@@ -1,5 +1,6 @@
 @php
   use Illuminate\Support\Facades\Storage;
+  use App\Enums\MembershipStatus;
 @endphp
 
 <div>
@@ -57,19 +58,23 @@
                     <div class="flex justify-between">
                       <span class="text-sm text-gray-700">Edad:</span>
                       <span class="text-sm font-medium text-gray-900">
-                        {{ $this->memberAge ? $this->memberAge . ' años' : '-' }}
+                        {{ $member->getAge().' años' ?? '-' }}
                       </span>
                     </div>
                     <div class="flex justify-between">
                       <span class="text-sm text-gray-700">Sexo:</span>
                       <span class="text-sm font-medium text-gray-900">
-                        {{ $member->gender === 'M' ? 'Masculino' : 'Femenino' }}
+                        {{ $member->gender->label() }}
                       </span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Membership Information -->
+                @php
+                  $latestMembership = $member->latestMembership();
+                @endphp
+
                 <div class="bg-gray-50 rounded-lg p-4">
                   <h4 class="font-semibold text-gray-700 mb-3">Estado de Membresía</h4>
                   <div class="space-y-2">
@@ -78,20 +83,18 @@
                       <span class="text-sm font-medium text-gray-900">{{ $member->memberships->count() }}</span>
                     </div>
                     <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Tipo actual:</span>
+                      <span class="text-sm text-gray-700">Membresía actual:</span>
                       <span class="text-sm font-medium text-gray-900">
-                        {{ $this->activeMembership?->membershipType?->name ?? 'Sin membresía' }}
+                        {{ $latestMembership?->membershipType?->name ?? 'Sin membresía' }}
                       </span>
                     </div>
                     <div class="flex justify-between">
                       <span class="text-sm text-gray-700">Estado:</span>
-                      @if ($this->activeMembership)
-                        @php
-                          $isActive =
-                              $this->activeMembership->end_date && $this->activeMembership->end_date->isFuture();
-                        @endphp
-                        <span class="text-sm font-medium {{ $isActive ? 'text-green-600' : 'text-red-600' }}">
-                          {{ $isActive ? 'Activa' : 'Vencida' }}
+                      @if ($latestMembership)
+                        <span class="text-sm font-medium
+                          {{ $latestMembership->status == MembershipStatus::ACTIVE ? 'text-green-600' : 'text-red-600' }}"
+                        />
+                          {{ $latestMembership->status->label() }}
                         </span>
                       @else
                         <span class="text-sm font-medium text-gray-600">Sin membresía</span>
@@ -100,7 +103,7 @@
                     <div class="flex justify-between">
                       <span class="text-sm text-gray-700">Vencimiento:</span>
                       <span class="text-sm font-medium text-gray-900">
-                        {{ $this->activeMembership?->end_date?->format('d/m/Y') ?? '-' }}
+                        {{ $latestMembership?->end_date?->format('d/m/Y') ?? '-' }}
                       </span>
                     </div>
                   </div>
@@ -134,7 +137,6 @@
                 </flux:button>
               </div>
             </div>
-
           </div>
         </div>
       </div>
