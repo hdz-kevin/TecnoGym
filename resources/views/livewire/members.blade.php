@@ -67,9 +67,7 @@
                     alt="{{ $member->name }}"
                   />
                 @else
-                  <span class="text-xl font-semibold text-gray-600">
-                    {{ collect(explode(' ', $member->name))->map(fn($name) => strtoupper(substr($name, 0, 1)))->take(2)->join('') }}
-                  </span>
+                  <span class="text-xl font-semibold text-gray-700">{{ $member->initials() }}</span>
                 @endif
               </div>
               <div>

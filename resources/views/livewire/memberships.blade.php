@@ -101,10 +101,17 @@
         <div class="p-6">
           <div class="space-y-4">
             <div class="flex items-center space-x-4">
-              <div class="h-12 w-12 bg-gray-200 rounded-full flex items-center justify-center">
-                <span class="text-lg font-semibold text-gray-900">
-                  {{ $membership->member->initials() }}
-                </span>
+              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200
+                cursor-pointer transition-all">
+                @if($membership->member->photo)
+                  <img
+                    src="{{ Storage::url('member-photos/'.$membership->member->photo) }}"
+                    class="h-full w-full object-cover"
+                    alt="{{ $membership->member->name }}"
+                  />
+                @else
+                  <span class="text-xl font-semibold text-gray-700">{{ $membership->member->initials() }}</span>
+                @endif
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">

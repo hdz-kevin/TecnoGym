@@ -26,7 +26,7 @@
               <!-- Member Photo and Basic Info -->
               <div class="flex items-center space-x-6 mb-6">
                 <div
-                  class="h-55 w-65 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden border border-gray-200">
+                  class="h-65 w-75 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden border border-gray-200">
                   @if ($member->photo)
                     <img src="{{ Storage::url('member-photos/' . $member->photo) }}" alt="{{ $member->name }}"
                       class="h-full w-full object-cover">
