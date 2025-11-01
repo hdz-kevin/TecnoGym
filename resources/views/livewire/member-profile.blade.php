@@ -23,29 +23,22 @@
 
             <!-- Modal Body -->
             <div class="px-6 py-6">
-              <!-- Member Photo and Basic Info -->
               <div class="flex items-center space-x-6 mb-6">
                 <div
-                  class="h-65 w-75 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden border border-gray-200">
+                  class="h-70 w-75 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden border border-gray-200">
                   @if ($member->photo)
-                    <img src="{{ Storage::url('member-photos/' . $member->photo) }}" alt="{{ $member->name }}"
-                      class="h-full w-full object-cover">
+                    <img
+                      src="{{ Storage::url('member-photos/'.$member->photo) }}"
+                      class="h-full w-full object-cover"
+                      alt="{{ $member->name }}"
+                    />
                   @else
-                    <span class="text-3xl font-semibold text-gray-600">{{ $this->memberInitials }}</span>
+                    <span class="">Sin foto</span>
                   @endif
                 </div>
                 <div>
                   <h2 class="text-2xl font-bold text-gray-900 mb-1">{{ $member->name }}</h2>
                   <p class=" text-gray-600">ID: {{ $member->id }}</p>
-                  {{-- <p class="text-sm text-gray-600">Género:
-                    @if ($member->gender === 'male' || $member->gender === 'M')
-                      Masculino
-                    @elseif($member->gender === 'female' || $member->gender === 'F')
-                      Femenino
-                    @else
-                      -
-                    @endif
-                  </p> --}}
                 </div>
               </div>
 

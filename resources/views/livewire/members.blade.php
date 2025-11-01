@@ -49,20 +49,15 @@
           @endif
         </div>
 
-        @php
-          $photoUrl = Storage::url('member-photos/' . ($member->photo ?? 'default.png'));
-        @endphp
-
         <div class="p-6">
           <div class="space-y-4">
             <!-- Member Info -->
             <div class="flex items-center space-x-4">
               <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200
-                cursor-pointer transition-all"
-                wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
+                cursor-pointer transition-all" wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
                 @if($member->photo)
                   <img
-                    src="{{ $photoUrl }}"
+                    src="{{ Storage::url('member-photos/'.$member->photo) }}"
                     class="h-full w-full object-cover"
                     alt="{{ $member->name }}"
                   />
