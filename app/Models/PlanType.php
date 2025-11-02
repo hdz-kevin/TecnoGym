@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MembershipType extends Model
+class PlanType extends Model
 {
     protected $fillable = ['name'];
 
     /**
-     * Get the periods for the membership type.
+     * Get the plans for the plan type.
      */
-    public function periods(): HasMany
+    public function plans(): HasMany
     {
-        return $this->hasMany(Period::class);
+        return $this->hasMany(Plan::class);
     }
 
     /**

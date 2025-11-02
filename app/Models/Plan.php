@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Period extends Model
+class Plan extends Model
 {
     protected $fillable = [
         'name',
@@ -22,11 +22,11 @@ class Period extends Model
     ];
 
     /**
-     * Get the membership type that owns the period.
+     * Get the plan type that owns the plan.
      */
-    public function membershipType(): BelongsTo
+    public function planType(): BelongsTo
     {
-        return $this->belongsTo(MembershipType::class);
+        return $this->belongsTo(PlanType::class);
     }
 
     /**
