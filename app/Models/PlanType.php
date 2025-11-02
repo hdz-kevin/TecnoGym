@@ -18,7 +18,7 @@ class PlanType extends Model
     }
 
     /**
-     * Get the memberships for the membership type.
+     * Get the memberships for the plan type.
      */
     public function memberships(): HasMany
     {

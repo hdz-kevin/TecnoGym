@@ -10,35 +10,14 @@ class Membership extends Model
 {
     protected $fillable = [
         'member_id',
-        'membership_type_id',
-        'period_id',
-        'price',
-        'start_date',
-        'end_date',
+        'plan_id',
+        'plan_type_id',
         'status',
     ];
 
     protected $casts = [
         'status' => MembershipStatus::class,
-        'start_date' => 'date',
-        'end_date' => 'date',
     ];
-
-    /**
-     * Calculate days until or since expiration.
-     *
-     * @return int
-     */
-    public function daysUntilExpiration(): int
-    {
-        if ($this->status === MembershipStatus::ACTIVE) {
-            return (now() < $this->start_date)
-                    ? ceil($this->start_date->diffInDays($this->end_date))
-                    : ceil(now()->diffInDays($this->end_date));
-        }
-
-        return floor(now()->diffInDays($this->end_date) * -1);
-    }
 
     /**
      * Get the member that owns the membership.
@@ -49,18 +28,18 @@ class Membership extends Model
     }
 
     /**
-     * Get the membership type that owns the membership.
+     * Get the plan that owns the membership.
      */
-    public function membershipType(): BelongsTo
+    public function plan(): BelongsTo
     {
-        return $this->belongsTo(MembershipType::class);
+        return $this->belongsTo(Plan::class);
     }
 
     /**
-     * Get the period that owns the membership.
+     * Get the plan type that owns the membership.
      */
-    public function period(): BelongsTo
+    public function planType(): BelongsTo
     {
-        return $this->belongsTo(Period::class);
+        return $this->belongsTo(PlanType::class);
     }
 }

@@ -6,6 +6,8 @@ enum MembershipStatus: string
 {
     case ACTIVE = 'active';
     case EXPIRED = 'expired';
+    /** Pending is when a membership does not have any period */
+    case PENDING = 'pending';
 
     /**
      * Get all enum values as an array
@@ -23,6 +25,7 @@ enum MembershipStatus: string
         return match ($this) {
             self::ACTIVE => 'Activa',
             self::EXPIRED => 'Vencida',
+            self::PENDING => 'Pendiente',
         };
     }
 }

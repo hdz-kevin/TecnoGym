@@ -25,6 +25,16 @@ class Member extends Model
     ];
 
     /**
+     * Get the memberships for the member.
+     *
+     * @return HasMany
+     */
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+    /**
      * Get the active membership for the member.
      *
      * @return Membership|null If no active membership, returns null.
@@ -70,15 +80,5 @@ class Member extends Model
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
-    }
-
-    /**
-     * Get the memberships for the member.
-     *
-     * @return HasMany
-     */
-    public function memberships(): HasMany
-    {
-        return $this->hasMany(Membership::class);
     }
 }

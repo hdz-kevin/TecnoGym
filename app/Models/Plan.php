@@ -14,7 +14,7 @@ class Plan extends Model
         'duration_value',
         'duration_unit',
         'price',
-        'membership_type_id',
+        'plan_type_id',
     ];
 
     protected $casts = [
@@ -30,7 +30,7 @@ class Plan extends Model
     }
 
     /**
-     * Get the memberships for the period.
+     * Get the memberships for the plan.
      */
     public function memberships(): HasMany
     {
