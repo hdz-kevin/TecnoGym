@@ -5,12 +5,13 @@ namespace App\Livewire;
 use App\Models\MembershipType;
 use App\Models\Period;
 use App\Enums\DurationUnit;
+use App\Models\PlanType;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Tipos de Membresía')]
-class MembershipTypes extends Component
+class Plans extends Component
 {
     // Modal states
     public $showTypeModal = false;
@@ -211,8 +212,8 @@ class MembershipTypes extends Component
 
     public function render()
     {
-        $membershipTypes = MembershipType::with('periods')->get();
+        $planTypes = PlanType::with('plans')->get();
 
-        return view('livewire.membership-types', compact('membershipTypes'));
+        return view('livewire.plans', compact('planTypes'));
     }
 }

@@ -2,7 +2,7 @@
 
 <div>
   <div class="p-6 pt-4 space-y-6">
-    @if ($membershipTypes->count() > 0)
+    @if ($planTypes->count() > 0)
       <div class="flex justify-end">
         <flux:button variant="primary" icon="plus" wire:click="createType">
           Tipo de Membresía
@@ -12,28 +12,28 @@
 
     <!-- Membership Types Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-      @forelse ($membershipTypes as $type)
+      @forelse ($planTypes as $planType)
         <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
           <!-- Membership Type Header -->
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-[19px] font-medium text-gray-900">{{ $type->name }}</h3>
+                <h3 class="text-[19px] font-medium text-gray-900">{{ $planType->name }}</h3>
               </div>
               <div class="flex items-center gap-2">
                 <flux:button
                   class="border !text-[16px] !text-indigo-600 hover:!bg-indigo-50 hover:!text-indigo-700"
                   variant="ghost"
-                  wire:click="editType({{ $type->id }})" icon="pencil"
+                  wire:click="editType({{ $planType->id }})" icon="pencil"
                 >
                   Editar
                 </flux:button>
-                @if ($type->periods->count() === 0)
+                @if ($planType->plans->count() === 0)
                   <flux:button
                     class="border !text-[16px] !text-red-600 hover:!text-red-700 hover:!bg-red-50"
                     variant="ghost"
                     icon="trash"
-                    wire:click="deleteType({{ $type->id }})"
+                    wire:click="deleteType({{ $planType->id }})"
                     wire:confirm="¿Estás seguro de eliminar este tipo de membresía?"
                   >
                     Eliminar
@@ -45,26 +45,26 @@
 
           <!-- Membership Type Periods -->
           <div class="p-6">
-            @if ($type->periods->count() > 0)
+            @if ($planType->plans->count() > 0)
               <div class="space-y-3 mb-5">
-                @foreach ($type->periods as $period)
+                @foreach ($planType->plans as $plan)
                   <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div class="flex-1">
                       <div class="flex items-center gap-2">
-                          <h3 class="font-medium text-gray-900">{{ $period->name }}</h3>
+                          <h3 class="font-medium text-gray-900">{{ $plan->name }}</h3>
                           <p>-</p>
-                          <p class="text-lg font-semibold text-gray-900">${{ number_format($period->price) }}</p>
+                          <p class="text-lg font-semibold text-gray-900">${{ number_format($plan->price) }}</p>
                       </div>
                       <p class="text-sm text-gray-600">
-                        {{ $period->duration_value }} {{ $period->duration_unit->label($period->duration_value) }}
+                        {{ $plan->duration_value }} {{ $plan->duration_unit->label($plan->duration_value) }}
                       </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
-                      <flux:button size="sm" variant="filled" wire:click="editPeriod({{ $period->id }})"
+                      <flux:button size="sm" variant="filled" wire:click="editPeriod({{ $plan->id }})"
                         class="!bg-indigo-50 !text-indigo-600 hover:!bg-indigo-100 hover:!text-indigo-700">
                         Editar
                       </flux:button>
-                      <flux:button size="sm" variant="filled" wire:click="deletePeriod({{ $period->id }})"
+                      <flux:button size="sm" variant="filled" wire:click="deletePeriod({{ $plan->id }})"
                         wire:confirm="¿Estás seguro de eliminar este periodo?"
                         class="!bg-red-50 !text-red-600 hover:!bg-red-100 hover:!text-red-700">
                         Eliminar
@@ -86,7 +86,7 @@
             @endif
 
             <!-- New Period Button -->
-            <flux:button variant="outline" icon="plus" wire:click="createPeriod({{ $type->id }})"
+            <flux:button variant="outline" icon="plus" wire:click="createPeriod({{ $planType->id }})"
               class="w-full">
               Agregar Periodo
             </flux:button>
