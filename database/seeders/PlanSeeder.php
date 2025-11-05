@@ -3,23 +3,23 @@
 namespace Database\Seeders;
 
 use App\Enums\DurationUnit;
-use App\Models\MembershipType;
+use App\Models\PlanType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class MembershipTypeSeeder extends Seeder
+class PlanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        /** @var MembershipType */
-        $general = MembershipType::create(['name' => 'General']);
-        /** @var MembershipType */
-        $student = MembershipType::create(['name' => 'Estudiante']);
+        /** @var PlanType */
+        $general = PlanType::create(['name' => 'General']);
+        /** @var PlanType */
+        $student = PlanType::create(['name' => 'Estudiante']);
 
-        $general->periods()->createMany([
+        $general->plans()->createMany([
             [
                 'name' => 'Mensual',
                 'duration_value' => 1,
@@ -34,7 +34,7 @@ class MembershipTypeSeeder extends Seeder
             ],
         ]);
 
-        $student->periods()->createMany([
+        $student->plans()->createMany([
             [
                 'name' => 'Mensual',
                 'duration_value' => 1,
