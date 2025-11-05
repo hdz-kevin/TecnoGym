@@ -2,37 +2,36 @@
 
 namespace App\Livewire;
 
-use App\Models\MembershipType;
-use App\Models\Period;
-use App\Enums\DurationUnit;
 use App\Models\PlanType;
+use App\Models\Plan;
+use App\Enums\DurationUnit;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Tipos de Membresía')]
+#[Title('Planes')]
 class Plans extends Component
 {
     // Modal states
     public $showTypeModal = false;
-    public $showPeriodModal = false;
+    public $showPlanModal = false;
 
     // Editing states
-    public MembershipType|null $editingType = null;
-    public Period|null $editingPeriod = null;
-    public MembershipType|null $selectedTypeForPeriod = null;
+    public PlanType|null $editingType = null;
+    public Plan|null $editingPlan = null;
+    public PlanType|null $selectedTypeForPlan = null;
 
-    // Form fields for MembershipType
+    // Form fields for PlanType
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('string')]
     #[Rule('max:255')]
     public $typeName = '';
 
-    // Form fields for MembershipPeriod
-    #[Rule('required', message: 'El nombre del período es obligatorio')]
+    // Form fields for Plan
+    #[Rule('required', message: 'El nombre del plan es obligatorio')]
     #[Rule('string')]
     #[Rule('max:255')]
-    public $periodName = '';
+    public $planName = '';
 
     #[Rule('required', message: 'La duración es obligatoria')]
     #[Rule('integer', message: 'La duración debe ser un número')]
@@ -48,7 +47,7 @@ class Plans extends Component
     public $price = '';
 
     /**
-     * Create new membership type
+     * Create new plan type
      */
     public function createType()
     {
@@ -58,9 +57,9 @@ class Plans extends Component
     }
 
     /**
-     * Edit existing membership type
+     * Edit existing plan type
      */
-    public function editType(MembershipType $type)
+    public function editType(PlanType $type)
     {
         $this->editingType = $type;
         $this->typeName = $type->name;
@@ -68,7 +67,7 @@ class Plans extends Component
     }
 
     /**
-     * Save membership type (create or update)
+     * Save plan type (create or update)
      */
     public function saveType()
     {
@@ -78,10 +77,10 @@ class Plans extends Component
 
         if ($this->editingType) {
             $this->editingType->update(['name' => $this->typeName]);
-            $message = 'Tipo de membresía actualizado exitosamente.';
+            $message = 'Tipo de plan actualizado exitosamente.';
         } else {
-            MembershipType::create(['name' => $this->typeName]);
-            $message = 'Tipo de membresía creado exitosamente.';
+            PlanType::create(['name' => $this->typeName]);
+            $message = 'Tipo de plan creado exitosamente.';
         }
 
         $this->closeTypeModal();
@@ -89,83 +88,83 @@ class Plans extends Component
     }
 
     /**
-     * Create new period for a membership type
+     * Create new plan for a plan type
      */
-    public function createPeriod(MembershipType $membershipType)
+    public function createPlan(PlanType $planType)
     {
-        $this->editingPeriod = null;
-        $this->selectedTypeForPeriod = $membershipType;
-        $this->showPeriodModal = true;
-        $this->resetPeriodForm();
+        $this->editingPlan = null;
+        $this->selectedTypeForPlan = $planType;
+        $this->showPlanModal = true;
+        $this->resetPlanForm();
     }
 
     /**
-     * Edit existing period
+     * Edit existing plan
      */
-    public function editPeriod(Period $period)
+    public function editPlan(Plan $plan)
     {
-        $this->editingPeriod = $period;
-        $this->selectedTypeForPeriod = $period->membershipType;
-        $this->periodName = $period->name;
-        $this->durationValue = $period->duration_value;
-        $this->durationUnit = $period->duration_unit->value;
-        $this->price = $period->price;
-        $this->showPeriodModal = true;
+        $this->editingPlan = $plan;
+        $this->selectedTypeForPlan = $plan->planType;
+        $this->planName = $plan->name;
+        $this->durationValue = $plan->duration_value;
+        $this->durationUnit = $plan->duration_unit->value;
+        $this->price = $plan->price;
+        $this->showPlanModal = true;
     }
 
     /**
-     * Save period (create or update)
+     * Save plan (create or update)
      */
-    public function savePeriod()
+    public function savePlan()
     {
         $this->validate([
-            'periodName' => 'required|string|max:255',
+            'planName' => 'required|string|max:255',
             'durationValue' => 'required|integer|min:1',
             'durationUnit' => 'required',
             'price' => 'required|integer|min:1',
         ]);
 
-        $periodData = [
-            'name' => $this->periodName,
+        $planData = [
+            'name' => $this->planName,
             'duration_value' => $this->durationValue,
             'duration_unit' => DurationUnit::from($this->durationUnit),
             'price' => $this->price,
         ];
 
-        if ($this->editingPeriod) {
-            $this->editingPeriod->update($periodData);
-            $message = 'Período actualizado exitosamente.';
+        if ($this->editingPlan) {
+            $this->editingPlan->update($planData);
+            $message = 'Plan actualizado exitosamente.';
         } else {
-            $this->selectedTypeForPeriod->periods()->create($periodData);
-            $message = 'Período creado exitosamente.';
+            $this->selectedTypeForPlan->plans()->create($planData);
+            $message = 'Plan creado exitosamente.';
         }
 
-        $this->closePeriodModal();
+        $this->closePlanModal();
         session()->flash('message', $message);
     }
 
     /**
-     * Delete membership type
+     * Delete plan type
      */
-    public function deleteType(MembershipType $type)
+    public function deleteType(PlanType $type)
     {
-        // Check if type has periods
-        if ($type->periods()->count() > 0) {
-            session()->flash('error', 'No se puede eliminar un tipo que tiene períodos asociados.');
+        // Check if type has plans
+        if ($type->plans()->count() > 0) {
+            session()->flash('error', 'No se puede eliminar un tipo que tiene planes asociados.');
             return;
         }
 
         $type->delete();
-        session()->flash('message', 'Tipo de membresía eliminado exitosamente.');
+        session()->flash('message', 'Tipo de plan eliminado exitosamente.');
     }
 
     /**
-     * Delete period
+     * Delete plan
      */
-    public function deletePeriod(Period $period)
+    public function deletePlan(Plan $plan)
     {
-        $period->delete();
-        session()->flash('message', 'Período eliminado exitosamente.');
+        $plan->delete();
+        session()->flash('message', 'Plan eliminado exitosamente.');
     }
 
     /**
@@ -180,14 +179,14 @@ class Plans extends Component
     }
 
     /**
-     * Close period modal and reset form
+     * Close plan modal and reset form
      */
-    public function closePeriodModal()
+    public function closePlanModal()
     {
-        $this->showPeriodModal = false;
-        $this->editingPeriod = null;
-        $this->selectedTypeForPeriod = null;
-        $this->resetPeriodForm();
+        $this->showPlanModal = false;
+        $this->editingPlan = null;
+        $this->selectedTypeForPlan = null;
+        $this->resetPlanForm();
         $this->resetValidation();
     }
 
@@ -200,11 +199,11 @@ class Plans extends Component
     }
 
     /**
-     * Reset period form fields
+     * Reset plan form fields
      */
-    private function resetPeriodForm()
+    private function resetPlanForm()
     {
-        $this->periodName = '';
+        $this->planName = '';
         $this->durationValue = '';
         $this->durationUnit = '';
         $this->price = '';

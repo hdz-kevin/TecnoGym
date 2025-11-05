@@ -1,20 +1,20 @@
-<x-slot:subtitle>Configura los tipos de membresía y sus periodos de tiempo</x-slot:subtitle>
+<x-slot:subtitle>Configura los tipos de planes y sus opciones de duración</x-slot:subtitle>
 
 <div>
   <div class="p-6 pt-4 space-y-6">
     @if ($planTypes->count() > 0)
       <div class="flex justify-end">
         <flux:button variant="primary" icon="plus" wire:click="createType">
-          Tipo de Membresía
+          Tipo de Plan
         </flux:button>
       </div>
     @endif
 
-    <!-- Membership Types Grid -->
+    <!-- Plan Types Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
       @forelse ($planTypes as $planType)
         <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
-          <!-- Membership Type Header -->
+          <!-- Plan Type Header -->
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <div>
@@ -34,7 +34,7 @@
                     variant="ghost"
                     icon="trash"
                     wire:click="deleteType({{ $planType->id }})"
-                    wire:confirm="¿Estás seguro de eliminar este tipo de membresía?"
+                    wire:confirm="¿Estás seguro de eliminar este tipo de plan?"
                   >
                     Eliminar
                   </flux:button>
@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <!-- Membership Type Periods -->
+          <!-- Plan Type Plans -->
           <div class="p-6">
             @if ($planType->plans->count() > 0)
               <div class="space-y-3 mb-5">
@@ -60,12 +60,12 @@
                       </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
-                      <flux:button size="sm" variant="filled" wire:click="editPeriod({{ $plan->id }})"
+                      <flux:button size="sm" variant="filled" wire:click="editPlan({{ $plan->id }})"
                         class="!bg-indigo-50 !text-indigo-600 hover:!bg-indigo-100 hover:!text-indigo-700">
                         Editar
                       </flux:button>
-                      <flux:button size="sm" variant="filled" wire:click="deletePeriod({{ $plan->id }})"
-                        wire:confirm="¿Estás seguro de eliminar este periodo?"
+                      <flux:button size="sm" variant="filled" wire:click="deletePlan({{ $plan->id }})"
+                        wire:confirm="¿Estás seguro de eliminar este plan?"
                         class="!bg-red-50 !text-red-600 hover:!bg-red-100 hover:!text-red-700">
                         Eliminar
                       </flux:button>
@@ -81,14 +81,14 @@
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <p class="text-sm text-gray-500 mb-3">No hay periodos de tiempo configurados</p>
+                <p class="text-sm text-gray-500 mb-3">No hay planes configurados</p>
               </div>
             @endif
 
-            <!-- New Period Button -->
-            <flux:button variant="outline" icon="plus" wire:click="createPeriod({{ $planType->id }})"
+            <!-- New Plan Button -->
+            <flux:button variant="outline" icon="plus" wire:click="createPlan({{ $planType->id }})"
               class="w-full">
-              Agregar Periodo
+              Agregar Plan
             </flux:button>
           </div>
         </div>
@@ -101,8 +101,8 @@
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay tipos de membresía</h3>
-          <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de membresía</p>
+          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay tipos de planes</h3>
+          <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de plan</p>
           <flux:button variant="primary" icon="plus" wire:click="createType">
             Crear Uno
           </flux:button>
@@ -111,7 +111,7 @@
     </div>
   </div>
 
-  <!-- Membership Type Modal -->
+  <!-- Plan Type Modal -->
   @if ($showTypeModal)
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeTypeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
@@ -123,7 +123,7 @@
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingType ? 'Editar Tipo de Membresía' : 'Nuevo Tipo de Membresía' }}
+                {{ $editingType ? 'Editar Tipo de Plan' : 'Nuevo Tipo de Plan' }}
               </h3>
               <button wire:click="closeTypeModal" class="text-gray-400 hover:text-gray-600">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -154,9 +154,9 @@
     </div>
   @endif
 
-  <!-- Period Modal -->
-  @if ($showPeriodModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closePeriodModal">
+  <!-- Plan Modal -->
+  @if ($showPlanModal)
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closePlanModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div
@@ -166,26 +166,26 @@
             <!-- Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingPeriod ? 'Editar Periodo' : 'Nuevo Periodo' }}
-                @if ($selectedTypeForPeriod)
-                  <span class="text-sm font-normal text-gray-500">- {{ $selectedTypeForPeriod->name }}</span>
+                {{ $editingPlan ? 'Editar Plan' : 'Nuevo Plan' }}
+                @if ($selectedTypeForPlan)
+                  <span class="text-sm font-normal text-gray-500">- {{ $selectedTypeForPlan->name }}</span>
                 @endif
               </h3>
-              <button wire:click="closePeriodModal" class="text-gray-400 hover:text-gray-600">
+              <button wire:click="closePlanModal" class="text-gray-400 hover:text-gray-600">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <form wire:submit.prevent="savePeriod">
+            <form wire:submit.prevent="savePlan">
               <!-- Body -->
               <div class="px-6 py-4 space-y-4">
               <!-- Name -->
                 <flux:field>
-                  <flux:label for="periodName">Nombre del periodo *</flux:label>
-                  <flux:input wire:model="periodName" id="periodName" placeholder="Ej: Mensual, Semanal, Anual" />
-                  <flux:error name="periodName" />
+                  <flux:label for="planName">Nombre del plan *</flux:label>
+                  <flux:input wire:model="planName" id="planName" placeholder="Ej: Mensual, Semanal, Anual" />
+                  <flux:error name="planName" />
                 </flux:field>
 
               <!-- Duration -->
@@ -218,8 +218,8 @@
 
               <!-- Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-                <flux:button variant="ghost" wire:click="closePeriodModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $editingPeriod ? 'Actualizar' : 'Crear' }}</flux:button>
+                <flux:button variant="ghost" wire:click="closePlanModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingPlan ? 'Actualizar' : 'Crear' }}</flux:button>
               </div>
             </form>
           </div>
