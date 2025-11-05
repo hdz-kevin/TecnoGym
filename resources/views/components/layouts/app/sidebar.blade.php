@@ -33,8 +33,8 @@
       </flux:navlist.group>
 
       <flux:navlist.group :heading="__('Configuración')" class="grid">
-        <flux:navlist.item icon="tag" :href="route('membership-types.index')" :current="request()->routeIs('membership-types.index')" wire:navigate>
-          {{ __('Tipos de Membresía') }}
+        <flux:navlist.item icon="rectangle-stack" :href="route('plans.index')" :current="request()->routeIs('plans.index')" wire:navigate>
+          {{ __('Planes') }}
         </flux:navlist.item>
       </flux:navlist.group>
     </flux:navlist>

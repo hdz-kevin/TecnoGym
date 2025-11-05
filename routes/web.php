@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 
     Route::get('members', Members::class)->name('members.index');
-    Route::get('membership-types', MembershipTypes::class)->name('membership-types.index');
+    Route::get('plans', MembershipTypes::class)->name('plans.index');
     Route::get('memberships', Memberships::class)->name('memberships.index');
 });
 
