@@ -13,7 +13,7 @@
     <!-- Plan Types Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
       @forelse ($planTypes as $planType)
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm" wire:key="{{ $planType->id }}">
           <!-- Plan Type Header -->
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
@@ -43,12 +43,12 @@
             </div>
           </div>
 
-          <!-- Plan Type Plans -->
+          <!-- Plans -->
           <div class="p-6">
             @if ($planType->plans->count() > 0)
               <div class="space-y-3 mb-5">
                 @foreach ($planType->plans as $plan)
-                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg" wire:key="{{ $plan->id }}">
                     <div class="flex-1">
                       <div class="flex items-center gap-2">
                           <h3 class="font-medium text-gray-900">{{ $plan->name }}</h3>
@@ -64,11 +64,13 @@
                         class="!bg-indigo-50 !text-indigo-600 hover:!bg-indigo-100 hover:!text-indigo-700">
                         Editar
                       </flux:button>
-                      <flux:button size="sm" variant="filled" wire:click="deletePlan({{ $plan->id }})"
-                        wire:confirm="¿Estás seguro de eliminar este plan?"
-                        class="!bg-red-50 !text-red-600 hover:!bg-red-100 hover:!text-red-700">
-                        Eliminar
-                      </flux:button>
+                      @if ($plan->memberships->count() === 0)
+                        <flux:button size="sm" variant="filled" wire:click="deletePlan({{ $plan->id }})"
+                          wire:confirm="¿Estás seguro de eliminar este plan?"
+                          class="!bg-red-50 !text-red-600 hover:!bg-red-100 hover:!text-red-700">
+                          Eliminar
+                        </flux:button>
+                      @endif
                     </div>
                   </div>
                 @endforeach
@@ -101,7 +103,7 @@
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay tipos de planes</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay planes configurados</h3>
           <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de plan</p>
           <flux:button variant="primary" icon="plus" wire:click="createType">
             Crear Uno
