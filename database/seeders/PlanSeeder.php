@@ -24,12 +24,14 @@ class PlanSeeder extends Seeder
                 'name' => 'Mensual',
                 'duration_value' => 1,
                 'duration_unit' => DurationUnit::MONTH,
+                'duration_in_days' => DurationUnit::MONTH->toDays() * 1,
                 'price' => 400
             ],
             [
                 'name' => '15 días',
                 'duration_value' => 2,
                 'duration_unit' => DurationUnit::WEEK,
+                'duration_in_days' => DurationUnit::WEEK->toDays() * 2,
                 'price' => 250,
             ],
         ]);
@@ -39,12 +41,14 @@ class PlanSeeder extends Seeder
                 'name' => 'Mensual',
                 'duration_value' => 1,
                 'duration_unit' => DurationUnit::MONTH,
+                'duration_in_days' => DurationUnit::MONTH->toDays() * 1,
                 'price' => 350
             ],
             [
                 'name' => '15 días',
                 'duration_value' => 2,
                 'duration_unit' => DurationUnit::WEEK,
+                'duration_in_days' => DurationUnit::WEEK->toDays() * 2,
                 'price' => 200
             ],
         ]);
