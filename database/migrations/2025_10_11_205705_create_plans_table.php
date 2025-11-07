@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('duration_value');
             $table->enum('duration_unit', DurationUnit::values()); // day, week, month
+            $table->integer('duration_in_days'); // For easier ordering
             $table->integer('price');
             $table->timestamps();
         });

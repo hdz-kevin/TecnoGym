@@ -13,6 +13,7 @@ class Plan extends Model
         'name',
         'duration_value',
         'duration_unit',
+        'duration_in_days',
         'price',
         'plan_type_id',
     ];
