@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MemberSeeder::class,
             PlanSeeder::class,
-            // MembershipSeeder::class,
+            MembershipSeeder::class,
         ]);
     }
 }

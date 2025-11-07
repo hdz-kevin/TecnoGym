@@ -6,8 +6,7 @@ use App\Enums\DurationUnit;
 use App\Enums\MembershipStatus;
 use App\Models\Member;
 use App\Models\Membership;
-use App\Models\MembershipType;
-use Carbon\Carbon;
+use App\Models\PlanType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,97 +17,81 @@ class MembershipSeeder extends Seeder
      */
     public function run(): void
     {
+        // Plan Types
+        $general = PlanType::where('name', 'general')->first();
+        $student = PlanType::where('name', 'estudiante')->first();
+
+        // General Plans
+        $genMonthly = $general->plans()
+                            ->where('duration_value', 1)
+                            ->where('duration_unit', DurationUnit::MONTH)
+                            ->first();
+        $genBiweekly = $general->plans()
+                            ->where('duration_value', 2)
+                            ->where('duration_unit', DurationUnit::WEEK)
+                            ->first();
+        // Student Plans
+        $stuMonthly = $student->plans()
+                            ->where('duration_value', 1)
+                            ->where('duration_unit', DurationUnit::MONTH)
+                            ->first();
+        $stuBiweekly = $student->plans()
+                            ->where('duration_value', 2)
+                            ->where('duration_unit', DurationUnit::WEEK)
+                            ->first();
+
+        // Members
         $members = Member::all();
 
-        // Membership Types
-        $general = MembershipType::where('name', 'general')->first();
-        $student = MembershipType::where('name', 'estudiante')->first();
-
-        // General Periods
-        $genMonthly = $general->periods()
-                            ->where('duration_value', 1)
-                            ->where('duration_unit', DurationUnit::MONTH)
-                            ->first();
-        $genBiweekly = $general->periods()
-                            ->where('duration_value', 2)
-                            ->where('duration_unit', DurationUnit::WEEK)
-                            ->first();
-        // Student Periods
-        $stuMonthly = $student->periods()
-                            ->where('duration_value', 1)
-                            ->where('duration_unit', DurationUnit::MONTH)
-                            ->first();
-        $stuBiweekly = $student->periods()
-                            ->where('duration_value', 2)
-                            ->where('duration_unit', DurationUnit::WEEK)
-                            ->first();
-
+        // Memberships
         $memberships = [
             // General
             [
-                'member_id' => $members[0]->id,
-                'period' => $genMonthly,
-                'start_date' => Carbon::now()->subMonth(),
-                'status' => MembershipStatus::ACTIVE,
+                'member' => $members[0],
+                'plan' => $genMonthly,
+                'status' => MembershipStatus::PENDING,
             ],
             [
-                'member_id' => $members[1]->id,
-                'period' => $genMonthly,
-                'start_date' => Carbon::now()->subDays(15),
-                'status' => MembershipStatus::ACTIVE,
+                'member' => $members[1],
+                'plan' => $genMonthly,
+                'status' => MembershipStatus::PENDING,
             ],
             [
-                'member_id' => $members[4]->id,
-                'period' => $genBiweekly,
-                'start_date' => Carbon::now()->subDays(1),
-                'status' => MembershipStatus::ACTIVE,
+                'member' => $members[5],
+                'plan' => $genBiweekly,
+                'status' => MembershipStatus::PENDING,
             ],
             [
-                'member_id' => $members[5]->id,
-                'period' => $genMonthly,
-                'start_date' => Carbon::now()->subDays(45),
-                'status' => MembershipStatus::EXPIRED,
+                'member' => $members[7],
+                'plan' => $genMonthly,
+                'status' => MembershipStatus::PENDING,
             ],
             // Student
             [
-                'member_id' => $members[4]->id,
-                'period' => $stuMonthly,
-                'start_date' => Carbon::now()->subDays(7),
-                'status' => MembershipStatus::ACTIVE,
+                'member' => $members[4],
+                'plan' => $stuMonthly,
+                'status' => MembershipStatus::PENDING,
             ],
             [
-                'member_id' => $members[6]->id,
-                'period' => $stuBiweekly,
-                'start_date' => Carbon::now()->subDays(13),
-                'status' => MembershipStatus::ACTIVE,
+                'member' => $members[6],
+                'plan' => $stuBiweekly,
+                'status' => MembershipStatus::PENDING,
             ],
             [
-                'member_id' => $members[6]->id,
-                'period' => $genMonthly,
-                'start_date' => Carbon::now()->subDays(6),
-                'status' => MembershipStatus::ACTIVE,
-            ],
-            [
-                'member_id' => $members[8]->id,
-                'period' => $stuBiweekly,
-                'start_date' => Carbon::now()->subDays(15),
-                'status' => MembershipStatus::EXPIRED,
+                'member' => $members[8],
+                'plan' => $stuMonthly,
+                'status' => MembershipStatus::PENDING,
             ],
         ];
 
+        // Create memberships
         foreach ($memberships as $membership) {
-            $period = $membership['period'];
-            $startDate = $membership['start_date'];
+            $plan = $membership['plan'];
 
             Membership::create([
-                'member_id' => $membership['member_id'],
-                'membership_type_id' => $period->membership_type_id,
-                'period_id' => $period->id,
-                'price' => $period->price,
-                'start_date' => $startDate,
-                'end_date' => $period->duration_value == 1 && $period->duration_unit == DurationUnit::MONTH
-                                ? $startDate->copy()->addMonth()
-                                : $startDate->copy()->addWeeks(2),
+                'member_id' => $membership['member']->id,
+                'plan_id' => $plan->id,
+                'plan_type_id' => $plan->plan_type_id,
                 'status' => $membership['status'],
             ]);
         }

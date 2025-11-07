@@ -6,7 +6,7 @@ enum MembershipStatus: string
 {
     case ACTIVE = 'active';
     case EXPIRED = 'expired';
-    /** Pending is when a membership does not have any period */
+    /** Pending is when a membership does not have any payment */
     case PENDING = 'pending';
 
     /**
