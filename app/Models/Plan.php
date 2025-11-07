@@ -37,4 +37,12 @@ class Plan extends Model
     {
         return $this->hasMany(Membership::class);
     }
+
+    /**
+     * Get formatted duration string (e.g., "15 días", "1 mes", "3 meses").
+     */
+    public function getFormattedDurationAttribute(): string
+    {
+        return $this->duration_value . ' ' . $this->duration_unit->label($this->duration_value);
+    }
 }

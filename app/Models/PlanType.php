@@ -14,7 +14,7 @@ class PlanType extends Model
      */
     public function plans(): HasMany
     {
-        return $this->hasMany(Plan::class);
+        return $this->hasMany(Plan::class)->orderBy('duration_in_days');
     }
 
     /**

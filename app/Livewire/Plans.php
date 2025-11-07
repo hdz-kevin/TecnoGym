@@ -128,6 +128,7 @@ class Plans extends Component
             'name' => $this->planName,
             'duration_value' => $this->durationValue,
             'duration_unit' => DurationUnit::from($this->durationUnit),
+            'duration_in_days' => DurationUnit::from($this->durationUnit)->toDays() * $this->durationValue,
             'price' => $this->price,
         ];
 
@@ -211,7 +212,7 @@ class Plans extends Component
 
     public function render()
     {
-        $planTypes = PlanType::with('plans')->get();
+        $planTypes = PlanType::with(['plans'])->get();
 
         return view('livewire.plans', compact('planTypes'));
     }

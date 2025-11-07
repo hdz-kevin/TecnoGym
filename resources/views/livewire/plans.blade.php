@@ -56,7 +56,7 @@
                           <p class="text-lg font-semibold text-gray-900">${{ number_format($plan->price) }}</p>
                       </div>
                       <p class="text-sm text-gray-600">
-                        {{ $plan->duration_value }} {{ $plan->duration_unit->label($plan->duration_value) }}
+                        {{ $plan->formatted_duration }}
                       </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
