@@ -51,4 +51,15 @@ class Membership extends Model
     {
         return $this->hasMany(Period::class);
     }
+
+    /**
+     * Get the current active period.
+     */
+    public function currentPeriod(): HasMany
+    {
+        return $this->hasMany(Period::class)
+                    ->where('start_date', '<=', now())
+                    ->where('end_date', '>=', now())
+                    ->latest('start_date');
+    }
 }

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             MemberSeeder::class,
             PlanSeeder::class,
             MembershipSeeder::class,
+            PeriodSeeder::class,
         ]);
     }
 }
