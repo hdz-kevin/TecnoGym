@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\PaymentStatus;
+use App\Enums\PeriodStatus;
 use App\Models\Membership;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('periods', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Membership::class)->constrained()->onDelete('restrict');
 
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('price_paid');
-            $table->enum('status', PaymentStatus::values())->default(PaymentStatus::IN_PROGRESS->value);
+            $table->enum('status', PeriodStatus::values())->default(PeriodStatus::IN_PROGRESS->value);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('periods');
     }
 };

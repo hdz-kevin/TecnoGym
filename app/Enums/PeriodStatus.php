@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PaymentStatus: string
+enum PeriodStatus: string
 {
     case IN_PROGRESS = 'in_progress';
     case COMPLETED = 'completed';
@@ -16,7 +16,7 @@ enum PaymentStatus: string
     }
 
     /**
-     * Get the label for the payment status
+     * Get the label for the period status
      */
     public function label(): string
     {

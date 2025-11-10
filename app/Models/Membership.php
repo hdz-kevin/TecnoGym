@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\MembershipStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Membership extends Model
 {
@@ -41,5 +42,13 @@ class Membership extends Model
     public function planType(): BelongsTo
     {
         return $this->belongsTo(PlanType::class);
+    }
+
+    /**
+     * Get the periods for the membership.
+     */
+    public function periods(): HasMany
+    {
+        return $this->hasMany(Period::class);
     }
 }
