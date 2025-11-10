@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('price');
+            $table->integer('price_paid');
             $table->enum('status', PaymentStatus::values())->default(PaymentStatus::IN_PROGRESS->value);
             $table->timestamps();
         });

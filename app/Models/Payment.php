@@ -11,11 +11,13 @@ class Payment extends Model
         'membership_id',
         'start_date',
         'end_date',
-        'price',
+        'price_paid',
         'status',
     ];
 
     protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
         'status' => PaymentStatus::class,
     ];
 }
