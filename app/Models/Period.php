@@ -29,4 +29,12 @@ class Period extends Model
     {
         return $this->belongsTo(Membership::class);
     }
+
+    /**
+     * Get formatted period string.
+     */
+    public function getFormattedPeriodAttribute(): string
+    {
+        return $this->start_date->format('d/m/Y') . ' - ' . $this->end_date->format('d/m/Y');
+    }
 }
