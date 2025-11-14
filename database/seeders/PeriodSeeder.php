@@ -73,6 +73,9 @@ class PeriodSeeder extends Seeder
             if ($membership->currentPeriod()->first()) {
                 $membership->status = MembershipStatus::ACTIVE;
                 $membership->save();
+            } else if ($membership->periods->count() > 0) {
+                $membership->status = MembershipStatus::EXPIRED;
+                $membership->save();
             }
         });
     }

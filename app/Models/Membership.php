@@ -58,8 +58,21 @@ class Membership extends Model
     public function currentPeriod(): HasMany
     {
         return $this->hasMany(Period::class)
-                    ->where('start_date', '<=', now())
+                    // ->where('start_date', '<=', now())
                     ->where('end_date', '>=', now())
                     ->latest('start_date');
+    }
+
+    /**
+     * Calculate and return the membership status.
+     *
+     * @return MembershipStatus
+     */
+    public function getStatus(): MembershipStatus {
+        return match (true) {
+            $this->periods()->where('end_date', '>=', now())->count() > 0 => MembershipStatus::ACTIVE,
+            $this->periods->count() > 0 => MembershipStatus::EXPIRED,
+            default => MembershipStatus::PENDING,
+        };
     }
 }

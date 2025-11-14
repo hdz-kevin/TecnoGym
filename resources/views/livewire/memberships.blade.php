@@ -1,5 +1,6 @@
 @php
 use Illuminate\Support\Facades\Storage;
+use App\Enums\MembershipStatus;
 @endphp
 
 <x-slot:subtitle>Gestiona las membresías de tus socios</x-slot:subtitle>
@@ -69,7 +70,7 @@ use Illuminate\Support\Facades\Storage;
           </svg>
         </div>
         <input type="text" placeholder="Buscar por socio..."
-          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
+          class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
       </div>
     </div>
     <div class="flex gap-3">
@@ -100,32 +101,33 @@ use Illuminate\Support\Facades\Storage;
                        class="h-full w-full rounded-full object-cover">
                 @else
                   <span class="text-lg font-semibold text-gray-600">
-                    {{ collect(explode(' ', $membership->member->name))->map(fn($name) => strtoupper(substr($name, 0, 1)))->take(2)->join('') }}
+                    {{ $membership->member->initials() }}
                   </span>
                 @endif
               </div>
 
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
-                <p class="text-sm text-gray-600">{{ $membership->plan->name }} ({{ $membership->plan->planType->name }}) - ${{ number_format($membership->plan->price) }}</p>
+                <p class="text-gray-700">
+                  {{ $membership->plan->name }} ({{ $membership->plan->planType->name }}) - ${{ number_format($membership->plan->price) }}
+                </p>
               </div>
             </div>
 
             <!-- Right: Status Badge -->
             <div class="text-right">
-              @if($membership->current_period)
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                  Activa
-                </span>
-              @elseif($membership->periods_count > 0)
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                  Vencida
-                </span>
-              @else
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                  Pendiente
-                </span>
-              @endif
+              @php
+                $status = $membership->getStatus();
+              @endphp
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium
+                {{
+                  $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800"
+                  : ($status == MembershipStatus::EXPIRED ? "bg-red-100 text-red-800"
+                  : "bg-yellow-100 text-yellow-800")
+                }}"
+              >
+                {{ $status->label() }}
+              </span>
             </div>
           </div>
 
@@ -134,18 +136,17 @@ use Illuminate\Support\Facades\Storage;
             <div class="flex items-center justify-between">
               <div class="text-sm text-gray-600">
                 @if($membership->last_period)
-                  <span class="flex items-center gap-1">
-                    <flux:icon icon="calendar-days" variant="micro" class="text-gray-500" />
+                  <span class="flex items-center gap-1.5">
+                    <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
                     Último período: {{ $membership->last_period->start_date->format('d/m/Y') }} - {{ $membership->last_period->end_date->format('d/m/Y') }}
                   </span>
-                  <br>
-                  <span class="flex items-center gap-1 mt-1">
-                    <flux:icon icon="banknotes" variant="micro" class="text-gray-500" />
+                  <span class="flex items-center gap-1.5 mt-5">
+                    <flux:icon icon="banknotes" variant="mini" class="text-gray-500" />
                     Total pagado: ${{ number_format($membership->total_paid) }} ({{ $membership->periods_count }} {{ $membership->periods_count == 1 ? 'período' : 'períodos' }})
                   </span>
                 @else
-                  <span class="flex items-center gap-1">
-                    <flux:icon icon="exclamation-triangle" variant="micro" class="text-gray-500" />
+                  <span class="flex items-center gap-1.5">
+                    <flux:icon icon="exclamation-triangle" variant="mini" class="text-gray-500" />
                     Sin períodos registrados
                   </span>
                 @endif
