@@ -47,13 +47,12 @@ class Plans extends Component
     public $price = '';
 
     /**
-     * Create new plan type
+     * Show the create plan type modal.
      */
     public function createType()
     {
         $this->editingType = null;
         $this->showTypeModal = true;
-        $this->resetTypeForm();
     }
 
     /**

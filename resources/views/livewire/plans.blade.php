@@ -22,16 +22,18 @@
               </div>
               <div class="flex items-center gap-2">
                 <flux:button
-                  class="border !text-[16px] !text-indigo-600 hover:!bg-indigo-50 hover:!text-indigo-700"
+                  class="border text-indigo-600! hover:text-indigo-700! hover:bg-indigo-50!"
                   variant="ghost"
+                  size="sm"
                   wire:click="editType({{ $planType->id }})" icon="pencil"
                 >
                   Editar
                 </flux:button>
                 @if ($planType->plans->count() === 0)
                   <flux:button
-                    class="border !text-[16px] !text-red-600 hover:!text-red-700 hover:!bg-red-50"
+                    class="border text-red-600!  hover:text-red-700! hover:bg-red-50!"
                     variant="ghost"
+                    size="sm"
                     icon="trash"
                     wire:click="deleteType({{ $planType->id }})"
                     wire:confirm="¿Estás seguro de eliminar este tipo de plan?"
