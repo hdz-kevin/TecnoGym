@@ -53,6 +53,9 @@ class Memberships extends Component
             'periods' => fn($query) => $query->orderBy('start_date', 'desc')
         ]);
         $this->showHistoryModal = true;
+
+        // Disable body scroll
+        $this->dispatch('disable-scroll');
     }    /**
      * Close create modal
      */
@@ -69,6 +72,9 @@ class Memberships extends Component
     {
         $this->showHistoryModal = false;
         $this->selectedMembership = null;
+
+        // Enable body scroll
+        $this->dispatch('enable-scroll');
     }
 
     /**
@@ -145,8 +151,8 @@ class Memberships extends Component
         // Summary statistics
         $stats = [
             'total' => $memberships->count(),
-            'active' => $memberships->filter(fn($m) => $m->current_period !== null)->count(),
-            'expired' => $memberships->filter(fn($m) => $m->current_period === null && $m->periods->isNotEmpty())->count(),
+            'active' => $memberships->filter(fn($m) => $m->status === MembershipStatus::ACTIVE)->count(),
+            'expired' => $memberships->filter(fn($m) => $m->status === MembershipStatus::EXPIRED)->count(),
             'pending' => $memberships->filter(fn($m) => $m->status === MembershipStatus::PENDING)->count(),
         ];
 

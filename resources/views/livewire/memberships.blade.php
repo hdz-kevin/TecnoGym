@@ -15,7 +15,7 @@ use App\Enums\MembershipStatus;
             <flux:icon icon="credit-card" class="w-6 h-6 text-blue-600" />
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-500">Total</p>
+            <p class="font-medium text-gray-500">Total</p>
             <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
           </div>
         </div>
@@ -27,7 +27,7 @@ use App\Enums\MembershipStatus;
             <flux:icon icon="check" class="w-6 h-6 text-green-600" />
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-500">Activas</p>
+            <p class="font-medium text-gray-500">Activas</p>
             <p class="text-2xl font-bold text-gray-900">{{ $stats['active'] }}</p>
           </div>
         </div>
@@ -39,7 +39,7 @@ use App\Enums\MembershipStatus;
             <flux:icon icon="clock" class="w-6 h-6 text-red-600" />
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-500">Vencidas</p>
+            <p class="font-medium text-gray-500">Vencidas</p>
             <p class="text-2xl font-bold text-gray-900">{{ $stats['expired'] }}</p>
           </div>
         </div>
@@ -51,7 +51,7 @@ use App\Enums\MembershipStatus;
             <flux:icon icon="exclamation-triangle" class="w-6 h-6 text-yellow-600" />
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-500">Pendientes</p>
+            <p class="font-medium text-gray-500">Pendientes</p>
             <p class="text-2xl font-bold text-gray-900">{{ $stats['pending'] }}</p>
           </div>
         </div>
@@ -94,7 +94,7 @@ use App\Enums\MembershipStatus;
           <div class="flex items-center justify-between">
             <!-- Left: Member and Plan Info -->
             <div class="flex items-center space-x-4">
-              <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center">
+              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center">
                 @if($membership->member->photo)
                   <img src="{{ Storage::url('member-photos/' . $membership->member->photo) }}"
                        alt="{{ $membership->member->name }}"
@@ -109,7 +109,7 @@ use App\Enums\MembershipStatus;
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
                 <p class="text-gray-700">
-                  {{ $membership->plan->name }} ({{ $membership->planType->name }}) - ${{ number_format($membership->plan->price) }}
+                  {{ $membership->plan->name }} • {{ $membership->planType->name }} - ${{ number_format($membership->plan->price) }}
                 </p>
               </div>
             </div>
@@ -257,10 +257,10 @@ use App\Enums\MembershipStatus;
 
   <!-- History Modal -->
   @if($showHistoryModal && $selectedMembership)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeHistoryModal">
+    <div class="fixed inset-0 mb-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeHistoryModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
-          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-4xl" wire:click.stop>
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-6xl" wire:click.stop>
 
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
@@ -280,24 +280,31 @@ use App\Enums\MembershipStatus;
               <div class="bg-gray-50 rounded-lg p-4 mb-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <p class="text-sm text-gray-600">Socio</p>
-                    <p class="font-medium">{{ $selectedMembership->member->name }}</p>
+                    <p class="text-gray-600">Socio</p>
+                    <p class="font-medium">
+                      {{ $selectedMembership->member->name }}
+                    </p>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-600">Plan</p>
-                    <p class="font-medium">{{ $selectedMembership->plan->name }} ({{ $selectedMembership->plan->planType->name }})</p>
+                    <p class=" text-gray-600">Plan</p>
+                    <p class="font-medium">
+                      {{ $selectedMembership->plan->name }} • {{ $selectedMembership->plan->planType->name }}
+                    </p>
                   </div>
                   <div>
-                    <p class="text-sm text-gray-600">Estado</p>
-                    @if($selectedMembership->current_period)
-                      <span class="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-green-100 text-green-800">
-                        Activa
-                      </span>
-                    @else
-                      <span class="inline-flex items-center px-2 py-1 rounded text-sm font-medium bg-red-100 text-red-800">
-                        Vencida
-                      </span>
-                    @endif
+                    <p class="text-gray-600">Estado</p>
+                  @php
+                    $status = $selectedMembership->getStatus();
+                  @endphp
+                    <span class="inline-flex items-center px-3 py-1.5 rounded text-sm font-medium
+                      {{
+                        $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800"
+                        : ($status == MembershipStatus::EXPIRED ? "bg-red-100 text-red-800"
+                        : "bg-yellow-100 text-yellow-800")
+                      }}"
+                    >
+                      {{ $status->label() }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -312,8 +319,9 @@ use App\Enums\MembershipStatus;
                 </div>
 
                 @if($selectedMembership->periods->count() > 0)
-                  <div class="space-y-3">
-                    @foreach($selectedMembership->periods as $period)
+                  <div class="max-h-96 overflow-y-auto scroll-smooth p-1">
+                    <div class="space-y-3">
+                      @foreach($selectedMembership->periods as $period)
                       <div class="flex items-center justify-between p-4 border rounded-lg {{ $period->status->value === 'completed' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200' }}">
                         <div class="flex items-center space-x-4">
                           <div class="flex-shrink-0">
@@ -339,19 +347,17 @@ use App\Enums\MembershipStatus;
 
                         <div class="text-right">
                           <p class="font-bold text-lg">${{ number_format($period->price_paid) }}</p>
-                          <flux:button size="xs" variant="outline">
-                            🖨️ Recibo
-                          </flux:button>
                         </div>
                       </div>
                     @endforeach
+                    </div>
                   </div>
 
                   <!-- Summary -->
                   <div class="mt-6 pt-4 border-t border-gray-200">
                     <div class="flex justify-between text-lg font-semibold">
                       <span>Total pagado:</span>
-                      <span>${{ number_format($selectedMembership->periods->where('status.value', 'completed')->sum('price_paid')) }}</span>
+                      <span>${{ number_format($selectedMembership->periods->sum('price_paid')) }}</span>
                     </div>
                   </div>
                 @else
@@ -361,7 +367,7 @@ use App\Enums\MembershipStatus;
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                       </svg>
                     </div>
-                    <p class="text-gray-500">No hay pagos registrados para esta membresía</p>
+                    <p class="text-gray-500">No hay periodos registrados para esta membresía</p>
                   </div>
                 @endif
               </div>
@@ -380,4 +386,17 @@ use App\Enums\MembershipStatus;
     </div>
   @endif
 
+  <script>
+    document.addEventListener('livewire:init', () => {
+      // Disable scroll when history modal opens
+      Livewire.on('disable-scroll', () => {
+        document.body.classList.add('overflow-hidden');
+      });
+
+      // Enable scroll when history modal closes
+      Livewire.on('enable-scroll', () => {
+        document.body.classList.remove('overflow-hidden');
+      });
+    });
+  </script>
 </div>
