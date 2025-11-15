@@ -5,40 +5,20 @@ namespace App\Models;
 use App\Enums\MembershipStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Membership extends Model
 {
     protected $fillable = [
         'member_id',
-        'membership_type_id',
-        'period_id',
-        'price',
-        'start_date',
-        'end_date',
+        'plan_id',
+        'plan_type_id',
         'status',
     ];
 
     protected $casts = [
         'status' => MembershipStatus::class,
-        'start_date' => 'date',
-        'end_date' => 'date',
     ];
-
-    /**
-     * Calculate days until or since expiration.
-     *
-     * @return int
-     */
-    public function daysUntilExpiration(): int
-    {
-        if ($this->status === MembershipStatus::ACTIVE) {
-            return (now() < $this->start_date)
-                    ? ceil($this->start_date->diffInDays($this->end_date))
-                    : ceil(now()->diffInDays($this->end_date));
-        }
-
-        return floor(now()->diffInDays($this->end_date) * -1);
-    }
 
     /**
      * Get the member that owns the membership.
@@ -49,18 +29,50 @@ class Membership extends Model
     }
 
     /**
-     * Get the membership type that owns the membership.
+     * Get the plan that owns the membership.
      */
-    public function membershipType(): BelongsTo
+    public function plan(): BelongsTo
     {
-        return $this->belongsTo(MembershipType::class);
+        return $this->belongsTo(Plan::class);
     }
 
     /**
-     * Get the period that owns the membership.
+     * Get the plan type that owns the membership.
      */
-    public function period(): BelongsTo
+    public function planType(): BelongsTo
     {
-        return $this->belongsTo(Period::class);
+        return $this->belongsTo(PlanType::class);
+    }
+
+    /**
+     * Get the periods for the membership.
+     */
+    public function periods(): HasMany
+    {
+        return $this->hasMany(Period::class);
+    }
+
+    /**
+     * Get the current active period.
+     */
+    public function currentPeriod(): HasMany
+    {
+        return $this->hasMany(Period::class)
+                    // ->where('start_date', '<=', now())
+                    ->where('end_date', '>=', now())
+                    ->latest('start_date');
+    }
+
+    /**
+     * Calculate and return the membership status.
+     *
+     * @return MembershipStatus
+     */
+    public function getStatus(): MembershipStatus {
+        return match (true) {
+            $this->periods()->where('end_date', '>=', now())->count() > 0 => MembershipStatus::ACTIVE,
+            $this->periods->count() > 0 => MembershipStatus::EXPIRED,
+            default => MembershipStatus::PENDING,
+        };
     }
 }

@@ -17,10 +17,10 @@ class MemberFactory extends Factory
      */
     public function definition(): array
     {
-      $gender = fake()->randomElement(MemberGender::cases());
+      $gender = fake()->randomElement(MemberGender::cases())->value;
 
         return [
-            'name' => fake()->name($gender->value == 'M' ? 'male' : 'female'),
+            'name' => fake()->name($gender),
             'gender' => $gender,
             'birth_date' => fake()->date(),
             'photo' => null,

@@ -2,38 +2,39 @@
 
 namespace App\Models;
 
-use App\Enums\DurationUnit;
+use App\Enums\PeriodStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Period extends Model
 {
     protected $fillable = [
-        'name',
-        'duration_value',
-        'duration_unit',
-        'price',
-        'membership_type_id',
+        'membership_id',
+        'start_date',
+        'end_date',
+        'price_paid',
+        'status',
     ];
 
     protected $casts = [
-        'duration_unit' => DurationUnit::class,
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'status' => PeriodStatus::class,
     ];
 
     /**
-     * Get the membership type that owns the period.
+     * Get the membership that owns the period.
      */
-    public function membershipType(): BelongsTo
+    public function membership(): BelongsTo
     {
-        return $this->belongsTo(MembershipType::class);
+        return $this->belongsTo(Membership::class);
     }
 
     /**
-     * Get the memberships for the period.
+     * Get formatted period string.
      */
-    public function memberships(): HasMany
+    public function getFormattedPeriodAttribute(): string
     {
-        return $this->hasMany(Membership::class);
+        return $this->start_date->format('d/m/Y') . ' - ' . $this->end_date->format('d/m/Y');
     }
 }

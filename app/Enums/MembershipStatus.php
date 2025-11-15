@@ -2,17 +2,21 @@
 
 namespace App\Enums;
 
-enum MembershipStatus: string
+enum MembershipStatus: int
 {
-    case ACTIVE = 'active';
-    case EXPIRED = 'expired';
+    case ACTIVE = 1;
+    case EXPIRED = 2;
+    /** Pending is when a membership does not have any payment */
+    case PENDING = 3;
 
     /**
      * Get all enum values as an array
+     *
+     * @return array<int>
      */
     public static function values(): array
     {
-        return array_map(fn ($case) => $case->value, self::cases());
+        return array_map(fn (self $case) => $case->value, self::cases());
     }
 
     /**
@@ -23,6 +27,7 @@ enum MembershipStatus: string
         return match ($this) {
             self::ACTIVE => 'Activa',
             self::EXPIRED => 'Vencida',
+            self::PENDING => 'Pendiente',
         };
     }
 }

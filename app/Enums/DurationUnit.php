@@ -27,4 +27,16 @@ enum DurationUnit: string
             self::MONTH => $quantity === 1 ? 'Mes' : 'Meses',
         };
     }
+
+    /**
+     * Get the number of days for comparison purposes
+     */
+    public function toDays(): int
+    {
+        return match ($this) {
+            self::DAY => 1,
+            self::WEEK => 7,
+            self::MONTH => 30, // Aprox.
+        };
+    }
 }
