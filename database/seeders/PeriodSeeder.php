@@ -69,12 +69,21 @@ class PeriodSeeder extends Seeder
             }
         }
 
+        // $memberships = Membership::with('periods')->get();
+
         $memberships->each(function ($membership) {
             if ($membership->currentPeriod()->first()) {
                 $membership->status = MembershipStatus::ACTIVE;
                 $membership->save();
             } else if ($membership->periods->count() > 0) {
                 $membership->status = MembershipStatus::EXPIRED;
+                $membership->save();
+            }
+
+            // Set created_at to match first period start date
+            $firstPeriod = $membership->periods()->orderBy('start_date')->first();
+            if ($firstPeriod) {
+                $membership->created_at = $firstPeriod->start_date;
                 $membership->save();
             }
         });

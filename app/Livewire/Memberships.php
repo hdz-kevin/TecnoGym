@@ -122,9 +122,12 @@ class Memberships extends Component
         // Get memberships with all related data
         $memberships = Membership::with([
             'member',
-            'plan.planType',
+            'plan',
+            'planType',
             'periods' => fn($query) => $query->orderBy('start_date', 'desc')
         ])
+        ->orderBy('status')
+        ->orderBy('created_at', 'asc')
         ->get()
         ->map(function ($membership) {
             // Calculate summary data

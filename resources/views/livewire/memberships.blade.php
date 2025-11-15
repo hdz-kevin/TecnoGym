@@ -109,7 +109,7 @@ use App\Enums\MembershipStatus;
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
                 <p class="text-gray-700">
-                  {{ $membership->plan->name }} ({{ $membership->plan->planType->name }}) - ${{ number_format($membership->plan->price) }}
+                  {{ $membership->plan->name }} ({{ $membership->planType->name }}) - ${{ number_format($membership->plan->price) }}
                 </p>
               </div>
             </div>
@@ -134,7 +134,7 @@ use App\Enums\MembershipStatus;
           <!-- Bottom: Period Summary and Actions -->
           <div class="mt-4 pt-4 border-t border-gray-100">
             <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-600">
+              <div class="text-sm text-gray-700">
                 @if($membership->last_period)
                   <span class="flex items-center gap-1.5">
                     <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />

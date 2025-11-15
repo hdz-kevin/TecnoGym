@@ -2,15 +2,17 @@
 
 namespace App\Enums;
 
-enum MembershipStatus: string
+enum MembershipStatus: int
 {
-    case ACTIVE = 'active';
-    case EXPIRED = 'expired';
+    case ACTIVE = 1;
+    case EXPIRED = 2;
     /** Pending is when a membership does not have any payment */
-    case PENDING = 'pending';
+    case PENDING = 3;
 
     /**
      * Get all enum values as an array
+     *
+     * @return array<int>
      */
     public static function values(): array
     {
