@@ -72,6 +72,7 @@ class Members extends Component
      */
     public function createMemberModal()
     {
+        $this->editingMember = null;
         $this->showModal = true;
     }
 
@@ -80,7 +81,6 @@ class Members extends Component
      */
     public function editMemberModal(Member $member)
     {
-        $this->showModal = true;
         $this->editingMember = $member;
 
         $this->name = $member->name;
@@ -90,6 +90,8 @@ class Members extends Component
             $this->birth_month = $member->birth_date?->format('m') ?? '';
             $this->birth_year = $member->birth_date?->format('Y') ?? '';
         }
+
+        $this->showModal = true;
     }
 
     /**

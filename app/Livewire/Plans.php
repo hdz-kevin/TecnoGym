@@ -12,20 +12,11 @@ use Livewire\Component;
 #[Title('Planes')]
 class Plans extends Component
 {
-    // Modal states
-    public $showTypeModal = false;
-    public $showPlanModal = false;
-
-    // Editing states
-    public PlanType|null $editingType = null;
-    public Plan|null $editingPlan = null;
-    public PlanType|null $selectedTypeForPlan = null;
-
     // Form fields for PlanType
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('string')]
     #[Rule('max:255')]
-    public $typeName = '';
+    public $type_name = '';
 
     // Form fields for Plan
     #[Rule('required', message: 'El nombre del plan es obligatorio')]
@@ -46,22 +37,31 @@ class Plans extends Component
     #[Rule('min:1', message: 'El precio debe ser mayor a 0')]
     public $price = '';
 
+    // Modal states
+    public $showTypeModal = false;
+    public $showPlanModal = false;
+
+    // Editing states
+    public PlanType|null $editingType = null;
+    public Plan|null $editingPlan = null;
+    public PlanType|null $selectedTypeForPlan = null;
+
     /**
      * Show the create plan type modal.
      */
-    public function createType()
+    public function createTypeModal()
     {
         $this->editingType = null;
         $this->showTypeModal = true;
     }
 
     /**
-     * Edit existing plan type
+     * Show the edit plan type modal.
      */
-    public function editType(PlanType $type)
+    public function editTypeModal(PlanType $type)
     {
         $this->editingType = $type;
-        $this->typeName = $type->name;
+        $this->type_name = $type->name;
         $this->showTypeModal = true;
     }
 
@@ -71,19 +71,35 @@ class Plans extends Component
     public function saveType()
     {
         $this->validate([
-            'typeName' => 'required|string|max:255'
+            'type_name' => 'required|string|max:255',
         ]);
 
         if ($this->editingType) {
-            $this->editingType->update(['name' => $this->typeName]);
-            $message = 'Tipo de plan actualizado exitosamente.';
+            $this->editingType->update(['name' => $this->type_name]);
         } else {
-            PlanType::create(['name' => $this->typeName]);
-            $message = 'Tipo de plan creado exitosamente.';
+            PlanType::create(['name' => $this->type_name]);
         }
 
         $this->closeTypeModal();
-        session()->flash('message', $message);
+    }
+
+    /**
+     * Close type modal and reset form
+     */
+    public function closeTypeModal()
+    {
+        $this->showTypeModal = false;
+        $this->editingType = null;
+        $this->resetTypeForm();
+        $this->resetValidation();
+    }
+
+    /**
+     * Reset type form fields
+     */
+    private function resetTypeForm()
+    {
+        $this->type_name = '';
     }
 
     /**
@@ -168,17 +184,6 @@ class Plans extends Component
     }
 
     /**
-     * Close type modal and reset form
-     */
-    public function closeTypeModal()
-    {
-        $this->showTypeModal = false;
-        $this->editingType = null;
-        $this->resetTypeForm();
-        $this->resetValidation();
-    }
-
-    /**
      * Close plan modal and reset form
      */
     public function closePlanModal()
@@ -188,14 +193,6 @@ class Plans extends Component
         $this->selectedTypeForPlan = null;
         $this->resetPlanForm();
         $this->resetValidation();
-    }
-
-    /**
-     * Reset type form fields
-     */
-    private function resetTypeForm()
-    {
-        $this->typeName = '';
     }
 
     /**

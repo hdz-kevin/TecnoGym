@@ -4,7 +4,7 @@
   <div class="p-6 pt-4 space-y-6">
     @if ($planTypes->count() > 0)
       <div class="flex justify-end">
-        <flux:button variant="primary" icon="plus" wire:click="createType">
+        <flux:button variant="primary" icon="plus" wire:click="createTypeModal">
           Tipo de Plan
         </flux:button>
       </div>
@@ -25,7 +25,7 @@
                   class="border text-indigo-600! hover:text-indigo-700! hover:bg-indigo-50!"
                   variant="ghost"
                   size="sm"
-                  wire:click="editType({{ $planType->id }})" icon="pencil"
+                  wire:click="editTypeModal({{ $planType->id }})" icon="pencil"
                 >
                   Editar
                 </flux:button>
@@ -107,7 +107,7 @@
           </div>
           <h3 class="text-lg font-medium text-gray-900 mb-1">No hay planes configurados</h3>
           <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de plan</p>
-          <flux:button variant="primary" icon="plus" wire:click="createType">
+          <flux:button variant="primary" icon="plus" wire:click="createTypeModal">
             Crear Uno
           </flux:button>
         </div>
@@ -140,16 +140,17 @@
               <!-- Modal Body -->
               <div class="px-6 py-4">
                 <flux:field>
-                  <flux:label for="typeName">Nombre</flux:label>
-                  <flux:input wire:model="typeName" id="typeName" placeholder="Ej: General, Estudiante, Premium" />
-                  <flux:error name="typeName" />
+                  <flux:label for="type_name">Nombre</flux:label>
+                  <flux:input wire:model="type_name" id="type_name" placeholder="Ej: General, Estudiante, Premium" />
+                  <flux:error name="type_name" />
                 </flux:field>
               </div>
 
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeTypeModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $editingType ? 'Actualizar' : 'Crear' }}</flux:button>
+
+                <flux:button type="submit" variant="primary">{{ $editingType ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
           </div>
