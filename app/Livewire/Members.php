@@ -36,11 +36,11 @@ class Members extends Component
     // Modal state
     public $showModal = false;
 
-    /** Updating member instance or null (no updating by default) */
-    public Member|null $updatingMember = null;
+    /** Editing member instance or null (no editing by default) */
+    public Member|null $editingMember = null;
 
     /**
-     * Save a new member to the database.
+     * Save a new member or update an existing one.
      */
     public function saveMember()
     {
@@ -51,8 +51,8 @@ class Members extends Component
 
         $validated = $this->validate();
 
-        if ($this->updatingMember) {
-            $this->updatingMember->update($validated);
+        if ($this->editingMember) {
+            $this->editingMember->update($validated);
             $flashMessage = 'Socio actualizado exitosamente.';
         } else {
             Member::create([
@@ -76,12 +76,12 @@ class Members extends Component
     }
 
     /**
-     * Show the update member modal.
+     * Show the edit member modal.
      */
-    public function updateMemberModal(Member $member)
+    public function editMemberModal(Member $member)
     {
         $this->showModal = true;
-        $this->updatingMember = $member;
+        $this->editingMember = $member;
 
         $this->name = $member->name;
         $this->gender = $member->gender;
@@ -98,7 +98,7 @@ class Members extends Component
     public function closeModal()
     {
         $this->showModal = false;
-        $this->updatingMember = null;
+        $this->editingMember = null;
         $this->resetForm();
         $this->resetValidation();
     }
@@ -118,7 +118,7 @@ class Members extends Component
 
     public function render()
     {
-        $members = Member::all()->take(9);
+        $members = Member::with('memberships')->get()->take(9);
 
         return view('livewire.members', compact('members'));
     }

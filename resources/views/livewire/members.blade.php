@@ -95,7 +95,7 @@
                 <flux:button size="sm" variant="outline" wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
                   Ver
                 </flux:button>
-                <flux:button size="sm" variant="outline" wire:click="updateMemberModal({{ $member->id }})">
+                <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
                   Editar
                 </flux:button>
               </div>
@@ -131,7 +131,7 @@
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $updatingMember ? 'Editar Socio' : 'Nuevo Socio' }}
+                {{ $editingMember ? 'Editar Socio' : 'Nuevo Socio' }}
               </h3>
               <button wire:click="closeModal" class="text-gray-400 hover:text-gray-600">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -201,7 +201,7 @@
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $updatingMember ? "Actualizar" : "Crear" }}</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingMember ? "Actualizar" : "Crear" }}</flux:button>
               </div>
             </form>
           </div>
