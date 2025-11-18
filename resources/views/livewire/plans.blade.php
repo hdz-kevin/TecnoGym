@@ -62,14 +62,14 @@
                       </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
-                      <flux:button size="sm" variant="filled" wire:click="editPlan({{ $plan->id }})"
-                        class="!bg-indigo-50 !text-indigo-600 hover:!bg-indigo-100 hover:!text-indigo-700">
+                      <flux:button size="sm" variant="filled" wire:click="editPlanModal({{ $plan->id }})"
+                        class="bg-indigo-50! text-indigo-600! hover:bg-indigo-100! hover:text-indigo-700!">
                         Editar
                       </flux:button>
                       @if ($plan->memberships->count() === 0)
                         <flux:button size="sm" variant="filled" wire:click="deletePlan({{ $plan->id }})"
                           wire:confirm="¿Estás seguro de eliminar este plan?"
-                          class="!bg-red-50 !text-red-600 hover:!bg-red-100 hover:!text-red-700">
+                          class="bg-red-50! text-red-600! hover:bg-red-100! hover:text-red-700!">
                           Eliminar
                         </flux:button>
                       @endif
@@ -90,7 +90,7 @@
             @endif
 
             <!-- New Plan Button -->
-            <flux:button variant="outline" icon="plus" wire:click="createPlan({{ $planType->id }})"
+            <flux:button variant="outline" icon="plus" wire:click="createPlanModal({{ $planType->id }})"
               class="w-full">
               Agregar Plan
             </flux:button>
@@ -188,28 +188,28 @@
               <div class="px-6 py-4 space-y-4">
               <!-- Name -->
                 <flux:field>
-                  <flux:label for="planName">Nombre del plan *</flux:label>
-                  <flux:input wire:model="planName" id="planName" placeholder="Ej: Mensual, Semanal, Anual" />
-                  <flux:error name="planName" />
+                  <flux:label for="plan_name">Nombre del plan *</flux:label>
+                  <flux:input wire:model="plan_name" id="plan_name" placeholder="Ej: Mensual, Semanal, Anual" />
+                  <flux:error name="plan_name" />
                 </flux:field>
 
               <!-- Duration -->
                 <div class="grid grid-cols-2 gap-4">
                   <flux:field>
-                    <flux:label for="durationValue">Duración *</flux:label>
-                    <flux:input wire:model="durationValue" id="durationValue" type="number" min="1"
+                    <flux:label for="duration_value">Duración *</flux:label>
+                    <flux:input wire:model="duration_value" id="duration_value" type="number" min="1"
                       placeholder="1" />
-                    <flux:error name="durationValue" />
+                    <flux:error name="duration_value" />
                   </flux:field>
 
                   <flux:field>
-                    <flux:label for="durationUnit">Unidad *</flux:label>
-                    <flux:select wire:model="durationUnit" id="durationUnit" placeholder="Seleccionar">
+                    <flux:label for="duration_unit">Unidad *</flux:label>
+                    <flux:select wire:model="duration_unit" id="duration_unit" placeholder="Seleccionar">
                       <flux:select.option value="day">Día(s)</flux:select.option>
                       <flux:select.option value="week">Semana(s)</flux:select.option>
                       <flux:select.option value="month">Mes(es)</flux:select.option>
                     </flux:select>
-                    <flux:error name="durationUnit" />
+                    <flux:error name="duration_unit" />
                   </flux:field>
                 </div>
 
@@ -224,7 +224,7 @@
               <!-- Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closePlanModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $editingPlan ? 'Actualizar' : 'Crear' }}</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingPlan ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
           </div>
