@@ -1,6 +1,6 @@
 @php
 use Illuminate\Support\Facades\Storage;
-use App\Enums\MembershipStatus;
+use \App\Enums\MembershipStatus;
 @endphp
 
 <x-slot:subtitle>Gestiona las membresías de tus socios</x-slot:subtitle>
@@ -9,7 +9,10 @@ use App\Enums\MembershipStatus;
   <!-- Stats Summary -->
   @if($stats['total'] > 0)
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
+        wire:click="filterByStatus(null)"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-blue-100 rounded-lg">
             <flux:icon icon="credit-card" class="w-6 h-6 text-blue-600" />
@@ -21,7 +24,10 @@ use App\Enums\MembershipStatus;
         </div>
       </div>
 
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
+        wire:click="filterByStatus({{ MembershipStatus::ACTIVE }})"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-green-100 rounded-lg">
             <flux:icon icon="check" class="w-6 h-6 text-green-600" />
@@ -33,7 +39,10 @@ use App\Enums\MembershipStatus;
         </div>
       </div>
 
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
+        wire:click="filterByStatus({{ MembershipStatus::EXPIRED }})"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-red-100 rounded-lg">
             <flux:icon icon="clock" class="w-6 h-6 text-red-600" />
@@ -45,7 +54,10 @@ use App\Enums\MembershipStatus;
         </div>
       </div>
 
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
+        wire:click="filterByStatus({{ MembershipStatus::PENDING }})"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-yellow-100 rounded-lg">
             <flux:icon icon="exclamation-triangle" class="w-6 h-6 text-yellow-600" />
@@ -73,13 +85,13 @@ use App\Enums\MembershipStatus;
           class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
       </div>
     </div>
-    <div class="flex gap-3">
-      <flux:select placeholder="Todos" class="min-w-40">
+    <div class="">
+      {{-- <flux:select placeholder="Todos" class="min-w-40">
         <flux:select.option value="">Todos</flux:select.option>
         <flux:select.option value="active">Activas</flux:select.option>
         <flux:select.option value="expired">Vencidas</flux:select.option>
         <flux:select.option value="pending">Pendientes</flux:select.option>
-      </flux:select>
+      </flux:select> --}}
       <flux:button variant="primary" icon="plus" wire:click="createMembership">
         Nueva Membresía
       </flux:button>
@@ -189,7 +201,7 @@ use App\Enums\MembershipStatus;
 
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-              <h3 class="text-lg font-medium text-gray-900">Nueva Membresía</h3>
+              <h3 class="text-lg font-medium text-gray-900">Nue va Membresía</h3>
               <button wire:click="closeCreateModal" class="text-gray-400 hover:text-gray-600 transition-colors">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -241,12 +253,8 @@ use App\Enums\MembershipStatus;
 
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-                <flux:button variant="ghost" wire:click="closeCreateModal">
-                  Cancelar
-                </flux:button>
-                <flux:button type="submit" variant="primary">
-                  Crear Membresía
-                </flux:button>
+                <flux:button variant="ghost" wire:click="closeCreateModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">Crear Membresía</flux:button>
               </div>
             </form>
           </div>

@@ -33,6 +33,9 @@ class Memberships extends Component
     // Available plans for selected member
     public $availablePlans = [];
 
+    /** Current status filter */
+    public ?MembershipStatus $statusFilter = null;
+
     /**
      * Open create membership modal
      */
@@ -123,6 +126,14 @@ class Memberships extends Component
         session()->flash('message', 'Membresía creada exitosamente.');
     }
 
+    /**
+     * Update current status filter.
+     */
+    public function filterByStatus(?MembershipStatus $status = null)
+    {
+        $this->statusFilter = $status;
+    }
+
     public function render()
     {
         // Get memberships with all related data
@@ -132,6 +143,9 @@ class Memberships extends Component
             'planType',
             'periods' => fn($query) => $query->orderBy('start_date', 'desc')
         ])
+        ->when($this->statusFilter, function ($query) {
+            $query->where('status', $this->statusFilter);
+        })
         ->orderBy('status')
         ->orderBy('created_at', 'asc')
         ->get()
@@ -148,12 +162,13 @@ class Memberships extends Component
             return $membership;
         });
 
-        // Summary statistics
+        // Calculate stats on all memberships (not filtered)
+        $allMemberships = Membership::all();
         $stats = [
-            'total' => $memberships->count(),
-            'active' => $memberships->filter(fn($m) => $m->status === MembershipStatus::ACTIVE)->count(),
-            'expired' => $memberships->filter(fn($m) => $m->status === MembershipStatus::EXPIRED)->count(),
-            'pending' => $memberships->filter(fn($m) => $m->status === MembershipStatus::PENDING)->count(),
+            'total' => $allMemberships->count(),
+            'active' => $allMemberships->filter(fn($m) => $m->status === MembershipStatus::ACTIVE)->count(),
+            'expired' => $allMemberships->filter(fn($m) => $m->status === MembershipStatus::EXPIRED)->count(),
+            'pending' => $allMemberships->filter(fn($m) => $m->status === MembershipStatus::PENDING)->count(),
         ];
 
         $members = Member::orderBy('name')->get();

@@ -149,7 +149,6 @@
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeTypeModal">Cancelar</flux:button>
-
                 <flux:button type="submit" variant="primary">{{ $editingType ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
