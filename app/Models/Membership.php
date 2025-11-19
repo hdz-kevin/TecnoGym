@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MembershipStatus;
+use App\Enums\PeriodStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,42 +23,53 @@ class Membership extends Model
 
     /**
      * Get the member that owns the membership.
+     *
+     * @return BelongsTo
      */
-    public function member(): BelongsTo
+    public function member()
     {
         return $this->belongsTo(Member::class);
     }
 
     /**
      * Get the plan that owns the membership.
+     *
+     * @return BelongsTo
      */
-    public function plan(): BelongsTo
+    public function plan()
     {
         return $this->belongsTo(Plan::class);
     }
 
     /**
      * Get the plan type that owns the membership.
+     *
+     * @return BelongsTo
      */
-    public function planType(): BelongsTo
+    public function planType()
     {
         return $this->belongsTo(PlanType::class);
     }
 
     /**
      * Get the periods for the membership.
+     *
+     * @return HasMany
      */
-    public function periods(): HasMany
+    public function periods()
     {
         return $this->hasMany(Period::class);
     }
 
     /**
      * Get the current active period.
+     *
+     * @return HasMany
      */
-    public function currentPeriod(): HasMany
+    public function currentPeriod()
     {
         return $this->hasMany(Period::class)
+                    // future memberships are included
                     // ->where('start_date', '<=', now())
                     ->where('end_date', '>=', now())
                     ->latest('start_date');
@@ -68,11 +80,31 @@ class Membership extends Model
      *
      * @return MembershipStatus
      */
-    public function getStatus(): MembershipStatus {
+    public function getStatusAttribute() {
         return match (true) {
-            $this->periods()->where('end_date', '>=', now())->count() > 0 => MembershipStatus::ACTIVE,
+            $this->periods->where('end_date', '>=', now())->count() > 0 => MembershipStatus::ACTIVE,
             $this->periods->count() > 0 => MembershipStatus::EXPIRED,
             default => MembershipStatus::PENDING,
         };
+    }
+
+    /**
+     * Get the last period.
+     *
+     * @return Period|null
+     */
+    public function getLastPeriodAttribute()
+    {
+        return $this->periods->first();
+    }
+
+    /**
+     * Get total amount paid for completed periods.
+     *
+     * @return int
+     */
+    public function getTotalPaidAttribute()
+    {
+        return $this->periods->where('status', PeriodStatus::COMPLETED)->sum('price_paid');
     }
 }

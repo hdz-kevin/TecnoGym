@@ -6,7 +6,7 @@ use App\Models\Member;
 use App\Models\Membership;
 use App\Models\Plan;
 use App\Enums\MembershipStatus;
-use App\Enums\PeriodStatus;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
@@ -127,52 +127,49 @@ class Memberships extends Component
     }
 
     /**
-     * Update current status filter.
+     * Filter memberships by status
      */
     public function filterByStatus(?MembershipStatus $status = null)
     {
         $this->statusFilter = $status;
     }
 
-    public function render()
-    {
-        // Get memberships with all related data
-        $memberships = Membership::with([
+    /**
+     * Computed property for memberships list (with filtering and summary data)
+     */
+    #[Computed]
+    public function memberships() {
+        return Membership::with([
             'member',
-            'plan',
-            'planType',
+            'plan.planType',
             'periods' => fn($query) => $query->orderBy('start_date', 'desc')
         ])
         ->when($this->statusFilter, function ($query) {
             $query->where('status', $this->statusFilter);
         })
         ->orderBy('status')
-        ->orderBy('created_at', 'asc')
-        ->get()
-        ->map(function ($membership) {
-            // Calculate summary data
-            $membership->total_paid = $membership->periods->where('status', PeriodStatus::COMPLETED)->sum('price_paid');
-            $membership->periods_count = $membership->periods->count();
-            $membership->last_period = $membership->periods->first();
-            $membership->current_period = $membership->periods()
-                ->where('start_date', '<=', now())
-                ->where('end_date', '>=', now())
-                ->first();
+        ->get();
+    }
 
-            return $membership;
-        });
-
-        // Calculate stats on all memberships (not filtered)
+    /**
+     * Computed property for membership stats (calculated from all memberships)
+     */
+    #[Computed]
+    public function stats() {
         $allMemberships = Membership::all();
-        $stats = [
+
+        return [
             'total' => $allMemberships->count(),
-            'active' => $allMemberships->filter(fn($m) => $m->status === MembershipStatus::ACTIVE)->count(),
-            'expired' => $allMemberships->filter(fn($m) => $m->status === MembershipStatus::EXPIRED)->count(),
-            'pending' => $allMemberships->filter(fn($m) => $m->status === MembershipStatus::PENDING)->count(),
+            'active' => $allMemberships->where('status', MembershipStatus::ACTIVE)->count(),
+            'expired' => $allMemberships->where('status', MembershipStatus::EXPIRED)->count(),
+            'pending' => $allMemberships->where('status', MembershipStatus::PENDING)->count(),
         ];
+    }
 
-        $members = Member::orderBy('name')->get();
+    public function render()
+    {
+        $members = Member::all();
 
-        return view('livewire.memberships', compact('memberships', 'stats', 'members'));
+        return view('livewire.memberships', compact('members'));
     }
 }

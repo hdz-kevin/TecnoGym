@@ -6,9 +6,10 @@ use \App\Enums\MembershipStatus;
 <x-slot:subtitle>Gestiona las membresías de tus socios</x-slot:subtitle>
 
 <div class="p-6 pt-4 space-y-6">
-  <!-- Stats Summary -->
-  @if($stats['total'] > 0)
+  {{-- Membership stats --}}
+  @if($this->stats['total'] > 0)
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      {{-- Total --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
         wire:click="filterByStatus(null)"
@@ -19,11 +20,12 @@ use \App\Enums\MembershipStatus;
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">Total</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['total'] }}</p>
           </div>
         </div>
       </div>
 
+      {{-- Active --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
         wire:click="filterByStatus({{ MembershipStatus::ACTIVE }})"
@@ -34,11 +36,12 @@ use \App\Enums\MembershipStatus;
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">Activas</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['active'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['active'] }}</p>
           </div>
         </div>
       </div>
 
+      {{-- Expired --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
         wire:click="filterByStatus({{ MembershipStatus::EXPIRED }})"
@@ -49,11 +52,12 @@ use \App\Enums\MembershipStatus;
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">Vencidas</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['expired'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['expired'] }}</p>
           </div>
         </div>
       </div>
 
+      {{-- Pending --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
         wire:click="filterByStatus({{ MembershipStatus::PENDING }})"
@@ -64,7 +68,7 @@ use \App\Enums\MembershipStatus;
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">Pendientes</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['pending'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['pending'] }}</p>
           </div>
         </div>
       </div>
@@ -85,13 +89,8 @@ use \App\Enums\MembershipStatus;
           class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
       </div>
     </div>
-    <div class="">
-      {{-- <flux:select placeholder="Todos" class="min-w-40">
-        <flux:select.option value="">Todos</flux:select.option>
-        <flux:select.option value="active">Activas</flux:select.option>
-        <flux:select.option value="expired">Vencidas</flux:select.option>
-        <flux:select.option value="pending">Pendientes</flux:select.option>
-      </flux:select> --}}
+
+    <div>
       <flux:button variant="primary" icon="plus" wire:click="createMembership">
         Nueva Membresía
       </flux:button>
@@ -100,7 +99,7 @@ use \App\Enums\MembershipStatus;
 
   <!-- Memberships List -->
   <div class="space-y-4">
-    @forelse($memberships as $membership)
+    @forelse($this->memberships as $membership)
       <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow" wire:key="{{ $membership->id }}">
         <div class="p-6">
           <div class="flex items-center justify-between">
@@ -129,7 +128,7 @@ use \App\Enums\MembershipStatus;
             <!-- Right: Status Badge -->
             <div class="text-right">
               @php
-                $status = $membership->getStatus();
+                $status = $membership->status;
               @endphp
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium
                 {{
@@ -154,7 +153,9 @@ use \App\Enums\MembershipStatus;
                   </span>
                   <span class="flex items-center gap-1.5 mt-5">
                     <flux:icon icon="banknotes" variant="mini" class="text-gray-500" />
-                    Total pagado: ${{ number_format($membership->total_paid) }} ({{ $membership->periods_count }} {{ $membership->periods_count == 1 ? 'período' : 'períodos' }})
+                    Total pagado:
+                      ${{ number_format($membership->total_paid) }}
+                      ({{ $membership->periods->count() }} {{ $membership->periods->count() == 1 ? 'período' : 'períodos' }})
                   </span>
                 @else
                   <span class="flex items-center gap-1.5">
@@ -302,7 +303,7 @@ use \App\Enums\MembershipStatus;
                   <div>
                     <p class="text-gray-600">Estado</p>
                   @php
-                    $status = $selectedMembership->getStatus();
+                    $status = $selectedMembership->status;
                   @endphp
                     <span class="inline-flex items-center px-3 py-1.5 rounded text-sm font-medium
                       {{
