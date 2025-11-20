@@ -121,7 +121,7 @@
   </div>
 
   <!-- Create/Edit Form Modal -->
-  @if ($showModal)
+  @if ($showFormModal)
     <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -196,6 +196,87 @@
                   </div>
                   <flux:error name="birth_date" />
                 </flux:field>
+
+                <!-- Photo -->
+                <flux:field>
+                  <flux:label for="photo">Foto</flux:label>
+
+                  <!-- Preview and Upload Container -->
+                  <div class="mt-1">
+                    @if($photo)
+                      <!-- Photo Preview -->
+                      <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                          <div class="h-32 w-36 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                            @if(is_string($photo))
+                              <!-- Existing photo -->
+                              <img src="{{ Storage::url('member-photos/'.$photo) }}" alt="Vista previa" class="h-full w-full object-cover">
+                            @else
+                              <!-- New uploaded photo -->
+                              <img src="{{ $photo->temporaryUrl() }}" alt="Vista previa" class="h-full w-full object-cover">
+                            @endif
+                          </div>
+                        </div>
+
+                        <div class="flex-1">
+                          <div class="flex items-center space-x-3">
+                            <!-- Change Photo Button -->
+                            <label for="photo" class="cursor-pointer inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                              <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                              </svg>
+                              Cambiar foto
+                            </label>
+
+                            <!-- Remove Photo Button -->
+                            <button type="button" wire:click="$set('photo', null)" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                              <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                              </svg>
+                              Quitar
+                            </button>
+                          </div>
+
+                          <p class="mt-1 text-xs text-gray-500">JPG, PNG hasta 2MB</p>
+                        </div>
+                      </div>
+                    @else
+                      <!-- Upload Button -->
+                      <div class="flex gap-3 items-center">
+                        <label for="photo" class="cursor-pointer inline-flex items-center px-6 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                          <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                          </svg>
+                          Subir foto
+                        </label>
+                        <p class="text-sm text-gray-500">JPG, JPEG, PNG hasta 2MB</p>
+                      </div>
+                    @endif
+
+                    <!-- Hidden File Input -->
+                    <input
+                      type="file"
+                      id="photo"
+                      wire:model="photo"
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                      class="hidden"
+                    />
+                  </div>
+
+                  <!-- Loading State -->
+                  <div wire:loading wire:target="photo" class="mt-2">
+                    <div class="flex items-center text-sm text-blue-600">
+                      <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Subiendo imagen...
+                    </div>
+                  </div>
+
+                  <flux:error name="photo" />
+                </flux:field>
+
               </div>
 
               <!-- Modal Footer -->
