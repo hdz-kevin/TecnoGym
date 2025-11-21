@@ -7,12 +7,13 @@ use App\Enums\MemberGender;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 #[Title('Socios')]
 class Members extends Component
 {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     // Properties
     #[Rule('required', message: 'El nombre es obligatorio')]
@@ -21,7 +22,7 @@ class Members extends Component
     public $name = '';
 
     #[Rule('required', message: 'Elige un genero')]
-    #[Rule('in:M,F', message: 'Elige un genero válido')]
+    #[Rule('in:male,female', message: 'Elige un genero válido')]
     public $gender = '';
 
     #[Rule('nullable')]
@@ -33,8 +34,13 @@ class Members extends Component
     public $birth_month = '';
     public $birth_year = '';
 
+    #[Rule('nullable')]
+    #[Rule('image', message: 'El archivo debe ser una imagen')]
+    #[Rule('max:2048', message: 'La imagen no debe superar los 2MB')]
+    public $photo = null;
+
     // Modal state
-    public $showModal = false;
+    public $showFormModal = false;
 
     /** Editing member instance or null (no editing by default) */
     public Member|null $editingMember = null;
@@ -51,15 +57,16 @@ class Members extends Component
 
         $validated = $this->validate();
 
+        if ($this->photo) {
+            $photoPath = $this->photo->store('member-photos', 'public');
+            $validated['photo'] = $photoPath;
+        }
+
         if ($this->editingMember) {
             $this->editingMember->update($validated);
             $flashMessage = 'Socio actualizado exitosamente.';
         } else {
-            Member::create([
-                'name' => $this->name,
-                'gender' => MemberGender::from($this->gender),
-                'birth_date' => $this->birth_date,
-            ]);
+            Member::create($validated);
             $flashMessage = 'Socio creado exitosamente.';
         }
 
@@ -73,7 +80,7 @@ class Members extends Component
     public function createMemberModal()
     {
         $this->editingMember = null;
-        $this->showModal = true;
+        $this->showFormModal = true;
     }
 
     /**
@@ -91,7 +98,7 @@ class Members extends Component
             $this->birth_year = $member->birth_date?->format('Y') ?? '';
         }
 
-        $this->showModal = true;
+        $this->showFormModal = true;
     }
 
     /**
@@ -99,7 +106,7 @@ class Members extends Component
      */
     public function closeModal()
     {
-        $this->showModal = false;
+        $this->showFormModal = false;
         $this->editingMember = null;
         $this->resetForm();
         $this->resetValidation();
@@ -120,7 +127,7 @@ class Members extends Component
 
     public function render()
     {
-        $members = Member::with('memberships')->get()->take(9);
+        $members = Member::with('memberships')->get();
 
         return view('livewire.members', compact('members'));
     }

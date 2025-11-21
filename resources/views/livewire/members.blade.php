@@ -57,7 +57,7 @@
                 cursor-pointer transition-all" wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
                 @if($member->photo)
                   <img
-                    src="{{ Storage::url('member-photos/'.$member->photo) }}"
+                    src="{{ Storage::url($member->photo) }}"
                     class="h-full w-full object-cover"
                     alt="{{ $member->name }}"
                   />
@@ -126,7 +126,7 @@
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div
-            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl"
             wire:click.stop>
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
@@ -154,8 +154,8 @@
                 <flux:field>
                   <flux:label for="gender">Género *</flux:label>
                   <flux:select wire:model="gender" id="gender" placeholder="Seleccionar género">
-                    <flux:select.option value="M">Masculino</flux:select.option>
-                    <flux:select.option value="F">Femenino</flux:select.option>
+                    <flux:select.option value="male">Masculino</flux:select.option>
+                    <flux:select.option value="female">Femenino</flux:select.option>
                   </flux:select>
                   <flux:error name="gender" />
                 </flux:field>
@@ -206,13 +206,11 @@
                     @if($photo)
                       <!-- Photo Preview -->
                       <div class="flex items-center space-x-4">
-                        <div class="flex-shrink-0">
-                          <div class="h-32 w-36 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                        <div class="shrink-0">
+                          <div class="h-36 w-40 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                             @if(is_string($photo))
-                              <!-- Existing photo -->
                               <img src="{{ Storage::url('member-photos/'.$photo) }}" alt="Vista previa" class="h-full w-full object-cover">
                             @else
-                              <!-- New uploaded photo -->
                               <img src="{{ $photo->temporaryUrl() }}" alt="Vista previa" class="h-full w-full object-cover">
                             @endif
                           </div>
@@ -221,7 +219,7 @@
                         <div class="flex-1">
                           <div class="flex items-center space-x-3">
                             <!-- Change Photo Button -->
-                            <label for="photo" class="cursor-pointer inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <label for="photo" class="cursor-pointer inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                               <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                               </svg>
@@ -229,7 +227,7 @@
                             </label>
 
                             <!-- Remove Photo Button -->
-                            <button type="button" wire:click="$set('photo', null)" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            <button type="button" wire:click="$set('photo', null)" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2">
                               <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                               </svg>
@@ -237,7 +235,7 @@
                             </button>
                           </div>
 
-                          <p class="mt-1 text-xs text-gray-500">JPG, PNG hasta 2MB</p>
+                          <p class="text-sm text-gray-500 mt-1">JPG, JPEG, PNG hasta 2MB</p>
                         </div>
                       </div>
                     @else

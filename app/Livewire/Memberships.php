@@ -160,9 +160,9 @@ class Memberships extends Component
 
         return [
             'total' => $allMemberships->count(),
-            'active' => $allMemberships->where('status', MembershipStatus::ACTIVE)->count(),
-            'expired' => $allMemberships->where('status', MembershipStatus::EXPIRED)->count(),
-            'pending' => $allMemberships->where('status', MembershipStatus::PENDING)->count(),
+            'active' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::ACTIVE)->count(),
+            'expired' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::EXPIRED)->count(),
+            'pending' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::PENDING)->count(),
         ];
     }
 
