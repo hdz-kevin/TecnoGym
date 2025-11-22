@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Member;
 use App\Enums\MemberGender;
+use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -36,8 +37,11 @@ class Members extends Component
 
     #[Rule('nullable')]
     #[Rule('image', message: 'El archivo debe ser una imagen')]
-    #[Rule('max:2048', message: 'La imagen no debe superar los 2MB')]
+    #[Rule('max:4096', message: 'La imagen no debe superar los 4MB')]
     public $photo = null;
+
+    /** Existing photo path */
+    public string $existing_photo = '';
 
     // Modal state
     public $showFormModal = false;
@@ -52,7 +56,7 @@ class Members extends Component
     {
         // If at least one part of the date is set, construct the full date
         if ($this->birth_day || $this->birth_month || $this->birth_year) {
-            $this->birth_date = sprintf('%04d-%02d-%02d', $this->birth_year, $this->birth_month, $this->birth_day);
+            $this->birth_date = "{$this->birth_year}-{$this->birth_month}-{$this->birth_day}";
         }
 
         $validated = $this->validate();
@@ -60,6 +64,14 @@ class Members extends Component
         if ($this->photo) {
             $photoPath = $this->photo->store('member-photos', 'public');
             $validated['photo'] = $photoPath;
+        }
+
+        if ($this->editingMember?->photo) {
+            if ($this->photo || $this->existing_photo === '') {
+                File::delete(storage_path('app/public/' . $this->editingMember->photo));
+            } else {
+                $validated['photo'] = $this->existing_photo;
+            }
         }
 
         if ($this->editingMember) {
@@ -91,7 +103,9 @@ class Members extends Component
         $this->editingMember = $member;
 
         $this->name = $member->name;
-        $this->gender = $member->gender;
+        $this->gender = $member->gender->value;
+        $this->existing_photo = $member->photo ?? '';
+
         if ($member->birth_date) {
             $this->birth_day = $member->birth_date?->format('d') ?? '';
             $this->birth_month = $member->birth_date?->format('m') ?? '';
@@ -99,6 +113,18 @@ class Members extends Component
         }
 
         $this->showFormModal = true;
+    }
+
+    public function removePhoto()
+    {
+        // If there's an existing photo, delete it from storage
+        // if ($this->existing_photo && File::exists(storage_path('app/public/' . $this->existing_photo))) {
+        //     File::delete(storage_path('app/public/' . $this->existing_photo));
+        // }
+
+        // Clear both existing and new photo properties
+        $this->existing_photo = '';
+        $this->photo = null;
     }
 
     /**
@@ -123,6 +149,8 @@ class Members extends Component
         $this->birth_day = '';
         $this->birth_month = '';
         $this->birth_year = '';
+        $this->photo = null;
+        $this->existing_photo = '';
     }
 
     public function render()
