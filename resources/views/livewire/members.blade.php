@@ -203,15 +203,15 @@
 
                   <!-- Preview and Upload Container -->
                   <div class="mt-1">
-                    @if($photo)
+                    @if($existing_photo || $photo)
                       <!-- Photo Preview -->
                       <div class="flex items-center space-x-4">
                         <div class="shrink-0">
                           <div class="h-36 w-40 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                            @if(is_string($photo))
-                              <img src="{{ Storage::url('member-photos/'.$photo) }}" alt="Vista previa" class="h-full w-full object-cover">
-                            @else
+                            @if($photo)
                               <img src="{{ $photo->temporaryUrl() }}" alt="Vista previa" class="h-full w-full object-cover">
+                              @elseif ($existing_photo)
+                              <img src="{{ Storage::url($existing_photo) }}" alt="Vista previa" class="h-full w-full object-cover">
                             @endif
                           </div>
                         </div>
@@ -227,7 +227,7 @@
                             </label>
 
                             <!-- Remove Photo Button -->
-                            <button type="button" wire:click="$set('photo', null)" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                            <button type="button" wire:click="removePhoto" class="inline-flex items-center px-3 py-2 border border-red-300 shadow-sm text-sm leading-4 font-medium rounded-md text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2">
                               <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                               </svg>
