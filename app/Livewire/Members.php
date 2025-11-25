@@ -117,14 +117,8 @@ class Members extends Component
 
     public function removePhoto()
     {
-        // If there's an existing photo, delete it from storage
-        // if ($this->existing_photo && File::exists(storage_path('app/public/' . $this->existing_photo))) {
-        //     File::delete(storage_path('app/public/' . $this->existing_photo));
-        // }
-
-        // Clear both existing and new photo properties
-        $this->existing_photo = '';
         $this->photo = null;
+        $this->existing_photo = '';
     }
 
     /**

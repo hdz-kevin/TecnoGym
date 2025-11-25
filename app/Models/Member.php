@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MemberGender;
+use App\Enums\MembershipStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,9 +40,16 @@ class Member extends Model
      *
      * @return Membership|null If no active membership, returns null.
      */
-    public function activeMembership(): Membership|null
+    public function activeMembership(): ?Membership
     {
-        return $this->memberships()->where('status', 'ACTIVE')->with('membershipType')->latest('created_at')->first();
+        if ($this->memberships->count() == 0) {
+            return null;
+        }
+
+        return $this->memberships()
+                    ->where('status', MembershipStatus::ACTIVE->value)
+                    ->with('planType')
+                    ->first();
     }
 
     /**
@@ -51,7 +59,7 @@ class Member extends Model
      */
     public function latestMembership(): Membership|null
     {
-        return $this->memberships()->with('membershipType')->latest('created_at')->first();
+        return $this->memberships()->with('planType')->latest('created_at')->first();
     }
 
     /**
