@@ -107,7 +107,7 @@ use \App\Enums\MembershipStatus;
             <div class="flex items-center space-x-4">
               <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center">
                 @if($membership->member->photo)
-                  <img src="{{ Storage::url('member-photos/' . $membership->member->photo) }}"
+                  <img src="{{ Storage::url($membership->member->photo) }}"
                        alt="{{ $membership->member->name }}"
                        class="h-full w-full rounded-full object-cover">
                 @else
@@ -120,7 +120,7 @@ use \App\Enums\MembershipStatus;
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
                 <p class="text-gray-700">
-                  {{ $membership->plan->name }} • {{ $membership->planType->name }} - ${{ number_format($membership->plan->price) }}
+                  {{ $membership->planType->name }} • {{ $membership->plan->name }} - ${{ number_format($membership->plan->price) }}
                 </p>
               </div>
             </div>
@@ -149,18 +149,17 @@ use \App\Enums\MembershipStatus;
                 @if($membership->last_period)
                   <span class="flex items-center gap-1.5">
                     <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-                    Último período: {{ $membership->last_period->start_date->format('d/m/Y') }} - {{ $membership->last_period->end_date->format('d/m/Y') }}
+                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual:' : 'Último periodo:' }}
+                    {{ $membership->last_period->start_date->format('d/m/Y') }} - {{ $membership->last_period->end_date->format('d/m/Y') }}
                   </span>
                   <span class="flex items-center gap-1.5 mt-5">
                     <flux:icon icon="banknotes" variant="mini" class="text-gray-500" />
-                    Total pagado:
-                      ${{ number_format($membership->total_paid) }}
-                      ({{ $membership->periods->count() }} {{ $membership->periods->count() == 1 ? 'período' : 'períodos' }})
+                    {{ $membership->periods->count() }} periodos pagados
                   </span>
                 @else
                   <span class="flex items-center gap-1.5">
                     <flux:icon icon="exclamation-triangle" variant="mini" class="text-gray-500" />
-                    Sin períodos registrados
+                    Sin periodos registrados
                   </span>
                 @endif
               </div>
@@ -170,7 +169,7 @@ use \App\Enums\MembershipStatus;
                   Ver Historial
                 </flux:button>
                 <flux:button size="sm" variant="primary" icon="plus">
-                  Nuevo Período
+                  Nuevo Periodo
                 </flux:button>
               </div>
             </div>
@@ -321,9 +320,9 @@ use \App\Enums\MembershipStatus;
               <!-- Period History -->
               <div>
                 <div class="flex items-center justify-between mb-4">
-                  <h4 class="text-lg font-medium text-gray-900">Historial de Períodos</h4>
+                  <h4 class="text-lg font-medium text-gray-900">Historial de Periodos</h4>
                   <flux:button size="sm" variant="primary">
-                    + Nuevo Período
+                    + Nuevo Periodo
                   </flux:button>
                 </div>
 

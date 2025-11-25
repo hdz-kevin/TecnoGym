@@ -145,7 +145,7 @@ class Memberships extends Component
             'periods' => fn($query) => $query->orderBy('start_date', 'desc')
         ])
         ->when($this->statusFilter, function ($query) {
-            $query->where('status', $this->statusFilter);
+            $query->where('status', $this->statusFilter->value);
         })
         ->orderBy('status')
         ->get();
