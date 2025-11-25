@@ -29,7 +29,7 @@
                   class="h-70 w-75 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden border border-gray-200">
                   @if ($member->photo)
                     <img
-                      src="{{ Storage::url('member-photos/'.$member->photo) }}"
+                      src="{{ Storage::url($member->photo) }}"
                       class="h-full w-full object-cover"
                       alt="{{ $member->name }}"
                     />
