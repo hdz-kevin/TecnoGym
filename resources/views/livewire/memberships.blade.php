@@ -91,7 +91,7 @@ use \App\Enums\MembershipStatus;
     </div>
 
     <div>
-      <flux:button variant="primary" icon="plus" wire:click="createMembership">
+      <flux:button variant="primary" icon="plus" wire:click="createMembershipModal">
         Nueva Membresía
       </flux:button>
     </div>
@@ -194,14 +194,14 @@ use \App\Enums\MembershipStatus;
 
   <!-- Create Membership Modal -->
   @if($showCreateModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeCreateModal">
+    <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeCreateModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
-          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-lg" wire:click.stop>
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-xl" wire:click.stop>
 
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-              <h3 class="text-lg font-medium text-gray-900">Nue va Membresía</h3>
+              <h3 class="text-lg font-medium text-gray-900">Nueva Membresía</h3>
               <button wire:click="closeCreateModal" class="text-gray-400 hover:text-gray-600 transition-colors">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -209,13 +209,13 @@ use \App\Enums\MembershipStatus;
               </button>
             </div>
 
-            <form wire:submit="saveMembership">
-              <!-- Modal Body -->
-              <div class="px-6 py-4 space-y-4">
-                <!-- Member Selection -->
+            <!-- Modal Body -->
+            <form wire:submit.prevent="saveMembership">
+              <div class="px-6 py-4 space-y-6">
+                {{-- Member  --}}
                 <flux:field>
-                  <flux:label>Socio *</flux:label>
-                  <flux:select wire:model="member_id" placeholder="Seleccionar socio">
+                  <flux:label>Socio</flux:label>
+                  <flux:select wire:model.live="member_id" placeholder="Selecciona un socio">
                     @foreach($members as $member)
                       <flux:select.option value="{{ $member->id }}">{{ $member->name }}</flux:select.option>
                     @endforeach
@@ -223,38 +223,50 @@ use \App\Enums\MembershipStatus;
                   <flux:error name="member_id" />
                 </flux:field>
 
-                <!-- Plan Selection -->
-                @if($availablePlans && count($availablePlans) > 0)
-                  <flux:field>
-                    <flux:label>Plan *</flux:label>
-                    @foreach($availablePlans as $typeName => $plans)
-                      <div class="mb-3">
-                        <h4 class="text-sm font-medium text-gray-700 mb-2">{{ $typeName }}</h4>
-                        <div class="space-y-1">
-                          @foreach($plans as $plan)
-                            <label class="flex items-center space-x-3 p-2 border rounded hover:bg-gray-50 cursor-pointer">
-                              <input type="radio" wire:model="plan_id" value="{{ $plan->id }}" class="text-blue-600">
-                              <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                  <span class="font-medium">{{ $plan->name }}</span>
-                                  <span class="text-lg font-bold text-blue-600">${{ number_format($plan->price) }}</span>
-                                </div>
-                                <p class="text-sm text-gray-500">{{ $plan->formatted_duration }}</p>
-                              </div>
-                            </label>
-                          @endforeach
-                        </div>
-                      </div>
-                    @endforeach
-                    <flux:error name="plan_id" />
-                  </flux:field>
-                @endif
+                {{-- Plan type and period --}}
+                <div class="space-y-4">
+                  <flux:label class="mb-4!">Plan</flux:label>
+
+                  <div class="grid grid-cols-2 gap-4">
+                    {{-- Plan type --}}
+                    <flux:field>
+                      <flux:label class="text-sm text-gray-700">Tipo</flux:label>
+                      <flux:select wire:model.live="plan_type_id" placeholder="Selecciona un tipo">
+                        @foreach($planTypes as $planType)
+                          <flux:select.option value="{{ $planType->id }}">{{ $planType->name }}</flux:select.option>
+                        @endforeach
+                      </flux:select>
+                      <flux:error name="plan_type_id" />
+                    </flux:field>
+
+                    {{-- Period --}}
+                    <flux:field>
+                      <flux:label class="text-sm text-gray-700">Periodo</flux:label>
+                      <flux:select wire:model.live="plan_id" placeholder="Selecciona un periodo">
+                        @foreach($this->availablePlans as $plan)
+                          <flux:select.option value="{{ $plan->id }}">
+                            {{ $plan->name }}
+                          </flux:select.option>
+                        @endforeach
+                      </flux:select>
+                      <flux:error name="plan_id" />
+                    </flux:field>
+                  </div>
+                </div>
+
               </div>
 
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-                <flux:button variant="ghost" wire:click="closeCreateModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">Crear Membresía</flux:button>
+                <flux:button variant="ghost" wire:click="closeCreateModal">
+                  Cancelar
+                </flux:button>
+                <flux:button
+                  type="submit"
+                  variant="primary"
+                >
+                  Crear Membresía
+                </flux:button>
               </div>
             </form>
           </div>

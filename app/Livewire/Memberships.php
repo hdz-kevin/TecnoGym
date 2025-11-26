@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\Membership;
 use App\Models\Plan;
 use App\Enums\MembershipStatus;
+use App\Models\PlanType;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -19,30 +20,38 @@ class Memberships extends Component
     #[Validate('exists:members,id', message: 'Elige un socio válido')]
     public $member_id = '';
 
+    // Properties for new membership form
+    #[Validate('required', message: 'Elige un tipo de plan')]
+    #[Validate('exists:plan_types,id', message: 'Elige un tipo de plan válido')]
+    public $plan_type_id = '';
+
     #[Validate('required', message: 'Elige un plan')]
     #[Validate('exists:plans,id', message: 'Elige un plan válido')]
     public $plan_id = '';
 
     // Modal states
-    public $showCreateModal = false;
+    public $showCreateModal = true;
     public $showHistoryModal = false;
 
     // Selected membership for history view
     public $selectedMembership = null;
 
     // Available plans for selected member
-    public $availablePlans = [];
+    // public $availablePlans = [];
 
     /** Current status filter */
     public ?MembershipStatus $statusFilter = null;
 
     /**
      * Open create membership modal
+     *
+     * @return void
      */
-    public function createMembership()
+    public function createMembershipModal()
     {
         $this->showCreateModal = true;
-        $this->resetForm();
+        // Disable body scroll
+        $this->dispatch('disable-scroll');
     }
 
     /**
@@ -66,6 +75,9 @@ class Memberships extends Component
     {
         $this->showCreateModal = false;
         $this->resetForm();
+
+        // Enable body scroll
+        $this->dispatch('enable-scroll');
     }
 
     /**
@@ -86,23 +98,41 @@ class Memberships extends Component
     private function resetForm()
     {
         $this->member_id = '';
+        $this->plan_type_id = '';
         $this->plan_id = '';
-        $this->availablePlans = [];
     }
 
     /**
      * When member changes, load available plans
      */
-    public function updatedMemberId($value)
+    // public function updatedMemberId($value)
+    // {
+    //     if ($value) {
+    //         $this->availablePlans = Plan::with('planType')
+    //             ->orderByDuration()
+    //             ->get()
+    //             ->groupBy('planType.name');
+    //     } else {
+    //         $this->availablePlans = [];
+    //     }
+    //     $this->plan_id = '';
+    // }
+
+    #[Computed]
+    public function availablePlans()
     {
-        if ($value) {
-            $this->availablePlans = Plan::with('planType')
-                ->orderByDuration()
-                ->get()
-                ->groupBy('planType.name');
-        } else {
-            $this->availablePlans = [];
+        if (empty($this->plan_type_id)) {
+            return collect([]);
         }
+
+        return Plan::where('plan_type_id', $this->plan_type_id)->get();
+    }
+
+    /**
+     * When plan type changes, reset plan selection
+     */
+    public function updatedPlanTypeId($value)
+    {
         $this->plan_id = '';
     }
 
@@ -111,14 +141,16 @@ class Memberships extends Component
      */
     public function saveMembership()
     {
-        $validated = $this->validate();
-
-        $plan = Plan::find($validated['plan_id']);
+        $validated = $this->validate([
+            'member_id' => 'required|exists:members,id',
+            'plan_type_id' => 'required|exists:plan_types,id',
+            'plan_id' => 'required|exists:plans,id',
+        ]);
 
         Membership::create([
             'member_id' => $validated['member_id'],
             'plan_id' => $validated['plan_id'],
-            'plan_type_id' => $plan->plan_type_id,
+            'plan_type_id' => $validated['plan_type_id'],
             'status' => MembershipStatus::PENDING,
         ]);
 
@@ -169,7 +201,8 @@ class Memberships extends Component
     public function render()
     {
         $members = Member::all();
+        $planTypes = PlanType::with('plans')->get();
 
-        return view('livewire.memberships', compact('members'));
+        return view('livewire.memberships', compact('members', 'planTypes'));
     }
 }
