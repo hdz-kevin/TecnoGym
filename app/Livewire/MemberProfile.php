@@ -14,7 +14,7 @@ class MemberProfile extends Component
     #[On('show-member-profile')]
     public function showProfile($memberId)
     {
-        $this->member = Member::with(['memberships.membershipType'])->find($memberId);
+        $this->member = Member::with(['memberships.planType'])->find($memberId);
         $this->show = true;
     }
 

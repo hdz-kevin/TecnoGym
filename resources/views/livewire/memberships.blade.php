@@ -244,9 +244,7 @@ use \App\Enums\MembershipStatus;
                       <flux:label class="text-sm text-gray-700">Periodo</flux:label>
                       <flux:select wire:model.live="plan_id" placeholder="Selecciona un periodo">
                         @foreach($this->availablePlans as $plan)
-                          <flux:select.option value="{{ $plan->id }}">
-                            {{ $plan->name }}
-                          </flux:select.option>
+                          <flux:select.option value="{{ $plan->id }}">{{ $plan->name }}</flux:select.option>
                         @endforeach
                       </flux:select>
                       <flux:error name="plan_id" />

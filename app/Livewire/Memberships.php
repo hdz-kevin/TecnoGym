@@ -7,6 +7,8 @@ use App\Models\Membership;
 use App\Models\Plan;
 use App\Enums\MembershipStatus;
 use App\Models\PlanType;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -28,24 +30,34 @@ class Memberships extends Component
     #[Validate('exists:plans,id', message: 'Elige un plan válido')]
     public $plan_id = '';
 
-    // Modal states
-    public $showCreateModal = true;
+    /**
+     * Create membership modal state
+     */
+    public $showCreateModal = false;
+
+    /**
+     * History modal state
+     */
     public $showHistoryModal = false;
 
     /**
-     * Available plans for selected plan type.
+     * Available plans for selected plan type
      */
     public $availablePlans;
 
-    // Selected membership for history view
+    /**
+     * Selected membership for history modal
+     */
     public $selectedMembership = null;
 
-    // Available plans for selected member
-    // public $availablePlans = [];
-
-    /** Current status filter */
+    /**
+     * Current status filter for memberships list
+     */
     public ?MembershipStatus $statusFilter = null;
 
+    /**
+     * Mount the component
+     */
     public function mount()
     {
         $this->availablePlans = collect([]);
@@ -53,93 +65,17 @@ class Memberships extends Component
 
     /**
      * Open create membership modal
-     *
-     * @return void
      */
     public function createMembershipModal()
     {
         $this->showCreateModal = true;
-        // Disable body scroll
+
+        // Disable background scroll
         $this->dispatch('disable-scroll');
     }
 
     /**
-     * Show membership history modal
-     */
-    public function showHistory(Membership $membership)
-    {
-        $this->selectedMembership = $membership->load([
-            'member',
-            'plan.planType',
-            'periods' => fn($query) => $query->orderBy('start_date', 'desc')
-        ]);
-        $this->showHistoryModal = true;
-
-        // Disable body scroll
-        $this->dispatch('disable-scroll');
-    }    /**
-     * Close create modal
-     */
-    public function closeCreateModal()
-    {
-        $this->showCreateModal = false;
-        $this->resetForm();
-
-        // Enable body scroll
-        $this->dispatch('enable-scroll');
-    }
-
-    /**
-     * Close history modal
-     */
-    public function closeHistoryModal()
-    {
-        $this->showHistoryModal = false;
-        $this->selectedMembership = null;
-
-        // Enable body scroll
-        $this->dispatch('enable-scroll');
-    }
-
-    /**
-     * Reset form fields
-     */
-    private function resetForm()
-    {
-        $this->member_id = '';
-        $this->plan_type_id = '';
-        $this->plan_id = '';
-        $this->availablePlans = collect([]);
-    }
-
-    /**
-     * When member changes, load available plans
-     */
-    // public function updatedMemberId($value)
-    // {
-    //     if ($value) {
-    //         $this->availablePlans = Plan::with('planType')
-    //             ->orderByDuration()
-    //             ->get()
-    //             ->groupBy('planType.name');
-    //     } else {
-    //         $this->availablePlans = [];
-    //     }
-    //     $this->plan_id = '';
-    // }
-
-    // #[Computed]
-    // public function availablePlans()
-    // {
-    //     if (empty($this->plan_type_id)) {
-    //         return collect([]);
-    //     }
-
-    //     return Plan::where('plan_type_id', $this->plan_type_id)->get();
-    // }
-
-    /**
-     * When plan type changes, reset plan selection.
+     * When plan type changes, update available plans
      */
     public function updatedPlanTypeId($value)
     {
@@ -169,19 +105,71 @@ class Memberships extends Component
         ]);
 
         $this->closeCreateModal();
-        session()->flash('message', 'Membresía creada exitosamente.');
     }
 
     /**
-     * Filter memberships by status
+     * Close create modal
      */
-    public function filterByStatus(?MembershipStatus $status = null)
+    public function closeCreateModal()
+    {
+        $this->showCreateModal = false;
+        $this->resetForm();
+
+        // Enable background scroll
+        $this->dispatch('enable-scroll');
+    }
+
+    /**
+     * Reset form fields
+     */
+    private function resetForm()
+    {
+        $this->member_id = '';
+        $this->plan_type_id = '';
+        $this->plan_id = '';
+        $this->availablePlans = collect([]);
+    }
+
+    /**
+     * Show membership history modal
+     */
+    public function showHistory(Membership $membership)
+    {
+        $this->selectedMembership = $membership->load([
+            'member',
+            'plan.planType',
+            'periods' => fn($query) => $query->orderBy('start_date', 'desc')
+        ]);
+        $this->showHistoryModal = true;
+
+        // Disable background scroll
+        $this->dispatch('disable-scroll');
+    }
+
+    /**
+     * Close history modal
+     */
+    public function closeHistoryModal()
+    {
+        $this->showHistoryModal = false;
+        $this->selectedMembership = null;
+
+        // Enable background scroll
+        $this->dispatch('enable-scroll');
+    }
+
+    /**
+     * Update status filter
+     */
+    public function filterByStatus(MembershipStatus|null $status = null)
     {
         $this->statusFilter = $status;
     }
 
     /**
-     * Computed property for memberships list (with filtering and summary data)
+     * Get filtered and ordered memberships list
+     *
+     * @return Collection<Membership>
      */
     #[Computed]
     public function memberships() {
@@ -198,20 +186,25 @@ class Memberships extends Component
     }
 
     /**
-     * Computed property for membership stats (calculated from all memberships)
+     * Get memberships statistics
+     *
+     * @return SupportCollection<string, int>
      */
     #[Computed]
     public function stats() {
         $allMemberships = Membership::all();
 
-        return [
+        return collect([
             'total' => $allMemberships->count(),
             'active' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::ACTIVE)->count(),
             'expired' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::EXPIRED)->count(),
             'pending' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::PENDING)->count(),
-        ];
+        ]);
     }
 
+    /**
+     * Render the component view
+     */
     public function render()
     {
         $members = Member::all();

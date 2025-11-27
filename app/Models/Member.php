@@ -40,7 +40,7 @@ class Member extends Model
      *
      * @return Membership|null If no active membership, returns null.
      */
-    public function activeMembership(): ?Membership
+    public function activeMembership(): Membership|null
     {
         if ($this->memberships->count() == 0) {
             return null;
@@ -59,7 +59,10 @@ class Member extends Model
      */
     public function latestMembership(): Membership|null
     {
-        return $this->memberships()->with('planType')->latest('created_at')->first();
+        return $this->memberships()
+                    ->with('planType')
+                    ->latest('created_at')
+                    ->first();
     }
 
     /**
