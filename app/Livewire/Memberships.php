@@ -129,7 +129,7 @@ class Memberships extends Component
     }
 
     /**
-     * When plan type changes, reset plan selection
+     * When plan type changes, reset plan selection.
      */
     public function updatedPlanTypeId($value)
     {
@@ -141,11 +141,7 @@ class Memberships extends Component
      */
     public function saveMembership()
     {
-        $validated = $this->validate([
-            'member_id' => 'required|exists:members,id',
-            'plan_type_id' => 'required|exists:plan_types,id',
-            'plan_id' => 'required|exists:plans,id',
-        ]);
+        $validated = $this->validate();
 
         Membership::create([
             'member_id' => $validated['member_id'],
