@@ -1,1 +1,3 @@
-*.sqlite*
+nativephp.sqlite
+nativephp.sqlite-shm
+nativephp.sqlite-wal

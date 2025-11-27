@@ -18,8 +18,8 @@ class MembershipSeeder extends Seeder
     public function run(): void
     {
         // Plan Types
-        $general = PlanType::where('name', 'general')->first();
-        $student = PlanType::where('name', 'estudiante')->first();
+        $general = PlanType::where('name', 'General')->first();
+        $student = PlanType::where('name', 'Estudiante')->first();
 
         // General Plans
         $genMonthly = $general->plans()
