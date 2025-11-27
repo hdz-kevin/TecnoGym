@@ -20,7 +20,6 @@ class Memberships extends Component
     #[Validate('exists:members,id', message: 'Elige un socio válido')]
     public $member_id = '';
 
-    // Properties for new membership form
     #[Validate('required', message: 'Elige un tipo de plan')]
     #[Validate('exists:plan_types,id', message: 'Elige un tipo de plan válido')]
     public $plan_type_id = '';
@@ -33,6 +32,11 @@ class Memberships extends Component
     public $showCreateModal = true;
     public $showHistoryModal = false;
 
+    /**
+     * Available plans for selected plan type.
+     */
+    public $availablePlans;
+
     // Selected membership for history view
     public $selectedMembership = null;
 
@@ -41,6 +45,11 @@ class Memberships extends Component
 
     /** Current status filter */
     public ?MembershipStatus $statusFilter = null;
+
+    public function mount()
+    {
+        $this->availablePlans = collect([]);
+    }
 
     /**
      * Open create membership modal
@@ -100,6 +109,7 @@ class Memberships extends Component
         $this->member_id = '';
         $this->plan_type_id = '';
         $this->plan_id = '';
+        $this->availablePlans = collect([]);
     }
 
     /**
@@ -118,15 +128,15 @@ class Memberships extends Component
     //     $this->plan_id = '';
     // }
 
-    #[Computed]
-    public function availablePlans()
-    {
-        if (empty($this->plan_type_id)) {
-            return collect([]);
-        }
+    // #[Computed]
+    // public function availablePlans()
+    // {
+    //     if (empty($this->plan_type_id)) {
+    //         return collect([]);
+    //     }
 
-        return Plan::where('plan_type_id', $this->plan_type_id)->get();
-    }
+    //     return Plan::where('plan_type_id', $this->plan_type_id)->get();
+    // }
 
     /**
      * When plan type changes, reset plan selection.
@@ -134,6 +144,14 @@ class Memberships extends Component
     public function updatedPlanTypeId($value)
     {
         $this->plan_id = '';
+
+        if ($value) {
+            $this->availablePlans = Plan::where('plan_type_id', $value)
+                                        ->orderBy('duration_in_days')
+                                        ->get();
+        } else {
+            $this->availablePlans = collect([]);
+        }
     }
 
     /**
