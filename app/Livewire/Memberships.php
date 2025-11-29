@@ -56,11 +56,75 @@ class Memberships extends Component
     public ?MembershipStatus $statusFilter = null;
 
     /**
+     * Membership search by member name
+     */
+    public $search = '';
+
+    /**
      * Mount the component
      */
     public function mount()
     {
         $this->availablePlans = collect([]);
+    }
+
+    /**
+     * Update status filter
+     */
+    public function setStatusFilter(MembershipStatus|null $status = null)
+    {
+        $this->statusFilter = $status;
+        $this->search = '';
+    }
+
+    /**
+     * Reset status filter when searching
+     */
+    public function updatedSearch()
+    {
+        $this->statusFilter = null;
+    }
+
+    /**
+     * Get filtered and ordered memberships list
+     *
+     * @return Collection<Membership>
+     */
+    #[Computed]
+    public function memberships() {
+        return Membership::with([
+            'member',
+            'plan',
+            'planType',
+            'periods' => fn($query) => $query->orderBy('start_date', 'desc')
+        ])
+        ->when($this->search, function ($query) {
+            $query->whereHas('member', function ($q) {
+                $q->where('name', 'like', '%' . $this->search . '%');
+            });
+        })
+        ->when($this->statusFilter, function ($query) {
+            $query->where('status', $this->statusFilter->value);
+        })
+        ->orderBy('status')
+        ->get();
+    }
+
+    /**
+     * Get memberships statistics
+     *
+     * @return SupportCollection<string, int>
+     */
+    #[Computed]
+    public function stats() {
+        $allMemberships = Membership::all();
+
+        return collect([
+            'total' => $allMemberships->count(),
+            'active' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::ACTIVE)->count(),
+            'expired' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::EXPIRED)->count(),
+            'pending' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::PENDING)->count(),
+        ]);
     }
 
     /**
@@ -156,51 +220,6 @@ class Memberships extends Component
 
         // Enable background scroll
         $this->dispatch('enable-scroll');
-    }
-
-    /**
-     * Update status filter
-     */
-    public function filterByStatus(MembershipStatus|null $status = null)
-    {
-        $this->statusFilter = $status;
-    }
-
-    /**
-     * Get filtered and ordered memberships list
-     *
-     * @return Collection<Membership>
-     */
-    #[Computed]
-    public function memberships() {
-        return Membership::with([
-            'member',
-            'plan',
-            'planType',
-            'periods' => fn($query) => $query->orderBy('start_date', 'desc')
-        ])
-        ->when($this->statusFilter, function ($query) {
-            $query->where('status', $this->statusFilter->value);
-        })
-        ->orderBy('status')
-        ->get();
-    }
-
-    /**
-     * Get memberships statistics
-     *
-     * @return SupportCollection<string, int>
-     */
-    #[Computed]
-    public function stats() {
-        $allMemberships = Membership::all();
-
-        return collect([
-            'total' => $allMemberships->count(),
-            'active' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::ACTIVE)->count(),
-            'expired' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::EXPIRED)->count(),
-            'pending' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::PENDING)->count(),
-        ]);
     }
 
     /**

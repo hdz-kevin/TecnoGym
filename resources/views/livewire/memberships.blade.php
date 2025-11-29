@@ -12,7 +12,7 @@
       {{-- Total --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="filterByStatus(null)"
+        wire:click="setStatusFilter(null)"
       >
         <div class="flex items-center">
           <div class="p-2 bg-blue-100 rounded-lg">
@@ -28,7 +28,7 @@
       {{-- Active --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="filterByStatus({{ MembershipStatus::ACTIVE }})"
+        wire:click="setStatusFilter({{ MembershipStatus::ACTIVE }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-green-100 rounded-lg">
@@ -44,7 +44,7 @@
       {{-- Expired --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="filterByStatus({{ MembershipStatus::EXPIRED }})"
+        wire:click="setStatusFilter({{ MembershipStatus::EXPIRED }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-red-100 rounded-lg">
@@ -60,7 +60,7 @@
       {{-- Pending --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="filterByStatus({{ MembershipStatus::PENDING }})"
+        wire:click="setStatusFilter({{ MembershipStatus::PENDING }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-yellow-100 rounded-lg">
@@ -85,8 +85,12 @@
               d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
         </div>
-        <input type="text" placeholder="Buscar por socio..."
-          class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
+        <input
+          type="text"
+          placeholder="Buscar por socio..."
+          wire:model.live="search"
+          class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500"
+        />
       </div>
     </div>
 
