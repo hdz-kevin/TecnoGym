@@ -175,7 +175,8 @@ class Memberships extends Component
     public function memberships() {
         return Membership::with([
             'member',
-            'plan.planType',
+            'plan',
+            'planType',
             'periods' => fn($query) => $query->orderBy('start_date', 'desc')
         ])
         ->when($this->statusFilter, function ($query) {

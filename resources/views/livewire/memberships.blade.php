@@ -1,6 +1,6 @@
 @php
-use Illuminate\Support\Facades\Storage;
-use \App\Enums\MembershipStatus;
+  use Illuminate\Support\Facades\Storage;
+  use \App\Enums\MembershipStatus;
 @endphp
 
 <x-slot:subtitle>Gestiona las membresías de tus socios</x-slot:subtitle>
@@ -306,7 +306,7 @@ use \App\Enums\MembershipStatus;
                   <div>
                     <p class=" text-gray-600">Plan</p>
                     <p class="font-medium">
-                      {{ $selectedMembership->plan->name }} • {{ $selectedMembership->plan->planType->name }}
+                      {{ $selectedMembership->planType->name }} • {{ $selectedMembership->plan->name }}
                     </p>
                   </div>
                   <div>
