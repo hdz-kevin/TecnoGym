@@ -13,6 +13,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Attributes\On;
 
 #[Title('Membresías')]
 class Memberships extends Component
@@ -91,7 +92,8 @@ class Memberships extends Component
      * @return Collection<Membership>
      */
     #[Computed]
-    public function memberships() {
+    public function memberships()
+    {
         return Membership::with([
             'member',
             'plan',
@@ -116,7 +118,8 @@ class Memberships extends Component
      * @return SupportCollection<string, int>
      */
     #[Computed]
-    public function stats() {
+    public function stats()
+    {
         $allMemberships = Membership::all();
 
         return collect([
@@ -220,6 +223,15 @@ class Memberships extends Component
 
         // Enable background scroll
         $this->dispatch('enable-scroll');
+    }
+
+    /**
+     * Refresh memberships list
+     */
+    #[On('period-added')]
+    public function refreshMemberships()
+    {
+        // Component will re-render
     }
 
     /**

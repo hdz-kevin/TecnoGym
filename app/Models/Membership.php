@@ -76,19 +76,6 @@ class Membership extends Model
     }
 
     /**
-     * Calculate and return the membership status.
-     *
-     * @return MembershipStatus
-     */
-    public function getStatusAttribute() {
-        return match (true) {
-            $this->periods->where('end_date', '>=', now())->count() > 0 => MembershipStatus::ACTIVE,
-            $this->periods->count() > 0 => MembershipStatus::EXPIRED,
-            default => MembershipStatus::PENDING,
-        };
-    }
-
-    /**
      * Get the last period.
      *
      * @return Period|null

@@ -172,9 +172,18 @@
                 <flux:button size="sm" variant="outline" icon="chart-bar" wire:click="showHistory({{ $membership->id }})">
                   Ver Historial
                 </flux:button>
-                <flux:button size="sm" variant="primary" icon="plus">
-                  Nuevo Periodo
-                </flux:button>
+
+                @if ($membership->status == MembershipStatus::EXPIRED || $membership->status == MembershipStatus::PENDING)
+                  <flux:button
+                    size="sm"
+                    variant="primary"
+                    icon="plus"
+                    wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
+                  >
+                    Nuevo Periodo
+                  </flux:button>
+                @endif
+
               </div>
             </div>
           </div>
@@ -346,7 +355,7 @@
                       @foreach($selectedMembership->periods as $period)
                       <div class="flex items-center justify-between p-4 border rounded-lg {{ $period->status->value === 'completed' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200' }}">
                         <div class="flex items-center space-x-4">
-                          <div class="flex-shrink-0">
+                          <div class="shrink-0">
                             @if($period->status->value === 'completed')
                               <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                                 <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -421,4 +430,6 @@
       });
     });
   </script>
+
+  <livewire:add-period />
 </div>

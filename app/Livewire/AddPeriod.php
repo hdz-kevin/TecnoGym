@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Enums\DurationUnit;
+use App\Enums\MembershipStatus;
+use App\Enums\PeriodStatus;
+use App\Models\Membership;
+use Carbon\Carbon;
+use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Rule;
+
+class AddPeriod extends Component
+{
+    #[Rule('required', message: 'La fecha de inicio es obligatoria')]
+    #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
+    public $start_date;
+
+    public ?Membership $membership = null;
+
+    public $showModal = false;
+
+    #[On('open-add-period-modal')]
+    public function openModal(Membership $membership)
+    {
+        $this->membership = $membership->load(['plan']);
+        $this->start_date = now()->format('Y-m-d');
+        $this->showModal = true;
+        $this->dispatch('disable-scroll');
+    }
+
+    /**
+     * Calculate the end date based on the start date and plan duration.
+     *
+     * @return string|null
+     */
+    public function getEndDateProperty()
+    {
+        if (!$this->membership || !$this->start_date) {
+            return null;
+        }
+
+        try {
+            $endDate = Carbon::parse($this->start_date);
+            $durationUnit = $this->membership->plan->duration_unit;
+            $durationValue = $this->membership->plan->duration_value;
+
+            return match ($durationUnit) {
+                DurationUnit::DAY => $endDate->addDays($durationValue),
+                DurationUnit::WEEK => $endDate->addWeeks($durationValue),
+                DurationUnit::MONTH => $endDate->addMonths($durationValue),
+            };
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    public function save()
+    {
+        $this->validate();
+
+        $startDate = Carbon::parse($this->start_date);
+        $endDate = $this->endDate;
+
+        $this->membership->periods()->create([
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'price_paid' => $this->membership->plan->price,
+            'status' => PeriodStatus::IN_PROGRESS,
+        ]);
+
+        // Update membership status to active
+        $this->membership->update([
+            'status' => MembershipStatus::ACTIVE,
+        ]);
+
+        $this->dispatch('period-added'); // Let parent know to refresh
+        $this->closeModal();
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->membership = null;
+        $this->reset(['start_date']);
+        $this->dispatch('enable-scroll');
+    }
+
+    public function render()
+    {
+        return view('livewire.add-period');
+    }
+}
