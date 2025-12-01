@@ -300,7 +300,7 @@
     <div class="fixed inset-0 mb-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeHistoryModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
-          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-6xl" wire:click.stop>
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-5xl" wire:click.stop>
 
             <!-- Modal Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
@@ -351,63 +351,68 @@
 
               <!-- Period History -->
               <div>
-                <div class="flex items-center justify-between mb-4">
-                  <h4 class="text-lg font-medium text-gray-900">Historial de Periodos</h4>
-                  <flux:button size="sm" variant="primary">
-                    + Nuevo Periodo
-                  </flux:button>
-                </div>
+                <h4 class="text-lg font-medium text-gray-900 mb-6">Historial de Periodos</h4>
 
                 @if($selectedMembership->periods->count() > 0)
-                  <div class="max-h-96 overflow-y-auto scroll-smooth p-1">
-                    <div class="space-y-3">
+                  <div class="max-h-96 overflow-y-auto scroll-smooth px-2">
+                    <div class="relative border-l border-gray-200 ml-3 space-y-8">
                       @foreach($selectedMembership->periods as $period)
-                      <div wire:key="{{ $period->id }}" class="flex items-center justify-between p-4 border rounded-lg {{ $period->status->value === 'completed' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200' }}">
-                        <div class="flex items-center space-x-4">
-                          <div class="shrink-0">
+                        <div wire:key="{{ $period->id }}" class="relative ml-6">
+                          <!-- Timeline Dot -->
+                          <span class="absolute -left-9 flex h-6 w-6 items-center justify-center rounded-full ring-8 ring-white
+                            {{ $period->status->value === 'completed' ? 'bg-green-100' : 'bg-blue-100' }}
+                          ">
                             @if($period->status->value === 'completed')
-                              <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                </svg>
-                              </div>
+                              <svg class="h-3 w-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                              </svg>
                             @else
-                              <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                                <svg class="w-5 h-5 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
-                                </svg>
-                              </div>
+                              <svg class="h-3 w-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                              </svg>
                             @endif
-                          </div>
-                          <div>
-                            <p class="font-medium text-gray-900">{{ $period->formatted_period }}</p>
-                            <p class="text-sm text-gray-600">{{ $period->status->label() }}</p>
-                          </div>
-                        </div>
+                          </span>
 
-                        <div class="text-right">
-                          <p class="font-bold text-lg">${{ number_format($period->price_paid) }}</p>
+                          <!-- Content Card -->
+                          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                            <div>
+                              <div class="flex items-center gap-2 mb-1">
+                                <h3 class="text-base font-semibold text-gray-900">
+                                  {{ $period->start_date->format('d M Y') }} - {{ $period->end_date->format('d M Y') }}
+                                </h3>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                                  {{ $period->status->value === 'completed' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                  {{ $period->status->label() }}
+                                </span>
+                              </div>
+                              <p class="text-sm text-gray-500">
+                                {{ $period->start_date->diffInDays($period->end_date) }} días de duración
+                              </p>
+                            </div>
+                            <div class="mt-2 sm:mt-0 text-right">
+                              <p class="text-lg font-bold text-gray-900">${{ number_format($period->price_paid) }}</p>
+                              <p class="text-xs text-gray-400">Pagado</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    @endforeach
+                      @endforeach
                     </div>
                   </div>
 
                   <!-- Summary -->
                   <div class="mt-6 pt-4 border-t border-gray-200">
-                    <div class="flex justify-between text-lg font-semibold">
-                      <span>Total pagado:</span>
-                      <span>${{ number_format($selectedMembership->periods->sum('price_paid')) }}</span>
+                    <div class="flex justify-between items-center">
+                      <span class="text-sm text-gray-500">Total histórico pagado</span>
+                      <span class="text-xl font-bold text-gray-900">${{ number_format($selectedMembership->periods->sum('price_paid')) }}</span>
                     </div>
                   </div>
                 @else
-                  <div class="text-center py-8">
-                    <div class="text-gray-400 mb-2">
-                      <svg class="mx-auto h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                      </svg>
+                  <div class="text-center py-12 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                    <div class="mx-auto h-12 w-12 text-gray-400">
+                      <flux:icon icon="calendar-days" class="w-full h-full" />
                     </div>
-                    <p class="text-gray-500">No hay periodos registrados para esta membresía</p>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No hay historial</h3>
+                    <p class="mt-1 text-sm text-gray-500">Esta membresía aún no tiene periodos registrados.</p>
                   </div>
                 @endif
               </div>
