@@ -17,10 +17,21 @@ class AddPeriod extends Component
     #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
     public $start_date;
 
+    /**
+     * The membership to add the period to
+     */
     public ?Membership $membership = null;
 
+    /**
+     * Modal state
+     */
     public $showModal = false;
 
+    /**
+     * Open modal when open-add-period-modal event is dispatched
+     *
+     * @return void
+     */
     #[On('open-add-period-modal')]
     public function openModal(Membership $membership)
     {
@@ -33,7 +44,7 @@ class AddPeriod extends Component
     /**
      * Calculate the end date based on the start date and plan duration.
      *
-     * @return string|null
+     * @return \Carbon\Carbon|null
      */
     public function getEndDateProperty()
     {
@@ -56,6 +67,11 @@ class AddPeriod extends Component
         }
     }
 
+    /**
+     * Save the new period and update membership status to active
+     *
+     * @return void
+     */
     public function save()
     {
         $this->validate();
@@ -75,10 +91,14 @@ class AddPeriod extends Component
             'status' => MembershipStatus::ACTIVE,
         ]);
 
-        $this->dispatch('period-added'); // Let parent know to refresh
         $this->closeModal();
     }
 
+    /**
+     * Close the modal and reset the form
+     *
+     * @return void
+     */
     public function closeModal()
     {
         $this->showModal = false;
@@ -87,6 +107,11 @@ class AddPeriod extends Component
         $this->dispatch('enable-scroll');
     }
 
+    /**
+     * Render the component view
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.add-period');
