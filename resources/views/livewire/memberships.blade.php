@@ -109,11 +109,13 @@
           <div class="flex items-center justify-between">
             <!-- Left: Member and Plan Info -->
             <div class="flex items-center space-x-4">
-              <div class="h-18 w-18 bg-gray-100 rounded-full flex items-center justify-center">
+              <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center">
                 @if($membership->member->photo)
-                  <img src="{{ Storage::url($membership->member->photo) }}"
-                       alt="{{ $membership->member->name }}"
-                       class="h-full w-full rounded-full object-cover">
+                  <img
+                    src="{{ Storage::url($membership->member->photo) }}"
+                    class="h-full w-full rounded-full object-cover"
+                    alt="{{ $membership->member->name }}"
+                  />
                 @else
                   <span class="text-lg font-semibold text-gray-600">
                     {{ $membership->member->initials() }}
@@ -122,11 +124,18 @@
               </div>
 
               <div>
-                <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
-                <p class="text-gray-700">
-                  {{ $membership->planType->name }} • {{ $membership->plan->name }} - ${{ number_format($membership->plan->price) }}
-                </p>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-lg font-bold text-gray-800">{{ $membership->member->name }}</h3>
+                  <span class="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                    {{ $membership->planType->name }}
+                  </span>
+                </div>
+                <div class="mt-1 flex items-center gap-2.5 text-gray-800">
+                  {{ $membership->plan->name }}
+                  <span class="font-medium text-gray-900">${{ $membership->plan->price }}</span>
+                </div>
               </div>
+
             </div>
 
             <!-- Right: Status Badge -->
@@ -353,7 +362,7 @@
                   <div class="max-h-96 overflow-y-auto scroll-smooth p-1">
                     <div class="space-y-3">
                       @foreach($selectedMembership->periods as $period)
-                      <div class="flex items-center justify-between p-4 border rounded-lg {{ $period->status->value === 'completed' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200' }}">
+                      <div wire:key="{{ $period->id }}" class="flex items-center justify-between p-4 border rounded-lg {{ $period->status->value === 'completed' ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200' }}">
                         <div class="flex items-center space-x-4">
                           <div class="shrink-0">
                             @if($period->status->value === 'completed')

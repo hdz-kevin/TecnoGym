@@ -226,15 +226,6 @@ class Memberships extends Component
     }
 
     /**
-     * Refresh memberships list
-     */
-    #[On('period-added')]
-    public function refreshMemberships()
-    {
-        // Component will re-render
-    }
-
-    /**
      * Render the component view
      */
     public function render()
