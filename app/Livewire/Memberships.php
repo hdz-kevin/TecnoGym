@@ -32,24 +32,9 @@ class Memberships extends Component
     public $plan_id = '';
 
     /**
-     * Create membership modal state
-     */
-    public $showCreateModal = false;
-
-    /**
-     * History modal state
-     */
-    public $showHistoryModal = false;
-
-    /**
      * Available plans for selected plan type
      */
     public $availablePlans;
-
-    /**
-     * Selected membership for history modal
-     */
-    public $selectedMembership = null;
 
     /**
      * Current status filter for memberships list
@@ -60,6 +45,21 @@ class Memberships extends Component
      * Membership search by member name
      */
     public $search = '';
+
+    /**
+     * Create membership modal state
+     */
+    public $showCreateModal = false;
+
+    /**
+     * History modal state
+     */
+    public $showHistoryModal = false;
+
+    /**
+     * Selected membership for history modal
+     */
+    public $selectedMembership = null;
 
     /**
      * Mount the component
@@ -204,8 +204,9 @@ class Memberships extends Component
     {
         $this->selectedMembership = $membership->load([
             'member',
-            'plan.planType',
-            'periods' => fn($query) => $query->orderBy('start_date', 'desc')
+            'plan',
+            'planType',
+            'periods',
         ]);
         $this->showHistoryModal = true;
 

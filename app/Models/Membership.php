@@ -58,7 +58,7 @@ class Membership extends Model
      */
     public function periods()
     {
-        return $this->hasMany(Period::class);
+        return $this->hasMany(Period::class)->orderBy('start_date', 'desc');
     }
 
     /**
