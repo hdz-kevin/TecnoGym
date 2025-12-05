@@ -99,6 +99,7 @@ class Memberships extends Component
             $query->where('status', $this->statusFilter->value);
         })
         ->orderBy('status')
+        ->orderBy('updated_at', 'desc')
         ->get();
     }
 
