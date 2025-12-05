@@ -88,7 +88,7 @@ class Memberships extends Component
             'member',
             'plan',
             'planType',
-            'periods' => fn($query) => $query->orderBy('start_date', 'desc')
+            'periods',
         ])
         ->when($this->search, function ($query) {
             $query->whereHas('member', function ($q) {
