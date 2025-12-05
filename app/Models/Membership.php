@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\MembershipStatus;
-use App\Enums\PeriodStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -86,12 +85,12 @@ class Membership extends Model
     }
 
     /**
-     * Get total amount paid for completed periods.
+     * Get the total amount paid for the membership by summing the price_paid of all periods.
      *
      * @return int
      */
     public function getTotalPaidAttribute()
     {
-        return $this->periods->where('status', PeriodStatus::COMPLETED)->sum('price_paid');
+        return $this->periods->sum('price_paid');
     }
 }

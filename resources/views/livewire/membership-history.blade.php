@@ -66,7 +66,8 @@
                           <!-- Timeline Dot -->
                           <span
                             class="absolute -left-9 flex h-7 w-7 items-center justify-center rounded-full ring-8 ring-white
-                                                        {{ $period->status->value === 'completed' ? 'bg-green-100' : 'bg-yellow-100' }}">
+                            {{ $period->status->value === 'completed' ? 'bg-green-100' : 'bg-yellow-100' }}"
+                          >
                             @if ($period->status->value === 'completed')
                               <svg class="h-3.5 w-3.5 text-green-700" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
@@ -91,8 +92,8 @@
                               </h3>
                               <span
                                 class="inline-flex items-center px-2.5 py-1 rounded text-xs font-medium
-                                {{ $period->status->value === 'completed' ? 'bg-green-100 text-green-800'
-                                                                          : 'bg-yellow-100 text-yellow-800' }}">
+                                {{ $period->status->value === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}"
+                              >
                                 {{ $period->status->label() }}
                               </span>
                             </div>
@@ -111,7 +112,7 @@
                     <div class="flex justify-between items-center">
                       <span class="text-base text-gray-700">Total pagado</span>
                       <span class="text-xl font-semibold text-gray-900">
-                        ${{ number_format($membership->periods->sum('price_paid')) }}
+                        ${{ number_format($membership->total_paid) }}
                       </span>
                     </div>
                   </div>
