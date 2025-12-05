@@ -13,7 +13,6 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
-use Livewire\Attributes\On;
 
 #[Title('Membresías')]
 class Memberships extends Component
@@ -50,16 +49,6 @@ class Memberships extends Component
      * Create membership modal state
      */
     public $showCreateModal = false;
-
-    /**
-     * History modal state
-     */
-    public $showHistoryModal = false;
-
-    /**
-     * Selected membership for history modal
-     */
-    public $selectedMembership = null;
 
     /**
      * Mount the component
@@ -195,35 +184,6 @@ class Memberships extends Component
         $this->plan_type_id = '';
         $this->plan_id = '';
         $this->availablePlans = collect([]);
-    }
-
-    /**
-     * Show membership history modal
-     */
-    public function showHistory(Membership $membership)
-    {
-        $this->selectedMembership = $membership->load([
-            'member',
-            'plan',
-            'planType',
-            'periods',
-        ]);
-        $this->showHistoryModal = true;
-
-        // Disable background scroll
-        $this->dispatch('disable-scroll');
-    }
-
-    /**
-     * Close history modal
-     */
-    public function closeHistoryModal()
-    {
-        $this->showHistoryModal = false;
-        $this->selectedMembership = null;
-
-        // Enable background scroll
-        $this->dispatch('enable-scroll');
     }
 
     /**
