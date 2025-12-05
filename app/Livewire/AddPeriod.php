@@ -92,6 +92,9 @@ class AddPeriod extends Component
         ]);
 
         $this->closeModal();
+
+        // Refresh memberships list on parent component
+        $this->dispatch('refresh-memberships');
     }
 
     /**

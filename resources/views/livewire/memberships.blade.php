@@ -125,7 +125,7 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-lg font-bold text-gray-800">{{ $membership->member->name }}</h3>
+                  <h3 class="text-lg font-bold text-gray-800">{{ $membership->id }} - {{ $membership->member->name }}</h3>
                   <span class="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
                     {{ $membership->planType->name }}
                   </span>

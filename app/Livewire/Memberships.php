@@ -10,6 +10,7 @@ use App\Models\PlanType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
@@ -99,6 +100,18 @@ class Memberships extends Component
         })
         ->orderBy('status')
         ->get();
+    }
+
+    /**
+     * Refresh memberships list
+     *
+     * @return void
+     */
+    #[On('refresh-memberships')]
+    public function refreshMemberships()
+    {
+        $this->reset('search', 'statusFilter');
+        $this->memberships;
     }
 
     /**
