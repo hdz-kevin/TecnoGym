@@ -11,7 +11,8 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       {{-- Total --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === null ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter(null)"
       >
         <div class="flex items-center">
@@ -27,8 +28,9 @@
 
       {{-- Active --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="setStatusFilter({{ MembershipStatus::ACTIVE }})"
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === MembershipStatus::ACTIVE ? 'border-green-300 ring-1 ring-green-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MembershipStatus::ACTIVE->value }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-green-100 rounded-lg">
@@ -43,8 +45,9 @@
 
       {{-- Expired --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="setStatusFilter({{ MembershipStatus::EXPIRED }})"
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === MembershipStatus::EXPIRED ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MembershipStatus::EXPIRED->value }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-red-100 rounded-lg">
@@ -59,8 +62,9 @@
 
       {{-- Pending --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 cursor-pointer transition-all hover:shadow-md"
-        wire:click="setStatusFilter({{ MembershipStatus::PENDING }})"
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === MembershipStatus::PENDING ? 'border-yellow-300 ring-1 ring-yellow-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MembershipStatus::PENDING->value }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-yellow-100 rounded-lg">

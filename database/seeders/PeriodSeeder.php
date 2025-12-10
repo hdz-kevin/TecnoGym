@@ -4,10 +4,8 @@ namespace Database\Seeders;
 
 use App\Enums\DurationUnit;
 use App\Enums\MembershipStatus;
-use App\Enums\PaymentStatus;
 use App\Enums\PeriodStatus;
 use App\Models\Membership;
-use App\Models\Payment;
 use App\Models\Period;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
