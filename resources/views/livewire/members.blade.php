@@ -96,9 +96,6 @@
             <!-- Actions -->
             <div class="flex items-center justify-between">
               <div class="flex gap-2">
-                <flux:button size="sm" variant="outline" wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
-                  Ver
-                </flux:button>
                 <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
                   Editar
                 </flux:button>
