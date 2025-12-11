@@ -149,7 +149,7 @@ class Members extends Component
 
     public function render()
     {
-        $members = Member::with('memberships')->get();
+        $members = Member::with('memberships')->orderBy('created_at', 'desc')->get();
 
         return view('livewire.members', compact('members'));
     }
