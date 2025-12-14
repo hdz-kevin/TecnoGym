@@ -37,7 +37,7 @@
             <flux:icon icon="check" class="w-6 h-6 text-green-600" />
           </div>
           <div class="ml-4">
-            <p class="font-medium text-gray-500">Activas</p>
+            <p class="font-medium text-gray-500">{{ MembershipStatus::ACTIVE->label() }}s</p>
             <p class="text-2xl font-bold text-gray-900">{{ $this->stats['active'] }}</p>
           </div>
         </div>
@@ -54,25 +54,25 @@
             <flux:icon icon="clock" class="w-6 h-6 text-red-600" />
           </div>
           <div class="ml-4">
-            <p class="font-medium text-gray-500">Vencidas</p>
+            <p class="font-medium text-gray-500">{{ MembershipStatus::EXPIRED->label() }}s</p>
             <p class="text-2xl font-bold text-gray-900">{{ $this->stats['expired'] }}</p>
           </div>
         </div>
       </div>
 
-      {{-- Pending --}}
+      {{-- Not Started --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
-          {{ $this->statusFilter === MembershipStatus::PENDING ? 'border-yellow-300 ring-1 ring-yellow-200' : 'border-gray-200' }}"
-        wire:click="setStatusFilter({{ MembershipStatus::PENDING->value }})"
+          {{ $this->statusFilter === MembershipStatus::NOT_STARTED ? 'border-yellow-300 ring-1 ring-yellow-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MembershipStatus::NOT_STARTED->value }})"
       >
         <div class="flex items-center">
           <div class="p-2 bg-yellow-100 rounded-lg">
             <flux:icon icon="exclamation-triangle" class="w-6 h-6 text-yellow-600" />
           </div>
           <div class="ml-4">
-            <p class="font-medium text-gray-500">Pendientes</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['pending'] }}</p>
+            <p class="font-medium text-gray-500">{{ MembershipStatus::NOT_STARTED->label() }}s</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['not_started'] }}</p>
           </div>
         </div>
       </div>
@@ -159,7 +159,7 @@
             </div>
           </div>
 
-          <!-- Bottom: Period Summary and Actions -->
+          <!-- Buttons: Period Summary and Actions -->
           <div class="mt-4 pt-4 border-t border-gray-100">
             <div class="flex items-center justify-between">
               <div class="text-sm text-gray-700">
@@ -191,7 +191,7 @@
                   Ver Historial
                 </flux:button>
 
-                @if ($membership->status == MembershipStatus::EXPIRED || $membership->status == MembershipStatus::PENDING)
+                @if ($membership->status == MembershipStatus::EXPIRED || $membership->status == MembershipStatus::NOT_STARTED)
                   <flux:button
                     size="sm"
                     variant="primary"

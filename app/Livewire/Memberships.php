@@ -129,7 +129,7 @@ class Memberships extends Component
             'total' => $allMemberships->count(),
             'active' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::ACTIVE)->count(),
             'expired' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::EXPIRED)->count(),
-            'pending' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::PENDING)->count(),
+            'not_started' => $allMemberships->filter(fn ($m) => $m->status === MembershipStatus::NOT_STARTED)->count(),
         ]);
     }
 
@@ -171,7 +171,8 @@ class Memberships extends Component
             'member_id' => $validated['member_id'],
             'plan_id' => $validated['plan_id'],
             'plan_type_id' => $validated['plan_type_id'],
-            'status' => MembershipStatus::PENDING,
+            // Todo: ACTIVE status if membership is initialized
+            'status' => MembershipStatus::NOT_STARTED,
         ]);
 
         $this->closeCreateModal();

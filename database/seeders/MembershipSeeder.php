@@ -49,38 +49,38 @@ class MembershipSeeder extends Seeder
             [
                 'member' => $members[0],
                 'plan' => $genMonthly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
             [
                 'member' => $members[1],
                 'plan' => $genMonthly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
             [
                 'member' => $members[5],
                 'plan' => $genBiweekly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
             [
                 'member' => $members[7],
                 'plan' => $genMonthly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
             // Student
             [
                 'member' => $members[4],
                 'plan' => $stuMonthly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
             [
                 'member' => $members[6],
                 'plan' => $stuBiweekly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
             [
                 'member' => $members[8],
                 'plan' => $stuMonthly,
-                'status' => MembershipStatus::PENDING,
+                'status' => MembershipStatus::NOT_STARTED,
             ],
         ];
 
