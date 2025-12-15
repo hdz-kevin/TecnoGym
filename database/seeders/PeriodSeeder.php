@@ -18,7 +18,7 @@ class PeriodSeeder extends Seeder
      */
     public function run(): void
     {
-        $memberships = Membership::with(['plan', 'member'])->take(Membership::count() - 1)->get();
+        $memberships = Membership::with(['plan', 'member'])->get();
 
         foreach ($memberships as $membership) {
             $plan = $membership->plan;
@@ -39,12 +39,11 @@ class PeriodSeeder extends Seeder
                 };
 
                 // Period status
-                $isCurrentPeriod = $periodStart <= Carbon::now() && $periodEnd >= Carbon::now();
+                $isCurrentPeriod = $periodStart <= Carbon::now() && Carbon::now() <= $periodEnd;
                 $isFuturePeriod = $periodStart > Carbon::now();
-
                 $status = match (true) {
-                    $isFuturePeriod => PeriodStatus::IN_PROGRESS,
                     $isCurrentPeriod => PeriodStatus::IN_PROGRESS,
+                    $isFuturePeriod => PeriodStatus::IN_PROGRESS,
                     default => PeriodStatus::COMPLETED
                 };
 
@@ -73,17 +72,15 @@ class PeriodSeeder extends Seeder
             if ($membership->currentPeriod()->first()) {
                 $membership->status = MembershipStatus::ACTIVE;
                 $membership->save();
-            } else if ($membership->periods->count() > 0) {
+            } else {
                 $membership->status = MembershipStatus::EXPIRED;
                 $membership->save();
             }
 
             // Set created_at to match first period start date
-            $firstPeriod = $membership->periods()->orderBy('start_date')->first();
-            if ($firstPeriod) {
-                $membership->created_at = $firstPeriod->start_date;
-                $membership->save();
-            }
+            $firstPeriod = $membership->periods->sortBy('start_date')->first();
+            $membership->created_at = $firstPeriod->start_date;
+            $membership->save();
         });
     }
 }
