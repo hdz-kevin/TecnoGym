@@ -147,7 +147,7 @@
               @php
                 $status = $membership->status;
               @endphp
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium
+              <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
                 {{
                   $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800"
                   : ($status == MembershipStatus::EXPIRED ? "bg-red-100 text-red-800"

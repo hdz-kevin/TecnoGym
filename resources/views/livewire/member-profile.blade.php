@@ -129,9 +129,6 @@
             <!-- Modal Footer -->
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
               <div class="flex justify-end gap-4">
-                <flux:button variant="outline">
-                  Editar perfil
-                </flux:button>
                 <flux:button wire:click="close" variant="primary">
                   Cerrar
                 </flux:button>
