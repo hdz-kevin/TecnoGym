@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Plan::class)->constrained()->onDelete('restrict');
             $table->foreignIdFor(PlanType::class)->constrained()->onDelete('restrict');
 
-            $table->enum('status', MembershipStatus::values());
+            $table->enum('status', MembershipStatus::values())->default(MembershipStatus::ACTIVE->value);
             $table->timestamps();
         });
     }
