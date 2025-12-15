@@ -46,42 +46,14 @@ class MembershipSeeder extends Seeder
         // Memberships
         $memberships = [
             // General
-            [
-                'member' => $members[0],
-                'plan' => $genMonthly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
-            [
-                'member' => $members[1],
-                'plan' => $genMonthly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
-            [
-                'member' => $members[5],
-                'plan' => $genBiweekly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
-            [
-                'member' => $members[7],
-                'plan' => $genMonthly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
+            ['member' => $members[0], 'plan' => $genMonthly],
+            ['member' => $members[1], 'plan' => $genMonthly],
+            ['member' => $members[5], 'plan' => $genBiweekly],
+            ['member' => $members[7], 'plan' => $genMonthly],
             // Student
-            [
-                'member' => $members[4],
-                'plan' => $stuMonthly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
-            [
-                'member' => $members[6],
-                'plan' => $stuBiweekly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
-            [
-                'member' => $members[8],
-                'plan' => $stuMonthly,
-                'status' => MembershipStatus::NOT_STARTED,
-            ],
+            ['member' => $members[4], 'plan' => $stuMonthly],
+            ['member' => $members[6], 'plan' => $stuBiweekly],
+            ['member' => $members[8], 'plan' => $stuMonthly],
         ];
 
         // Create memberships
@@ -92,7 +64,6 @@ class MembershipSeeder extends Seeder
                 'member_id' => $membership['member']->id,
                 'plan_id' => $plan->id,
                 'plan_type_id' => $plan->plan_type_id,
-                'status' => $membership['status'],
             ]);
         }
     }
