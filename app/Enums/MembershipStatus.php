@@ -6,7 +6,6 @@ enum MembershipStatus: int
 {
     case ACTIVE = 1;
     case EXPIRED = 2;
-    case NOT_STARTED = 3;
 
     /**
      * Get all enum values as an array
@@ -26,7 +25,6 @@ enum MembershipStatus: int
         return match ($this) {
             self::ACTIVE => 'Activa',
             self::EXPIRED => 'Vencida',
-            self::NOT_STARTED => 'No iniciada',
         };
     }
 }
