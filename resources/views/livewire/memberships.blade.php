@@ -1,5 +1,5 @@
 @php
-  use Illuminate\Support\Facades\Storage;
+  // use Illuminate\Support\Facades\Storage;
   use \App\Enums\MembershipStatus;
 @endphp
 
@@ -8,7 +8,7 @@
 <div class="p-6 pt-4 space-y-6">
   {{-- Membership stats --}}
   @if($this->stats['total'] > 0)
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {{-- Total --}}
       <div
         class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
@@ -56,23 +56,6 @@
           <div class="ml-4">
             <p class="font-medium text-gray-500">{{ MembershipStatus::EXPIRED->label() }}s</p>
             <p class="text-2xl font-bold text-gray-900">{{ $this->stats['expired'] }}</p>
-          </div>
-        </div>
-      </div>
-
-      {{-- Not Started --}}
-      <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
-          {{ $this->statusFilter === MembershipStatus::NOT_STARTED ? 'border-yellow-300 ring-1 ring-yellow-200' : 'border-gray-200' }}"
-        wire:click="setStatusFilter({{ MembershipStatus::NOT_STARTED->value }})"
-      >
-        <div class="flex items-center">
-          <div class="p-2 bg-yellow-100 rounded-lg">
-            <flux:icon icon="exclamation-triangle" class="w-6 h-6 text-yellow-600" />
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-500">{{ MembershipStatus::NOT_STARTED->label() }}s</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['not_started'] }}</p>
           </div>
         </div>
       </div>
@@ -129,7 +112,7 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-lg font-bold text-gray-800">{{ $membership->member->name }}</h3>
+                  <h3 class="text-lg font-bold text-gray-800">{{ $membership->id }} - {{ $membership->member->name }}</h3>
                   <span class="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
                     {{ $membership->planType->name }}
                   </span>
@@ -149,9 +132,7 @@
               @endphp
               <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
                 {{
-                  $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800"
-                  : ($status == MembershipStatus::EXPIRED ? "bg-red-100 text-red-800"
-                  : "bg-yellow-100 text-yellow-800")
+                  $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                 }}"
               >
                 {{ $status->label() }}
@@ -191,7 +172,7 @@
                   Ver Historial
                 </flux:button>
 
-                @if ($membership->status == MembershipStatus::EXPIRED || $membership->status == MembershipStatus::NOT_STARTED)
+                @if ($membership->status == MembershipStatus::EXPIRED)
                   <flux:button
                     size="sm"
                     variant="primary"
@@ -201,7 +182,6 @@
                     Nuevo Periodo
                   </flux:button>
                 @endif
-
               </div>
             </div>
           </div>

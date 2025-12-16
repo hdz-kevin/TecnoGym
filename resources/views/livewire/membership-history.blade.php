@@ -42,11 +42,7 @@
                       $status = $membership->status;
                     @endphp
                     <span class="inline-flex items-center px-3.5 py-1 rounded text-base font-medium
-                        {{
-                            $status == \App\Enums\MembershipStatus::ACTIVE ? "bg-green-100 text-green-800"
-                            : ($status == \App\Enums\MembershipStatus::EXPIRED ? "bg-red-100 text-red-800"
-                            : "bg-yellow-100 text-yellow-800")
-                        }}"
+                      {{ $status == \App\Enums\MembershipStatus::ACTIVE ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800" }}"
                     >
                       {{ $status->label() }}
                     </span>
