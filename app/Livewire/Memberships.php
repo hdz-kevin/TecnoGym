@@ -2,11 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Enums\DurationUnit;
 use App\Models\Member;
 use App\Models\Membership;
 use App\Models\Plan;
 use App\Enums\MembershipStatus;
 use App\Models\PlanType;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Livewire\Attributes\Computed;
@@ -30,6 +32,15 @@ class Memberships extends Component
     #[Validate('required', message: 'Elige un plan')]
     #[Validate('exists:plans,id', message: 'Elige un plan válido')]
     public $plan_id = '';
+
+    #[Validate('required', message: 'La fecha de inicio es obligatoria')]
+    #[Validate('date', message: 'La fecha de inicio debe ser una fecha válida')]
+    public $start_date;
+
+    /**
+     * Automatically calculated end date of the first period
+     */
+    public ?string $end_date = null;
 
     /**
      * Available plans for selected plan type
@@ -138,6 +149,7 @@ class Memberships extends Component
     public function createMembershipModal()
     {
         $this->showCreateModal = true;
+        $this->start_date = now()->format('Y-m-d');
 
         // Disable background scroll
         $this->dispatch('disable-scroll');
@@ -146,17 +158,58 @@ class Memberships extends Component
     /**
      * When plan type changes, update available plans
      */
-    public function updatedPlanTypeId($value)
+    public function updatedPlanTypeId($planTypeId)
     {
         $this->plan_id = '';
 
-        if ($value) {
-            $this->availablePlans = Plan::where('plan_type_id', $value)
+        if ($planTypeId) {
+            $this->availablePlans = Plan::where('plan_type_id', $planTypeId)
                                         ->orderBy('duration_in_days')
                                         ->get();
         } else {
             $this->availablePlans = collect([]);
         }
+
+        // Reset end date to calculate it again
+        $this->end_date = null;
+    }
+
+    /**
+     * When plan (period) changes, update end date
+     *
+     * @param Plan|null $plan
+     * @return void
+     */
+    public function updatedPlanId(Plan|null $plan)
+    {
+        if ($plan == null) {
+            return;
+        }
+
+        try {
+            $startDate = Carbon::parse($this->start_date);
+
+            $endDate = match ($plan->duration_unit) {
+                DurationUnit::DAY => $startDate->addDays($plan->duration_value),
+                DurationUnit::WEEK => $startDate->addWeeks($plan->duration_value),
+                DurationUnit::MONTH => $startDate->addMonths($plan->duration_value),
+            };
+
+            $this->end_date = $endDate->format('d-m-Y');
+        } catch (\Exception $e) {
+            $this->end_date = null;
+        }
+    }
+
+    /**
+     * When start date changes, update end date
+     *
+     * @param string $startDate
+     * @return void
+     */
+    public function updatedStartDate($startDate)
+    {
+        $this->updatedPlanId(Plan::find($this->plan_id));
     }
 
     /**
@@ -197,6 +250,7 @@ class Memberships extends Component
         $this->member_id = '';
         $this->plan_type_id = '';
         $this->plan_id = '';
+        $this->end_date = null;
         $this->availablePlans = collect([]);
     }
 

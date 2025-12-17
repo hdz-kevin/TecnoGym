@@ -1,5 +1,4 @@
 @php
-  // use Illuminate\Support\Facades\Storage;
   use \App\Enums\MembershipStatus;
 @endphp
 
@@ -262,6 +261,19 @@
                     </flux:field>
                   </div>
                 </div>
+
+                  <flux:field>
+                    <flux:label>Fecha de Inicio</flux:label>
+                    <flux:input type="date" wire:model.live="start_date" />
+                    <flux:error name="start_date" />
+                  </flux:field>
+
+                  {{-- Calculated End Date --}}
+                  <div class="text-sm text-gray-700 bg-gray-100 p-3 rounded-md mt-2">
+                    El primer periodo terminará el: <span class="font-medium text-gray-900">
+                      {{ $end_date ?? '--/--/----' }}
+                    </span>
+                  </div>
 
               </div>
 
