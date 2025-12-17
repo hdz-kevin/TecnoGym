@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\Membership;
 use App\Models\Plan;
 use App\Enums\MembershipStatus;
+use App\Enums\PeriodStatus;
 use App\Models\PlanType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -39,11 +40,15 @@ class Memberships extends Component
 
     /**
      * Automatically calculated end date of the first period
+     *
+     * @var Carbon|null
      */
-    public ?string $end_date = null;
+    public Carbon|null $end_date = null;
 
     /**
      * Available plans for selected plan type
+     *
+     * @var Collection<Plan>
      */
     public $availablePlans;
 
@@ -189,13 +194,11 @@ class Memberships extends Component
         try {
             $startDate = Carbon::parse($this->start_date);
 
-            $endDate = match ($plan->duration_unit) {
+            $this->end_date = match ($plan->duration_unit) {
                 DurationUnit::DAY => $startDate->addDays($plan->duration_value),
                 DurationUnit::WEEK => $startDate->addWeeks($plan->duration_value),
                 DurationUnit::MONTH => $startDate->addMonths($plan->duration_value),
             };
-
-            $this->end_date = $endDate->format('d-m-Y');
         } catch (\Exception $e) {
             $this->end_date = null;
         }
@@ -214,17 +217,24 @@ class Memberships extends Component
 
     /**
      * Save new membership
-     *
-     * Todo: Initialize membership with a first period
      */
     public function saveMembership()
     {
         $validated = $this->validate();
 
-        Membership::create([
+        $membership = Membership::create([
             'member_id' => $validated['member_id'],
             'plan_id' => $validated['plan_id'],
             'plan_type_id' => $validated['plan_type_id'],
+            'status' => MembershipStatus::ACTIVE,
+        ]);
+
+        // Initialize first period
+        $membership->periods()->create([
+            'start_date' => $validated['start_date'],
+            'end_date' => $this->end_date,
+            'price_paid' => $membership->plan->price,
+            'status' => PeriodStatus::IN_PROGRESS,
         ]);
 
         $this->closeCreateModal();

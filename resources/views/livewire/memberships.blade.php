@@ -271,10 +271,9 @@
                   {{-- Calculated End Date --}}
                   <div class="text-sm text-gray-700 bg-gray-100 p-3 rounded-md mt-2">
                     El primer periodo terminará el: <span class="font-medium text-gray-900">
-                      {{ $end_date ?? '--/--/----' }}
+                      {{ $end_date?->format('d-m-Y') ?? '--/--/----' }}
                     </span>
                   </div>
-
               </div>
 
               <!-- Modal Footer -->
