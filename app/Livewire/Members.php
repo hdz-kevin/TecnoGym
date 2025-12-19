@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Member;
+use App\Models\Membership;
 use App\Enums\MemberGender;
 use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Rule;
@@ -149,7 +150,16 @@ class Members extends Component
 
     public function render()
     {
-        $members = Member::with('memberships')->orderBy('created_at', 'desc')->get();
+        // Order by status and last membership updated at
+        $members = Member::with('memberships')
+            ->addSelect(['last_membership_updated_at' => Membership::select('updated_at')
+                ->whereColumn('member_id', 'members.id')
+                ->latest('updated_at')
+                ->limit(1)
+            ])
+            ->orderBy('status')
+            ->orderBy('last_membership_updated_at', 'desc')
+            ->get();
 
         return view('livewire.members', compact('members'));
     }
