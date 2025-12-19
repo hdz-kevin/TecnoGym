@@ -44,11 +44,51 @@ class Members extends Component
     /** Existing photo path */
     public string $existing_photo = '';
 
+    /** Current status filter for members list */
+    public ?MemberStatus $statusFilter = null;
+
     // Modal state
     public $showFormModal = false;
 
     /** Editing member instance or null (no editing by default) */
     public Member|null $editingMember = null;
+
+    /**
+     * Update member status filter
+     */
+    public function setStatusFilter(MemberStatus|null $status = null)
+    {
+        $this->statusFilter = $status;
+    }
+
+    /**
+     * Show the create member modal.
+     */
+    public function createMemberModal()
+    {
+        $this->editingMember = null;
+        $this->showFormModal = true;
+    }
+
+    /**
+     * Show the edit member modal.
+     */
+    public function editMemberModal(Member $member)
+    {
+        $this->editingMember = $member;
+
+        $this->name = $member->name;
+        $this->gender = $member->gender->value;
+        $this->existing_photo = $member->photo ?? '';
+
+        if ($member->birth_date) {
+            $this->birth_day = $member->birth_date?->format('d') ?? '';
+            $this->birth_month = $member->birth_date?->format('m') ?? '';
+            $this->birth_year = $member->birth_date?->format('Y') ?? '';
+        }
+
+        $this->showFormModal = true;
+    }
 
     /**
      * Save a new member or update an existing one.
@@ -85,35 +125,6 @@ class Members extends Component
 
         $this->closeModal();
         session()->flash('message', $flashMessage);
-    }
-
-    /**
-     * Show the create member modal.
-     */
-    public function createMemberModal()
-    {
-        $this->editingMember = null;
-        $this->showFormModal = true;
-    }
-
-    /**
-     * Show the edit member modal.
-     */
-    public function editMemberModal(Member $member)
-    {
-        $this->editingMember = $member;
-
-        $this->name = $member->name;
-        $this->gender = $member->gender->value;
-        $this->existing_photo = $member->photo ?? '';
-
-        if ($member->birth_date) {
-            $this->birth_day = $member->birth_date?->format('d') ?? '';
-            $this->birth_month = $member->birth_date?->format('m') ?? '';
-            $this->birth_year = $member->birth_date?->format('Y') ?? '';
-        }
-
-        $this->showFormModal = true;
     }
 
     public function removePhoto()
@@ -164,6 +175,9 @@ class Members extends Component
                 ->latest('updated_at')
                 ->limit(1)
             ])
+            ->when($this->statusFilter, function ($query) {
+                $query->where('status', $this->statusFilter);
+            })
             ->orderBy('status')
             ->orderBy('last_membership_updated_at', 'desc')
             ->get();

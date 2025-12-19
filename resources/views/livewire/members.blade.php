@@ -9,7 +9,11 @@
   @if($stats['total'] > 0)
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       {{-- Total --}}
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === null ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter(null)"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-blue-100 rounded-lg">
             <flux:icon icon="users" class="w-6 h-6 text-blue-600" />
@@ -22,7 +26,11 @@
       </div>
 
       {{-- Active --}}
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === MemberStatus::ACTIVE ? 'border-green-300 ring-1 ring-green-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MemberStatus::ACTIVE->value }})"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-green-100 rounded-lg">
             <flux:icon icon="check" class="w-6 h-6 text-green-600" />
@@ -35,7 +43,11 @@
       </div>
 
       {{-- Expired --}}
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === MemberStatus::EXPIRED ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MemberStatus::EXPIRED->value }})"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-red-100 rounded-lg">
             <flux:icon icon="clock" class="w-6 h-6 text-red-600" />
@@ -48,7 +60,11 @@
       </div>
 
       {{-- No Membership --}}
-      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+          {{ $this->statusFilter === MemberStatus::NO_MEMBERSHIP ? 'border-yellow-300 ring-1 ring-yellow-200' : 'border-gray-200' }}"
+        wire:click="setStatusFilter({{ MemberStatus::NO_MEMBERSHIP->value }})"
+      >
         <div class="flex items-center">
           <div class="p-2 bg-yellow-100 rounded-lg">
             <flux:icon icon="exclamation-triangle" class="w-6 h-6 text-yellow-600" />
