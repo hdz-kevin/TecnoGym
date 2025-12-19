@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\Membership;
 use App\Models\Plan;
 use App\Enums\MembershipStatus;
+use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\PlanType;
 use Carbon\Carbon;
@@ -236,6 +237,9 @@ class Memberships extends Component
             'price_paid' => $membership->plan->price,
             'status' => PeriodStatus::IN_PROGRESS,
         ]);
+
+        // Update member status
+        $membership->member->update(['status' => MemberStatus::ACTIVE]);
 
         $this->closeCreateModal();
     }
