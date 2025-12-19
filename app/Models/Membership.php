@@ -63,6 +63,9 @@ class Membership extends Model
     /**
      * Get the current active period.
      *
+     * TODO: Refactor -> Why is a hasMany relationship used here?
+     *                   It should return a single period.
+     *
      * @return HasMany
      */
     public function currentPeriod()
