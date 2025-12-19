@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\MemberGender;
 use App\Enums\MembershipStatus;
+use App\Enums\MemberStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,6 +16,7 @@ class Member extends Model
 
     protected $fillable = [
         'name',
+        'status',
         'gender',
         'birth_date',
         'photo',
@@ -22,6 +24,7 @@ class Member extends Model
 
     protected $casts = [
         'birth_date' => 'date',
+        'status' => MemberStatus::class,
         'gender' => MemberGender::class,
     ];
 

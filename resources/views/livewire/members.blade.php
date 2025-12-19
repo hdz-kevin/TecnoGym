@@ -1,3 +1,7 @@
+@php
+  use App\Enums\MemberStatus;
+@endphp
+
 <x-slot:subtitle>Gestiona tus socios y su estado</x-slot:subtitle>
 
 <div class="p-6 pt-4 space-y-6">
@@ -38,19 +42,11 @@
       <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
         <!-- Status Badge -->
         <div class="absolute top-4 right-4">
-          @if ($member->memberships->count() == 0)
-            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-              Sin membresía
-            </span>
-          @elseif ($member->activeMembership())
-            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-              Activo
-            </span>
-          @else
-            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800">
-              Vencido
-            </span>
-          @endif
+          <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
+            {{ $member->status == MemberStatus::ACTIVE ? 'bg-green-100 text-green-800' :
+              ($member->status == MemberStatus::EXPIRED ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+            {{ $member->status->label() }}
+          </span>
         </div>
 
         <div class="p-6">
