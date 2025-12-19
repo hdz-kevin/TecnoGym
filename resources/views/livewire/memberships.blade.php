@@ -10,7 +10,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {{-- Total --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === null ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter(null)"
       >
@@ -27,7 +27,7 @@
 
       {{-- Active --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === MembershipStatus::ACTIVE ? 'border-green-300 ring-1 ring-green-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter({{ MembershipStatus::ACTIVE->value }})"
       >
@@ -44,7 +44,7 @@
 
       {{-- Expired --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === MembershipStatus::EXPIRED ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter({{ MembershipStatus::EXPIRED->value }})"
       >
@@ -271,7 +271,7 @@
                   {{-- Calculated End Date --}}
                   <div class="text-sm text-gray-700 bg-gray-100 p-3 rounded-md mt-2">
                     El primer periodo terminará el: <span class="font-medium text-gray-900">
-                      {{ $end_date?->format('d/m/') ?? '--/--/----' }}
+                      {{ $end_date?->format('d/m/Y') ?? '--/--/----' }}
                     </span>
                   </div>
               </div>

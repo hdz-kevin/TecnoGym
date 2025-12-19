@@ -10,7 +10,7 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       {{-- Total --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === null ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter(null)"
       >
@@ -27,7 +27,7 @@
 
       {{-- Active --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === MemberStatus::ACTIVE ? 'border-green-300 ring-1 ring-green-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter({{ MemberStatus::ACTIVE->value }})"
       >
@@ -44,7 +44,7 @@
 
       {{-- Expired --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === MemberStatus::EXPIRED ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter({{ MemberStatus::EXPIRED->value }})"
       >
@@ -61,7 +61,7 @@
 
       {{-- No Membership --}}
       <div
-        class="bg-white rounded-lg p-6 shadow-sm border cursor-pointer transition-all hover:shadow-md
+        class="bg-white rounded-lg p-6 shadow-sm border transition-all hover:shadow-md
           {{ $this->statusFilter === MemberStatus::NO_MEMBERSHIP ? 'border-yellow-300 ring-1 ring-yellow-200' : 'border-gray-200' }}"
         wire:click="setStatusFilter({{ MemberStatus::NO_MEMBERSHIP->value }})"
       >
