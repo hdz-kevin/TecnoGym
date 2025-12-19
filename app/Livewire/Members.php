@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Member;
 use App\Models\Membership;
-use App\Enums\MemberGender;
+use App\Enums\MemberStatus;
 use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
@@ -150,6 +150,13 @@ class Members extends Component
 
     public function render()
     {
+        $stats = [
+            'total' => Member::count(),
+            'active' => Member::where('status', MemberStatus::ACTIVE)->count(),
+            'expired' => Member::where('status', MemberStatus::EXPIRED)->count(),
+            'no_membership' => Member::where('status', MemberStatus::NO_MEMBERSHIP)->count(),
+        ];
+
         // Order by status and last membership updated at
         $members = Member::with('memberships')
             ->addSelect(['last_membership_updated_at' => Membership::select('updated_at')
@@ -161,6 +168,6 @@ class Members extends Component
             ->orderBy('last_membership_updated_at', 'desc')
             ->get();
 
-        return view('livewire.members', compact('members'));
+        return view('livewire.members', compact('members', 'stats'));
     }
 }

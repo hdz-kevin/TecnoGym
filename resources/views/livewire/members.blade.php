@@ -5,6 +5,62 @@
 <x-slot:subtitle>Gestiona tus socios y su estado</x-slot:subtitle>
 
 <div class="p-6 pt-4 space-y-6">
+  {{-- Membership stats --}}
+  @if($stats['total'] > 0)
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      {{-- Total --}}
+      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div class="flex items-center">
+          <div class="p-2 bg-blue-100 rounded-lg">
+            <flux:icon icon="users" class="w-6 h-6 text-blue-600" />
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-500">Total</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
+          </div>
+        </div>
+      </div>
+
+      {{-- Active --}}
+      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div class="flex items-center">
+          <div class="p-2 bg-green-100 rounded-lg">
+            <flux:icon icon="check" class="w-6 h-6 text-green-600" />
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-500">{{ MemberStatus::ACTIVE->label() }}s</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $stats['active'] }}</p>
+          </div>
+        </div>
+      </div>
+
+      {{-- Expired --}}
+      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div class="flex items-center">
+          <div class="p-2 bg-red-100 rounded-lg">
+            <flux:icon icon="clock" class="w-6 h-6 text-red-600" />
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-500">{{ MemberStatus::EXPIRED->label() }}s</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $stats['expired'] }}</p>
+          </div>
+        </div>
+      </div>
+
+      {{-- No Membership --}}
+      <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div class="flex items-center">
+          <div class="p-2 bg-yellow-100 rounded-lg">
+            <flux:icon icon="exclamation-triangle" class="w-6 h-6 text-yellow-600" />
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-500">{{ MemberStatus::NO_MEMBERSHIP->label() }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $stats['no_membership'] }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
   <!-- Search and Filters -->
   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
     <div class="flex-1 max-w-3xl">
@@ -19,17 +75,7 @@
           class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
       </div>
     </div>
-    <div class="flex gap-3">
-      <flux:select placeholder="Todos" class="min-w-40">
-        <flux:select.option value="">Todos</flux:select.option>
-        <flux:select.option value="active">Con membresía</flux:select.option>
-        <flux:select.option value="inactive">Sin membresía</flux:select.option>
-      </flux:select>
-      <flux:select placeholder="Ordenar por nombre" class="min-w-40">
-        <flux:select.option value="name">Ordenar por nombre</flux:select.option>
-        <flux:select.option value="date">Ordenar por fecha</flux:select.option>
-        <flux:select.option value="status">Ordenar por estado</flux:select.option>
-      </flux:select>
+    <div>
       <flux:button variant="primary" icon="plus" wire:click="createMemberModal">
         Nuevo Socio
       </flux:button>
