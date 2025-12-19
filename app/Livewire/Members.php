@@ -47,7 +47,10 @@ class Members extends Component
     /** Current status filter for members list */
     public ?MemberStatus $statusFilter = null;
 
-    // Modal state
+    /** Member search by name */
+    public $search = '';
+
+    /** Modal state */
     public $showFormModal = false;
 
     /** Editing member instance or null (no editing by default) */
@@ -59,6 +62,15 @@ class Members extends Component
     public function setStatusFilter(MemberStatus|null $status = null)
     {
         $this->statusFilter = $status;
+        $this->search = '';
+    }
+
+    /**
+     * Reset status filter when searching
+     */
+    public function updatedSearch()
+    {
+        $this->statusFilter = null;
     }
 
     /**
@@ -177,6 +189,9 @@ class Members extends Component
             ])
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);
+            })
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->orderBy('status')
             ->orderBy('last_membership_updated_at', 'desc')

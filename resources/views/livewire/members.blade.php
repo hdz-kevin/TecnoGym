@@ -88,6 +88,7 @@
           </svg>
         </div>
         <input type="text" placeholder="Buscar por nombre..."
+          wire:model.live="search"
           class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
       </div>
     </div>
