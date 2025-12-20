@@ -5,9 +5,11 @@ namespace App\Livewire;
 use App\Models\Member;
 use App\Models\Membership;
 use App\Enums\MemberStatus;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -171,17 +173,32 @@ class Members extends Component
         $this->existing_photo = '';
     }
 
-    public function render()
+    /**
+     * Get the members stats
+     *
+     * @return array<string, int>
+     */
+    #[Computed]
+    public function stats()
     {
-        $stats = [
+        return [
             'total' => Member::count(),
             'active' => Member::where('status', MemberStatus::ACTIVE)->count(),
             'expired' => Member::where('status', MemberStatus::EXPIRED)->count(),
             'no_membership' => Member::where('status', MemberStatus::NO_MEMBERSHIP)->count(),
         ];
+    }
 
+    /**
+     * Get the members list
+     *
+     * @return Collection<Member>
+     */
+    #[Computed]
+    public function members()
+    {
         // Order by status and last membership updated at
-        $members = Member::with('memberships')
+        return Member::with('memberships')
             ->addSelect(['last_membership_updated_at' => Membership::select('updated_at')
                 ->whereColumn('member_id', 'members.id')
                 ->latest('updated_at')
@@ -196,7 +213,10 @@ class Members extends Component
             ->orderBy('status')
             ->orderBy('last_membership_updated_at', 'desc')
             ->get();
+    }
 
-        return view('livewire.members', compact('members', 'stats'));
+    public function render()
+    {
+        return view('livewire.members');
     }
 }

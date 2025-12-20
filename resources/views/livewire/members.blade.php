@@ -6,7 +6,7 @@
 
 <div class="p-6 pt-4 space-y-6">
   {{-- Membership stats --}}
-  @if($stats['total'] > 0)
+  @if($this->stats['total'] > 0)
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       {{-- Total --}}
       <div
@@ -20,7 +20,7 @@
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">Total</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['total'] }}</p>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">{{ MemberStatus::ACTIVE->label() }}s</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['active'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['active'] }}</p>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">{{ MemberStatus::EXPIRED->label() }}s</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['expired'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['expired'] }}</p>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-500">{{ MemberStatus::NO_MEMBERSHIP->label() }}</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $stats['no_membership'] }}</p>
+            <p class="text-2xl font-bold text-gray-900">{{ $this->stats['no_membership'] }}</p>
           </div>
         </div>
       </div>
@@ -101,7 +101,7 @@
 
   <!-- Members Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-    @foreach ($members as $member)
+    @foreach ($this->members as $member)
       <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
         <!-- Status Badge -->
         <div class="absolute top-4 right-4">
