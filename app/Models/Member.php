@@ -62,9 +62,12 @@ class Member extends Model
      */
     public function latestMembership(): Membership|null
     {
+        if ($this->memberships->count() == 0) {
+            return null;
+        }
+
         return $this->memberships()
-                    ->with('planType')
-                    ->latest('created_at')
+                    ->orderBy('updated_at', 'desc')
                     ->first();
     }
 
