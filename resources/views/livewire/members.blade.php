@@ -130,25 +130,44 @@
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
-                <p class="text-sm text-gray-600">ID: {{ $member->id }}</p>
+                <p class="text-sm text-gray-700">ID: {{ $member->id }}</p>
               </div>
             </div>
 
             <!-- Member Details -->
-            <div>
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-gray-600">Estado</span>
-                <span class="text-sm font-medium text-gray-900">
-                  @if ($member->memberships->count() > 0)
-                    Con membresía activa
-                  @else
-                    Sin membresía
-                  @endif
-                </span>
+            <div class="space-y-5 py-2.5">
+              @php
+                  $latestMembership = $member->latestMembership();
+              @endphp
+
+              <div class="grid grid-cols-2 gap-4">
+                  {{-- Plan Info --}}
+                  <div>
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <flux:icon icon="credit-card" variant="mini" class="text-gray-400" />
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Plan</span>
+                      </div>
+                      <p class="font-medium text-gray-900">
+                          {{ $latestMembership?->planName ?? 'Sin plan' }}
+                      </p>
+                  </div>
+
+                  {{-- Expiration Info --}}
+                  <div>
+                      <div class="flex items-center gap-1.5 mb-1">
+                        <flux:icon icon="calendar" variant="mini" class="text-gray-400" />
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Vencimiento</span>
+                      </div>
+                      <p class="font-medium text-gray-900">
+                          {{ $latestMembership?->lastPeriod->end_date->format('d/m/Y') ?? '--/--/----' }}
+                      </p>
+                  </div>
               </div>
-              <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-600">Visitas</span>
-                <span class="text-sm font-medium text-gray-900">Sin registros</span>
+
+              {{-- Member Since --}}
+              <div class="flex items-center gap-1.5 text-sm font-medium text-gray-600">
+                 <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
+                 <span>Miembro desde {{ $member->created_at->format('d M Y') }}</span>
               </div>
             </div>
 

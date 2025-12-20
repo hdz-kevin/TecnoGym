@@ -96,4 +96,14 @@ class Membership extends Model
     {
         return $this->periods->sum('price_paid');
     }
+
+    /**
+     * Get the plan name.
+     *
+     * @return string
+     */
+    public function getPlanNameAttribute()
+    {
+        return $this->planType->name.' -> '.$this->plan->name;
+    }
 }
