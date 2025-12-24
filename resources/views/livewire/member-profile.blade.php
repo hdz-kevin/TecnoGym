@@ -9,19 +9,12 @@
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
           <div
-            class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all max-w-5xl w-full"
+            class="transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all max-w-6xl w-full"
             wire:click.stop>
 
-            <!-- Close Button (Absolute Top Right) -->
-            <button wire:click="close"
-              class="absolute top-1.5 right-1.5 z-10 p-2 rounded-full bg-white/20 hover:bg-gray-100 text-gray-500 transition-colors">
-              <flux:icon icon="x-mark" class="w-6 h-6" />
-            </button>
-
-            <div class="grid grid-cols-1 md:grid-cols-12 bg-white min-h-[550px]">
+            <div class="grid grid-cols-1 md:grid-cols-12 bg-white min-h-[580px]">
               <!-- Left Column: Large Image (5/12 cols) -->
-              <div
-                class="md:col-span-5 relative bg-gray-50 flex items-center justify-center overflow-hidden border-r border-gray-100">
+              <div class="md:col-span-5 relative bg-gray-50 flex items-center justify-center overflow-hidden border-r border-gray-100">
                 @if ($member->photo)
                   <img src="{{ Storage::url($member->photo) }}" class="absolute inset-0 w-full h-full object-cover"
                     alt="{{ $member->name }}" />
@@ -47,18 +40,17 @@
               </div>
 
               <!-- Right Column: Details (7/12 cols) -->
-              <div class="md:col-span-7 p-10 py-12 flex flex-col h-full bg-white">
+              <div class="md:col-span-7 p-10 flex flex-col h-full bg-white">
 
                 <!-- Header -->
                 <div class="flex justify-between items-start mb-8">
                   <div>
                     <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ $member->name }}</h2>
-                    <div class="flex items-center gap-3 mt-2 text-sm text-gray-500 font-medium">
+                    <div class="flex items-center gap-5 mt-3 text-sm text-gray-500 font-medium">
                       <span class="flex items-center gap-1.5 capitalize">
                         <flux:icon icon="user" variant="mini" class="text-gray-400" />
                         {{ $member->gender->label() }}
                       </span>
-                      <span class="text-gray-300">&bull;</span>
                       <span class="flex items-center gap-1.5">
                         <flux:icon icon="cake" variant="mini" class="text-gray-400" />
                         {{ $member->getAge() ? $member->getAge() . ' años' : 'Edad N/A' }}
