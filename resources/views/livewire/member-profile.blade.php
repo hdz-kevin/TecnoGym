@@ -9,129 +9,160 @@
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
           <div
-            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all max-w-3xl w-full"
+            class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all max-w-5xl w-full"
             wire:click.stop>
 
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-              <h3 class="text-lg font-medium text-gray-900">Perfil del socio</h3>
-              <button wire:click="close" class="text-gray-500 hover:text-gray-600 transition-colors">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+            <!-- Close Button (Absolute Top Right) -->
+            <button wire:click="close"
+              class="absolute top-1.5 right-1.5 z-10 p-2 rounded-full bg-white/20 hover:bg-gray-100 text-gray-500 transition-colors">
+              <flux:icon icon="x-mark" class="w-6 h-6" />
+            </button>
 
-            <!-- Modal Body -->
-            <div class="px-6 py-6">
-              <div class="flex items-center space-x-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 bg-white min-h-[550px]">
+              <!-- Left Column: Large Image (5/12 cols) -->
+              <div
+                class="md:col-span-5 relative bg-gray-50 flex items-center justify-center overflow-hidden border-r border-gray-100">
+                @if ($member->photo)
+                  <img src="{{ Storage::url($member->photo) }}" class="absolute inset-0 w-full h-full object-cover"
+                    alt="{{ $member->name }}" />
+                  <div
+                    class="absolute inset-x-0 bottom-0 h-1/4 bg-linear-to-t from-black/60 to-transparent pointer-events-none">
+                  </div>
+                @else
+                  <div class="flex flex-col items-center justify-center text-gray-400 p-8 text-center">
+                    <div
+                      class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4 border border-gray-200">
+                      <span class="text-4xl font-bold text-gray-300">{{ $member->initials() }}</span>
+                    </div>
+                    <span class="text-sm font-medium text-gray-500 uppercase tracking-wide">Sin foto</span>
+                  </div>
+                @endif
+
+                <!-- ID Badge on Image -->
                 <div
-                  class="h-70 w-75 bg-gray-100 rounded-md flex items-center justify-center overflow-hidden border border-gray-200">
-                  @if ($member->photo)
-                    <img
-                      src="{{ Storage::url($member->photo) }}"
-                      class="h-full w-full object-cover"
-                      alt="{{ $member->name }}"
-                    />
-                  @else
-                    <span class="">Sin foto</span>
-                  @endif
-                </div>
-                <div>
-                  <h2 class="text-2xl font-bold text-gray-900 mb-1">{{ $member->name }}</h2>
-                  <p class=" text-gray-600">ID: {{ $member->id }}</p>
+                  class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm z-20">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">ID de Socio</span>
+                  <span class="text-sm font-bold text-gray-900 ml-1 block">{{ $member->id }}</span>
                 </div>
               </div>
 
-              <!-- Member Details Grid -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Personal Information -->
-                <div class="bg-gray-50 rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-700 mb-3">Información Personal</h4>
-                  <div class="space-y-2">
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Fecha de nacimiento:</span>
-                      <span class="text-sm font-medium text-gray-900">
-                        {{ $member->birth_date ? $member->birth_date->format('d/m/Y') : '-' }}
-                      </span>
-                    </div>
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Edad:</span>
-                      <span class="text-sm font-medium text-gray-900">
-                        {{ $member->getAge().' años' ?? '-' }}
-                      </span>
-                    </div>
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Sexo:</span>
-                      <span class="text-sm font-medium text-gray-900">
+              <!-- Right Column: Details (7/12 cols) -->
+              <div class="md:col-span-7 p-10 py-12 flex flex-col h-full bg-white">
+
+                <!-- Header -->
+                <div class="flex justify-between items-start mb-8">
+                  <div>
+                    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ $member->name }}</h2>
+                    <div class="flex items-center gap-3 mt-2 text-sm text-gray-500 font-medium">
+                      <span class="flex items-center gap-1.5 capitalize">
+                        <flux:icon icon="user" variant="mini" class="text-gray-400" />
                         {{ $member->gender->label() }}
                       </span>
+                      <span class="text-gray-300">&bull;</span>
+                      <span class="flex items-center gap-1.5">
+                        <flux:icon icon="cake" variant="mini" class="text-gray-400" />
+                        {{ $member->getAge() ? $member->getAge() . ' años' : 'Edad N/A' }}
+                      </span>
                     </div>
+                  </div>
+                  <div>
+                    @php
+                      $statusColor = match ($member->status) {
+                          \App\Enums\MemberStatus::ACTIVE => 'bg-green-100 text-green-700 border-green-200',
+                          \App\Enums\MemberStatus::EXPIRED => 'bg-red-100 text-red-700 border-red-200',
+                          default => 'bg-yellow-100 text-yellow-700 border-yellow-200',
+                      };
+                    @endphp
+                    <span
+                      class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border {{ $statusColor }}">
+                      {{ $member->status->label() }}
+                    </span>
                   </div>
                 </div>
 
-                <!-- Membership Information -->
+                <!-- Membership Section (Simplified) -->
                 @php
-                  $latestMembership = $member->latestMembership();
+                  $activeMembership = $member->memberships
+                      ->where('status', \App\Enums\MembershipStatus::ACTIVE)
+                      ->first();
+                  $latestMembership = $member->memberships->sortByDesc('created_at')->first();
+                  $displayMembership = $activeMembership ?? $latestMembership;
                 @endphp
 
-                <div class="bg-gray-50 rounded-lg p-4">
-                  <h4 class="font-semibold text-gray-700 mb-3">Estado de Membresía</h4>
-                  <div class="space-y-2">
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Membresías totales:</span>
-                      <span class="text-sm font-medium text-gray-900">{{ $member->memberships->count() }}</span>
+                <div class="mb-10">
+                  <div class="flex items-center gap-2 mb-4">
+                    <flux:icon icon="credit-card" class="w-4 h-4 text-gray-400" />
+                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Información de Membresía</h3>
+                  </div>
+
+                  @if ($displayMembership)
+                    <div class="bg-gray-50 rounded-xl border border-gray-100 p-6">
+                      <div class="grid grid-cols-2 gap-8">
+                        <div>
+                          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Plan del Socio
+                          </p>
+                          <div class="text-xl font-bold text-gray-900 leading-tight">
+                            {{ $displayMembership->plan->name }}
+                          </div>
+                          <div class="text-sm font-semibold text-blue-600 mt-0.5">
+                            {{ $displayMembership->planType->name }}
+                          </div>
+                        </div>
+                        <div class="text-right">
+                          @php
+                            $currentPeriod = $displayMembership->periods->sortByDesc('end_date')->first();
+                            $daysLeft = $currentPeriod ? (int) now()->diffInDays($currentPeriod->end_date, false) : 0;
+                          @endphp
+                          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Fecha de
+                            Vencimiento</p>
+                          <div class="text-xl font-bold text-gray-900 leading-tight">
+                            {{ $currentPeriod ? $currentPeriod->end_date->format('d M, Y') : '--' }}
+                          </div>
+                          @if ($displayMembership->status == \App\Enums\MembershipStatus::ACTIVE)
+                            <div
+                              class="text-xs font-bold {{ $daysLeft < 5 ? 'text-red-500' : 'text-green-600' }} mt-1">
+                              {{ $daysLeft > 0 ? $daysLeft . ' días restantes' : 'Vence hoy' }}
+                            </div>
+                          @endif
+                        </div>
+                      </div>
                     </div>
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Membresía actual:</span>
-                      <span class="text-sm font-medium text-gray-900">
-                        {{ $latestMembership?->membershipType?->name ?? 'Sin membresía' }}
-                      </span>
+                  @else
+                    <div class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide leading-loose">No cuenta con
+                        una membresía activa</p>
                     </div>
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Estado:</span>
-                      @if ($latestMembership)
-                        <span class="text-sm font-medium
-                          {{ $latestMembership->status == MembershipStatus::ACTIVE ? 'text-green-600' : 'text-red-600' }}"
-                        />
-                          {{ $latestMembership->status->label() }}
-                        </span>
-                      @else
-                        <span class="text-sm font-medium text-gray-600">Sin membresía</span>
-                      @endif
-                    </div>
-                    <div class="flex justify-between">
-                      <span class="text-sm text-gray-700">Vencimiento:</span>
-                      <span class="text-sm font-medium text-gray-900">
-                        {{ $latestMembership?->end_date?->format('d/m/Y') ?? '-' }}
-                      </span>
-                    </div>
+                  @endif
+                </div>
+
+                <!-- Secondary Metadata -->
+                <div class="mt-auto grid grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                  <div>
+                    <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Miembro
+                      desde</span>
+                    <span class="text-sm font-bold text-gray-700 flex items-center gap-2">
+                      <flux:icon icon="calendar-days" variant="mini" class="text-gray-400" />
+                      {{ $member->created_at->format('d M, Y') }}
+                    </span>
+                  </div>
+                  <div>
+                    <span
+                      class="block text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Antigüedad</span>
+                    <span class="text-sm font-bold text-gray-700 flex items-center gap-2">
+                      <flux:icon icon="clock" variant="mini" class="text-gray-400" />
+                      {{ $months = (int) $member->created_at->diffInMonths(now()) }}
+                      {{ $months === 1 ? 'mes' : 'meses' }}
+                    </span>
                   </div>
                 </div>
-              </div>
 
-              <!-- Activity Section -->
-              {{-- <div class="mt-6 bg-gray-50 rounded-lg p-4">
-                <h4 class="text-sm font-semibold text-gray-700 mb-3">Actividad</h4>
-                <div class="grid grid-cols-2 gap-4">
-                  <div class="text-center">
-                    <p class="text-2xl font-bold text-gray-900">0</p>
-                    <p class="text-sm text-gray-600">Visitas totales</p>
-                  </div>
-                  <div class="text-center">
-                    <p class="text-2xl font-bold text-gray-900">-</p>
-                    <p class="text-sm text-gray-600">Última visita</p>
-                  </div>
+                <!-- Footer Actions -->
+                <div class="mt-10 flex items-center justify-end gap-3">
+                  <flux:button wire:click="close" variant="ghost">
+                    Cerrar
+                  </flux:button>
                 </div>
-              </div> --}}
-            </div>
 
-            <!-- Modal Footer -->
-            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
-              <div class="flex justify-end gap-4">
-                <flux:button wire:click="close" variant="primary">
-                  Cerrar
-                </flux:button>
               </div>
             </div>
           </div>

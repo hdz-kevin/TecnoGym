@@ -11,10 +11,26 @@ class MemberProfile extends Component
     public Member|null $member = null;
     public bool $show = false;
 
+
+    public function mount(): void
+    {
+        $this->show = true;
+        $this->member = Member::with([
+            'memberships.plan',
+            'memberships.planType',
+            'memberships.periods'
+        ])->find(8);
+    }
+
+
     #[On('show-member-profile')]
     public function showProfile($memberId)
     {
-        $this->member = Member::with(['memberships.planType'])->find($memberId);
+        $this->member = Member::with([
+            'memberships.plan',
+            'memberships.planType',
+            'memberships.periods'
+        ])->find($memberId);
         $this->show = true;
     }
 
