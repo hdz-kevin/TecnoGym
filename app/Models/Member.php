@@ -50,8 +50,7 @@ class Member extends Model
         }
 
         return $this->memberships()
-                    ->where('status', MembershipStatus::ACTIVE->value)
-                    ->with('planType')
+                    ->where('status', MembershipStatus::ACTIVE)
                     ->first();
     }
 

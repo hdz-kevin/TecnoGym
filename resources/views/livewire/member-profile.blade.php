@@ -1,6 +1,6 @@
 @php
-  use Illuminate\Support\Facades\Storage;
   use App\Enums\MembershipStatus;
+  use App\Enums\MemberStatus;
 @endphp
 
 <div>
@@ -43,7 +43,7 @@
               <div class="md:col-span-7 p-10 flex flex-col h-full bg-white">
 
                 <!-- Header -->
-                <div class="flex justify-between items-start mb-8">
+                <div class="flex justify-between mb-8">
                   <div>
                     <h2 class="text-3xl font-bold text-gray-900 tracking-tight">{{ $member->name }}</h2>
                     <div class="flex items-center gap-5 mt-3 text-sm text-gray-500 font-medium">
@@ -60,8 +60,8 @@
                   <div>
                     @php
                       $statusColor = match ($member->status) {
-                          \App\Enums\MemberStatus::ACTIVE => 'bg-green-100 text-green-700 border-green-200',
-                          \App\Enums\MemberStatus::EXPIRED => 'bg-red-100 text-red-700 border-red-200',
+                          MemberStatus::ACTIVE => 'bg-green-100 text-green-700 border-green-200',
+                          MemberStatus::EXPIRED => 'bg-red-100 text-red-700 border-red-200',
                           default => 'bg-yellow-100 text-yellow-700 border-yellow-200',
                       };
                     @endphp
@@ -74,43 +74,33 @@
 
                 <!-- Membership Section (Simplified) -->
                 @php
-                  $activeMembership = $member->memberships
-                      ->where('status', \App\Enums\MembershipStatus::ACTIVE)
-                      ->first();
-                  $latestMembership = $member->memberships->sortByDesc('created_at')->first();
-                  $displayMembership = $activeMembership ?? $latestMembership;
                 @endphp
 
                 <div class="mb-10">
-                  <div class="flex items-center gap-2 mb-4">
-                    <flux:icon icon="credit-card" class="w-4 h-4 text-gray-400" />
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Información de Membresía</h3>
+                  <div class="flex items-center gap-2 mb-3">
+                    <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide">Membresía Actual</h3>
                   </div>
 
-                  @if ($displayMembership)
+                  @if ($membership = $member->latestMembership())
                     <div class="bg-gray-50 rounded-xl border border-gray-100 p-6">
-                      <div class="grid grid-cols-2 gap-8">
+                      <div class="flex justify-between items-center gap-8">
                         <div>
-                          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Plan del Socio
+                          <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Plan</p>
+                          <p class="text-lg font-bold text-gray-800 leading-tight">
+                            {{ $membership->planType->name }} -> {{ $membership->plan->name }}
                           </p>
-                          <div class="text-xl font-bold text-gray-900 leading-tight">
-                            {{ $displayMembership->plan->name }}
-                          </div>
-                          <div class="text-sm font-semibold text-blue-600 mt-0.5">
-                            {{ $displayMembership->planType->name }}
-                          </div>
                         </div>
                         <div class="text-right">
                           @php
-                            $currentPeriod = $displayMembership->periods->sortByDesc('end_date')->first();
+                            $currentPeriod = $membership->periods->sortByDesc('end_date')->first();
                             $daysLeft = $currentPeriod ? (int) now()->diffInDays($currentPeriod->end_date, false) : 0;
                           @endphp
-                          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Fecha de
-                            Vencimiento</p>
+                          <p class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-1.5">Vencimiento</p>
                           <div class="text-xl font-bold text-gray-900 leading-tight">
                             {{ $currentPeriod ? $currentPeriod->end_date->format('d M, Y') : '--' }}
                           </div>
-                          @if ($displayMembership->status == \App\Enums\MembershipStatus::ACTIVE)
+                          @if ($membership->status == \App\Enums\MembershipStatus::ACTIVE)
                             <div
                               class="text-xs font-bold {{ $daysLeft < 5 ? 'text-red-500' : 'text-green-600' }} mt-1">
                               {{ $daysLeft > 0 ? $daysLeft . ' días restantes' : 'Vence hoy' }}
@@ -121,8 +111,9 @@
                     </div>
                   @else
                     <div class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide leading-loose">No cuenta con
-                        una membresía activa</p>
+                      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide leading-loose">
+                        No cuenta con una membresía activa
+                      </p>
                     </div>
                   @endif
                 </div>
