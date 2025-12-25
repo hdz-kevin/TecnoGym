@@ -104,6 +104,6 @@ class Membership extends Model
      */
     public function getPlanNameAttribute()
     {
-        return $this->planType->name.' -> '.$this->plan->name;
+        return $this->planType->name.' - '.$this->plan->name;
     }
 }

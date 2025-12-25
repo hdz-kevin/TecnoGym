@@ -73,9 +73,6 @@
                 </div>
 
                 <!-- Membership Section (Simplified) -->
-                @php
-                @endphp
-
                 <div class="mb-10">
                   <div class="flex items-center gap-2 mb-3">
                     <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
@@ -87,25 +84,17 @@
                       <div class="flex justify-between items-center gap-8">
                         <div>
                           <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Plan</p>
-                          <p class="text-lg font-bold text-gray-800 leading-tight">
-                            {{ $membership->planType->name }} -> {{ $membership->plan->name }}
+                          <p class="text-lg font-bold text-gray-800">
+                            {{ $membership->planType->name }} - {{ $membership->plan->name }}
                           </p>
                         </div>
                         <div class="text-right">
-                          @php
-                            $currentPeriod = $membership->periods->sortByDesc('end_date')->first();
-                            $daysLeft = $currentPeriod ? (int) now()->diffInDays($currentPeriod->end_date, false) : 0;
-                          @endphp
-                          <p class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-1.5">Vencimiento</p>
-                          <div class="text-xl font-bold text-gray-900 leading-tight">
-                            {{ $currentPeriod ? $currentPeriod->end_date->format('d M, Y') : '--' }}
+                          <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Periodo</p>
+                          <div class="text-lg font-bold text-gray-800 flex items-center gap-1.5">
+                            <span>{{ $membership->lastPeriod->start_date->format('d M, Y') }}</span>
+                            <span>-></span>
+                            <span>{{ $membership->lastPeriod->end_date->format('d M, Y') }}</span>
                           </div>
-                          @if ($membership->status == \App\Enums\MembershipStatus::ACTIVE)
-                            <div
-                              class="text-xs font-bold {{ $daysLeft < 5 ? 'text-red-500' : 'text-green-600' }} mt-1">
-                              {{ $daysLeft > 0 ? $daysLeft . ' días restantes' : 'Vence hoy' }}
-                            </div>
-                          @endif
                         </div>
                       </div>
                     </div>
