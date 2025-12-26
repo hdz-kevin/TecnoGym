@@ -191,12 +191,8 @@
   </div>
 
   <!-- Pagination -->
-  <div class="flex justify-center mt-8">
-    <div class="flex items-center space-x-2">
-      <flux:button size="sm" variant="outline">Anterior</flux:button>
-      <span class="text-sm text-gray-500 px-4">Página 1 de 3</span>
-      <flux:button size="sm" variant="outline">Siguiente</flux:button>
-    </div>
+  <div class="mt-8">
+    {{ $this->members->links() }}
   </div>
 
   <!-- Create/Edit Form Modal -->

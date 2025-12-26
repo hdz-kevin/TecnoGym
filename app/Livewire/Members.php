@@ -212,7 +212,7 @@ class Members extends Component
             })
             ->orderBy('status')
             ->orderBy('last_membership_updated_at', 'desc')
-            ->get();
+            ->paginate(6);
     }
 
     public function render()
