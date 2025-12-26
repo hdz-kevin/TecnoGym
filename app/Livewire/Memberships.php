@@ -86,6 +86,7 @@ class Memberships extends Component
     {
         $this->statusFilter = $status;
         $this->search = '';
+        $this->resetPage();
     }
 
     /**
@@ -94,6 +95,7 @@ class Memberships extends Component
     public function updatedSearch()
     {
         $this->statusFilter = null;
+        $this->resetPage();
     }
 
     /**

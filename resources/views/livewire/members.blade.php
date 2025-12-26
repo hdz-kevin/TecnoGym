@@ -113,7 +113,7 @@
         </div>
 
         <div class="p-6">
-          <div class="space-y-4">
+          <div class="space-y-3.5">
             <!-- Member Info -->
             <div class="flex items-center space-x-4">
               <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 transition-all">

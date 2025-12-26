@@ -65,6 +65,7 @@ class Members extends Component
     {
         $this->statusFilter = $status;
         $this->search = '';
+        $this->resetPage();
     }
 
     /**
@@ -73,6 +74,7 @@ class Members extends Component
     public function updatedSearch()
     {
         $this->statusFilter = null;
+        $this->resetPage();
     }
 
     /**
@@ -215,6 +217,11 @@ class Members extends Component
             ->paginate(9);
     }
 
+    /**
+     * Render the component.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.members');
