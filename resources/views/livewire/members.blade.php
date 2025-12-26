@@ -116,8 +116,7 @@
           <div class="space-y-4">
             <!-- Member Info -->
             <div class="flex items-center space-x-4">
-              <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200
-                cursor-pointer transition-all" wire:click="$dispatch('show-member-profile', { memberId: {{ $member->id }} })">
+              <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 transition-all">
                 @if($member->photo)
                   <img
                     src="{{ Storage::url($member->photo) }}"
@@ -172,17 +171,13 @@
             </div>
 
             <!-- Actions -->
-            <div class="flex items-center justify-between">
-              <div class="flex gap-2">
-                <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
-                  Editar
-                </flux:button>
-              </div>
-              <div class="flex gap-2">
-                <flux:button size="sm" variant="primary">
-                  Asignar membresía
-                </flux:button>
-              </div>
+            <div class="flex items-center justify-end gap-3">
+              <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
+                Editar
+              </flux:button>
+              <flux:button size="sm" variant="outline" wire:click="$dispatch('show-member-profile', { member: {{ $member->id }} })">
+                Ver
+              </flux:button>
             </div>
           </div>
         </div>
