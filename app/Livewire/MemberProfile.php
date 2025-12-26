@@ -12,13 +12,9 @@ class MemberProfile extends Component
     public bool $show = false;
 
     #[On('show-member-profile')]
-    public function showProfile($memberId)
+    public function showProfile(Member $member)
     {
-        $this->member = Member::with([
-            'memberships.plan',
-            'memberships.planType',
-            'memberships.periods'
-        ])->find($memberId);
+        $this->member = $member;
         $this->show = true;
     }
 
