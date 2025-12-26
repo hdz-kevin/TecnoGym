@@ -100,9 +100,9 @@
   </div>
 
   <!-- Members Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
     @foreach ($this->members as $member)
-      <div class="bg-white rounded-lg border border-gray-200 shadow-sm relative">
+      <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative">
         <!-- Status Badge -->
         <div class="absolute top-4 right-4">
           <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
@@ -139,27 +139,16 @@
                   $latestMembership = $member->latestMembership();
               @endphp
 
-              <div class="grid grid-cols-2 gap-4">
-                  {{-- Plan Info --}}
-                  <div>
-                      <div class="flex items-center gap-1.5 mb-1">
-                        <flux:icon icon="credit-card" variant="mini" class="text-gray-400" />
-                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Plan actual</span>
-                      </div>
-                      <p class="font-medium text-gray-900">
-                          {{ $latestMembership?->planName ?? 'Sin plan' }}
-                      </p>
+              {{-- Plan Info --}}
+              <div>
+                  <div class="text-sm font-medium text-gray-500 mb-1">
+                    Plan actual
                   </div>
-
-                  {{-- Expiration Info --}}
-                  <div>
-                      <div class="flex items-center gap-1.5 mb-1">
-                        <flux:icon icon="calendar" variant="mini" class="text-gray-400" />
-                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Vencimiento</span>
-                      </div>
-                      <p class="font-medium text-gray-900">
-                          {{ $latestMembership?->lastPeriod->end_date->format('d M Y') ?? '--/--/----' }}
-                      </p>
+                  <div class="flex items-center gap-2">
+                    <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
+                    <span class="font-medium text-gray-800">
+                        {{ $latestMembership?->planName ?? 'Sin plan' }}
+                    </span>
                   </div>
               </div>
 
