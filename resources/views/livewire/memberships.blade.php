@@ -111,17 +111,12 @@
 
               <div>
                 <div class="flex items-center gap-2">
-                  <h3 class="text-lg font-bold text-gray-800">{{ $membership->id }} - {{ $membership->member->name }}</h3>
-                  <span class="inline-flex items-center rounded-md bg-blue-50 px-2.5 py-1 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
-                    {{ $membership->planType->name }}
-                  </span>
+                  <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
                 </div>
-                <div class="mt-1 flex items-center gap-2.5 text-gray-800">
-                  {{ $membership->plan->name }}
-                  <span class="font-medium text-gray-900">${{ $membership->plan->price }}</span>
+                <div class="mt-1 flex items-center gap-2.5 text-gray-900">
+                  {{ $membership->plan_name }}
                 </div>
               </div>
-
             </div>
 
             <!-- Right: Status Badge -->
@@ -140,25 +135,19 @@
           </div>
 
           <!-- Buttons: Period Summary and Actions -->
-          <div class="mt-4 pt-4 border-t border-gray-100">
+          <div class="mt-4 pt-5 border-t border-gray-100">
             <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-700">
-                @if($membership->last_period)
-                  <span class="flex items-center gap-1.5">
-                    <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual:' : 'Último periodo:' }}
-                    {{ $membership->last_period->start_date->format('d/m/Y') }} - {{ $membership->last_period->end_date->format('d/m/Y') }}
+              <div class="text-sm text-gray-800">
+                <span class="flex items-center gap-1.5">
+                  <flux:icon icon="calendar-days" variant="mini" class="text-gray-600" />
+                  {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual:' : 'Último periodo:' }}
+                  <span class="font-medium text-gray-900">
+                    @php
+                      $last_period = $membership->last_period;
+                    @endphp
+                    {{ $last_period->start_date->format('d M Y') }} -> {{ $last_period->end_date->format('d M Y') }}
                   </span>
-                  <span class="flex items-center gap-1.5 mt-5">
-                    <flux:icon icon="banknotes" variant="mini" class="text-gray-500" />
-                    {{ $membership->periods->count() }} periodos pagados
-                  </span>
-                @else
-                  <span class="flex items-center gap-1.5">
-                    <flux:icon icon="exclamation-triangle" variant="mini" class="text-gray-500" />
-                    Sin periodos registrados
-                  </span>
-                @endif
+                </span>
               </div>
 
               <div class="flex items-center gap-2">

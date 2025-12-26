@@ -33,7 +33,7 @@
                   <div>
                     <p class="text-gray-800">Plan</p>
                     <p class="font-medium text-lg text-gray-800">
-                      {{ $membership->planType->name }} • {{ $membership->plan->name }}
+                      {{ $membership->plan_name }}
                     </p>
                   </div>
                   <div>
