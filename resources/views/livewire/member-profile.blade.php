@@ -40,8 +40,7 @@
               </div>
 
               <!-- Right Column: Details (7/12 cols) -->
-              <div class="md:col-span-7 p-10 flex flex-col h-full bg-white">
-
+              <div class="md:col-span-7 p-10 pb-8 flex flex-col h-full bg-white">
                 <!-- Header -->
                 <div class="flex justify-between mb-8">
                   <div>
@@ -53,7 +52,7 @@
                       </span>
                       <span class="flex items-center gap-1.5">
                         <flux:icon icon="cake" variant="mini" class="text-gray-400" />
-                        {{ $member->getAge() ? $member->getAge() . ' años' : 'Edad N/A' }}
+                        {{ $member->getAge() ? $member->getAge() . ' años' : 'Edad desconocida' }}
                       </span>
                     </div>
                   </div>
@@ -99,42 +98,41 @@
                       </div>
                     </div>
                   @else
-                    <div class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                      <p class="text-sm font-medium text-gray-500 uppercase tracking-wide leading-loose">
-                        No cuenta con una membresía activa
+                    <div class="text-center py-9 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                      <p class="text-base font-medium text-gray-600">
+                        No tiene una membresía asignada
                       </p>
                     </div>
                   @endif
                 </div>
 
                 <!-- Secondary Metadata -->
-                <div class="mt-auto grid grid-cols-2 gap-8 pt-8 border-t border-gray-100">
+                <div class="mt-auto grid grid-cols-2 gap-8 pt-8 border-t border-gray-200">
                   <div>
-                    <span class="block text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Miembro
-                      desde</span>
-                    <span class="text-sm font-bold text-gray-700 flex items-center gap-2">
-                      <flux:icon icon="calendar-days" variant="mini" class="text-gray-400" />
+                    <span class="block text-xs text-gray-500 font-bold uppercase tracking-wide mb-1.5">
+                      Miembro desde
+                    </span>
+                    <span class="font-bold text-gray-700 flex items-center gap-2">
+                      <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
                       {{ $member->created_at->format('d M, Y') }}
                     </span>
                   </div>
                   <div>
                     <span
-                      class="block text-[10px] text-gray-400 font-bold uppercase tracking-wide mb-1.5">Antigüedad</span>
-                    <span class="text-sm font-bold text-gray-700 flex items-center gap-2">
-                      <flux:icon icon="clock" variant="mini" class="text-gray-400" />
-                      {{ $months = (int) $member->created_at->diffInMonths(now()) }}
-                      {{ $months === 1 ? 'mes' : 'meses' }}
+                      class="block text-xs text-gray-500 font-bold uppercase tracking-wide mb-1.5">Antigüedad</span>
+                    <span class="font-bold text-gray-700 flex items-center gap-2">
+                      <flux:icon icon="clock" variant="mini" class="text-gray-500" />
+                      {{ $member->antiquity }} {{ $member->antiquity === 1 ? 'mes' : 'meses' }}
                     </span>
                   </div>
                 </div>
 
                 <!-- Footer Actions -->
-                <div class="mt-10 flex items-center justify-end gap-3">
-                  <flux:button wire:click="close" variant="ghost">
+                <div class="mt-12 flex justify-end">
+                  <flux:button wire:click="close">
                     Cerrar
                   </flux:button>
                 </div>
-
               </div>
             </div>
           </div>
