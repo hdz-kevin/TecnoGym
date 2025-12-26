@@ -192,7 +192,7 @@
 
   <!-- Pagination -->
   <div class="mt-8">
-    {{ $this->members->links('pagination.members') }}
+    {{ $this->members->links('pagination.custom') }}
   </div>
 
   <!-- Create/Edit Form Modal -->

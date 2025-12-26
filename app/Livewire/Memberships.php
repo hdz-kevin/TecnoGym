@@ -18,10 +18,13 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\WithPagination;
 
 #[Title('Membresías')]
 class Memberships extends Component
 {
+    use WithPagination;
+
     // Properties for new membership form
     #[Validate('required', message: 'Elige un socio')]
     #[Validate('exists:members,id', message: 'Elige un socio válido')]
@@ -117,7 +120,7 @@ class Memberships extends Component
         })
         ->orderBy('status')
         ->orderBy('updated_at', 'desc')
-        ->get();
+        ->paginate(6);
     }
 
     /**

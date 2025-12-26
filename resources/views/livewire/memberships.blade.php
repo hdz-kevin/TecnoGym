@@ -202,6 +202,11 @@
     @endforelse
   </div>
 
+  <!-- Pagination -->
+  <div class="mt-8">
+    {{ $this->memberships->links('pagination.custom') }}
+  </div>
+
   <!-- Create Membership Modal -->
   @if($showCreateModal)
     <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeCreateModal">
