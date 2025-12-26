@@ -82,14 +82,14 @@
     <div class="flex-1 max-w-3xl">
       <div class="relative">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
         </div>
         <input type="text" placeholder="Buscar por nombre..."
           wire:model.live="search"
-          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500" />
+          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600" />
       </div>
     </div>
     <div>
@@ -130,7 +130,7 @@
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
-                <p class="text-sm text-gray-700">ID: {{ $member->id }}</p>
+                <p class="text-sm text-gray-900">#ID: {{ $member->id }}</p>
               </div>
             </div>
 
@@ -145,7 +145,7 @@
                   <div>
                       <div class="flex items-center gap-1.5 mb-1">
                         <flux:icon icon="credit-card" variant="mini" class="text-gray-400" />
-                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Plan</span>
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Plan actual</span>
                       </div>
                       <p class="font-medium text-gray-900">
                           {{ $latestMembership?->planName ?? 'Sin plan' }}
@@ -159,7 +159,7 @@
                         <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Vencimiento</span>
                       </div>
                       <p class="font-medium text-gray-900">
-                          {{ $latestMembership?->lastPeriod->end_date->format('d/m/Y') ?? '--/--/----' }}
+                          {{ $latestMembership?->lastPeriod->end_date->format('d M Y') ?? '--/--/----' }}
                       </p>
                   </div>
               </div>
@@ -192,7 +192,7 @@
 
   <!-- Pagination -->
   <div class="mt-8">
-    {{ $this->members->links() }}
+    {{ $this->members->links('pagination.members') }}
   </div>
 
   <!-- Create/Edit Form Modal -->

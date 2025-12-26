@@ -36,7 +36,7 @@
                   class="absolute bottom-4 left-4 bg-white/90 px-3.5 py-1.5 rounded-lg border border-gray-100 z-20">
                   <p class="text-base font-semibold text-gray-900">
                     <span class="uppercase tracking-wide">#ID: </span>
-                    000{{ $member->id }}
+                    {{ $member->id }}
                   </p>
                 </div>
               </div>
