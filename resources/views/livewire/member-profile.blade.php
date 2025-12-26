@@ -33,9 +33,11 @@
 
                 <!-- ID Badge on Image -->
                 <div
-                  class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm z-20">
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">ID de Socio</span>
-                  <span class="text-sm font-bold text-gray-900 ml-1 block">{{ $member->id }}</span>
+                  class="absolute bottom-4 left-4 bg-white/90 px-3.5 py-1.5 rounded-lg border border-gray-100 z-20">
+                  <p class="text-base font-semibold text-gray-900">
+                    <span class="uppercase tracking-wide">#ID: </span>
+                    000{{ $member->id }}
+                  </p>
                 </div>
               </div>
 
