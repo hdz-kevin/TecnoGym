@@ -142,11 +142,11 @@
   </flux:header>
 
   {{-- Top Header --}}
-  <section class="bg-white shadow-sm border-b border-gray-200 px-8 py-5">
+  <section class="bg-white shadow-sm border-b border-gray-200 px-8 py-4">
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-semibold text-gray-900">{{ $title ?? 'Dashboard' }}</h1>
-        <p class="text-[15px] text-gray-600 mt-1.5">{{ $subtitle ?? 'Resumen general de tu gimnasio' }}</p>
+        <p class="text-base text-gray-600 mt-0.5">{{ $subtitle ?? 'Resumen general de tu gimnasio' }}</p>
       </div>
       @isset($actions)
         <div class="flex items-center gap-3">
