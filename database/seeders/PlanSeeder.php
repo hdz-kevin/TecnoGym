@@ -28,7 +28,7 @@ class PlanSeeder extends Seeder
                 'price' => 400
             ],
             [
-                'name' => '15 días',
+                'name' => '2 Semanas',
                 'duration_value' => 2,
                 'duration_unit' => DurationUnit::WEEK,
                 'duration_in_days' => DurationUnit::WEEK->toDays() * 2,
@@ -45,7 +45,7 @@ class PlanSeeder extends Seeder
                 'price' => 350
             ],
             [
-                'name' => '15 días',
+                'name' => '2 Semanas',
                 'duration_value' => 2,
                 'duration_unit' => DurationUnit::WEEK,
                 'duration_in_days' => DurationUnit::WEEK->toDays() * 2,

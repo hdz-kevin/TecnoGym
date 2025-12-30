@@ -41,27 +41,28 @@ class MembershipSeeder extends Seeder
                             ->first();
 
         // Members
-        $members = Member::all();
+        $members = Member::inRandomOrder()->limit(30)->get();
 
-        // Memberships
-        $memberships = [
-            // General
-            ['member' => $members[0], 'plan' => $genMonthly],
-            ['member' => $members[1], 'plan' => $genMonthly],
-            ['member' => $members[5], 'plan' => $genBiweekly],
-            ['member' => $members[7], 'plan' => $genMonthly],
-            // Student
-            ['member' => $members[4], 'plan' => $stuMonthly],
-            ['member' => $members[6], 'plan' => $stuBiweekly],
-            ['member' => $members[8], 'plan' => $stuMonthly],
+        // Plans
+        $allPlans = [
+            'general' => [
+                $genMonthly,
+                $genBiweekly,
+            ],
+            'student' => [
+                $stuMonthly,
+                $stuBiweekly,
+            ]
         ];
 
         // Create memberships
-        foreach ($memberships as $membership) {
-            $plan = $membership['plan'];
+        foreach ($members as $member) {
+            $planType = (rand(1, 10) <= 7) ? 'general' : 'student';
+            $plans = $allPlans[$planType];
+            $plan = $plans[array_rand($plans)];
 
             Membership::create([
-                'member_id' => $membership['member']->id,
+                'member_id' => $member->id,
                 'plan_id' => $plan->id,
                 'plan_type_id' => $plan->plan_type_id,
             ]);
