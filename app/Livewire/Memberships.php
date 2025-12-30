@@ -120,7 +120,6 @@ class Memberships extends Component
         ->when($this->statusFilter, function ($query) {
             $query->where('status', $this->statusFilter->value);
         })
-        ->orderBy('status')
         ->orderBy('updated_at', 'desc')
         ->paginate(4);
     }
