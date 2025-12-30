@@ -1,4 +1,4 @@
-<x-slot:subtitle>Configura los tipos de planes y sus opciones de duración</x-slot:subtitle>
+<x-slot:subtitle>Configura los planes disponibles para tu gimnasio</x-slot:subtitle>
 
 <div>
   <div class="p-6 pt-4 space-y-6">
