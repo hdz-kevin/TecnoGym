@@ -152,7 +152,7 @@
           </div>
 
           <!-- Actions Footer -->
-          <div class="flex justify-end gap-3 mt-2">
+          <div class="flex justify-end gap-3 mt-3">
             <flux:button
               size="sm"
               variant="outline"

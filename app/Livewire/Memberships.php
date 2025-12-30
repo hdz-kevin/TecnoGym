@@ -122,7 +122,7 @@ class Memberships extends Component
         })
         ->orderBy('status')
         ->orderBy('updated_at', 'desc')
-        ->paginate(6);
+        ->paginate(4);
     }
 
     /**
