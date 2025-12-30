@@ -127,6 +127,9 @@
               <div>
                 <div class="flex items-center gap-2">
                   <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
+                  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-sm font-medium text-gray-700 border border-gray-200">
+                    <span class="text-gray-500">#</span>{{ $membership->member->code }}
+                  </span>
                 </div>
                 <div class="mt-1 flex items-center gap-2.5 text-gray-900">
                   {{ $membership->plan_name }}
