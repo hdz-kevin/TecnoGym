@@ -88,116 +88,123 @@
   </div>
 
   <!-- Memberships List -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-    @forelse($this->memberships as $membership)
-      <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative flex flex-col"
-        wire:key="{{ $membership->id }}">
-        <!-- Status Badge -->
-        <div class="absolute top-6 right-6">
-          @php
-            $status = $membership->status;
-          @endphp
-          <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
-            {{
-              $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-            }}"
-          >
-            {{ $status->label() }}
-          </span>
-        </div>
-
-        <div class="p-6 flex-1">
-          <div class="flex items-center mb-6">
-            <!-- Left: Member and Plan Info -->
-            <div class="flex items-center space-x-4">
-              <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center">
-                @if($membership->member->photo)
-                  <img
-                    src="{{ Storage::url($membership->member->photo) }}"
-                    class="h-full w-full rounded-full object-cover"
-                    alt="{{ $membership->member->name }}"
-                  />
-                @else
-                  <span class="text-lg font-semibold text-gray-600">
-                    {{ $membership->member->initials() }}
-                  </span>
-                @endif
-              </div>
-
-              <div>
-                <div class="flex items-center gap-2">
-                  <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
-                  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-sm font-medium text-gray-700 border border-gray-200">
-                    <span class="text-gray-500">#</span>{{ $membership->member->code }}
-                  </span>
-                </div>
-                <div class="mt-1 flex items-center gap-2.5 text-gray-900">
-                  {{ $membership->plan_name }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Period Info -->
-          <div>
-            <div class="text-sm font-medium text-gray-500 mb-1">
-              {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
-            </div>
-            <div class="flex items-center gap-2">
-              <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-              <span class="font-medium text-gray-800">
-                @php
-                  $last_period = $membership->last_period;
-                @endphp
-                {{ $last_period->start_date->format('d M Y') }} -> {{ $last_period->end_date->format('d M Y') }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Actions Footer -->
-          <div class="flex justify-end gap-3 mt-3">
-            <flux:button
-              size="sm"
-              variant="outline"
-              icon="chart-bar"
-              wire:click="$dispatch('open-history-modal', { membership: {{ $membership->id }} })"
-            >
-              Ver Historial
-            </flux:button>
-
-            @if ($membership->status == MembershipStatus::EXPIRED)
-              <flux:button
-                size="sm"
-                variant="primary"
-                icon="plus"
-                wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
-              >
-                Nuevo Periodo
-              </flux:button>
-            @endif
-          </div>
-        </div>
+  @if($this->memberships->isEmpty())
+    <div class="text-center py-20">
+      <div class="text-gray-400 mb-3">
+        <flux:icon icon="credit-card" class="mx-auto h-12 w-12" />
       </div>
-    @empty
-      <div class="text-center py-12">
-        <div class="text-gray-400 mb-4">
-          <flux:icon icon="credit-card" class="mx-auto h-12 w-12" />
-        </div>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No hay membresías</h3>
-        <p class="mt-1 text-sm text-gray-500">Comienza creando una nueva membresía para tus socios.</p>
+      @if ($this->statusFilter || $this->search)
+        <h3 class="mt-2 font-medium text-gray-900">No hay resultados</h3>
+        <p class="mt-1.5 text-sm text-gray-600">No hay membresías que coincidan con tu búsqueda.</p>
+      @else
+        <h3 class="mt-2 font-medium text-gray-900">No hay membresías registradas</h3>
+        <p class="mt-1.5 text-sm text-gray-600">Comienza creando una nueva membresía.</p>
         <div class="mt-6">
-          <flux:button variant="primary" icon="plus" wire:click="createMembership">
+          <flux:button variant="primary" icon="plus" wire:click="createMembershipModal">
             Nueva Membresía
           </flux:button>
         </div>
-      </div>
-    @endforelse
-  </div>
+      @endif
+    </div>
+  @else
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      @foreach($this->memberships as $membership)
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative flex flex-col"
+          wire:key="{{ $membership->id }}">
+          <!-- Status Badge -->
+          <div class="absolute top-6 right-6">
+            @php
+              $status = $membership->status;
+            @endphp
+            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
+              {{
+                $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+              }}"
+            >
+              {{ $status->label() }}
+            </span>
+          </div>
 
-  <!-- Pagination -->
-  <div class="mt-8">
-    {{ $this->memberships->links('pagination.custom') }}
-  </div>
+          <div class="p-6 flex-1">
+            <div class="flex items-center mb-6">
+              <!-- Left: Member and Plan Info -->
+              <div class="flex items-center space-x-4">
+                <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center">
+                  @if($membership->member->photo)
+                    <img
+                      src="{{ Storage::url($membership->member->photo) }}"
+                      class="h-full w-full rounded-full object-cover"
+                      alt="{{ $membership->member->name }}"
+                    />
+                  @else
+                    <span class="text-lg font-semibold text-gray-600">
+                      {{ $membership->member->initials() }}
+                    </span>
+                  @endif
+                </div>
+
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
+                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-sm font-medium text-gray-700 border border-gray-200">
+                      <span class="text-gray-500">#</span>{{ $membership->member->code }}
+                    </span>
+                  </div>
+                  <div class="mt-1 flex items-center gap-2.5 text-gray-900">
+                    {{ $membership->plan_name }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Period Info -->
+            <div>
+              <div class="text-sm font-medium text-gray-500 mb-1">
+                {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
+              </div>
+              <div class="flex items-center gap-2">
+                <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
+                <span class="font-medium text-gray-800">
+                  @php
+                    $last_period = $membership->last_period;
+                  @endphp
+                  {{ $last_period->start_date->format('d M Y') }} -> {{ $last_period->end_date->format('d M Y') }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Actions Footer -->
+            <div class="flex justify-end gap-3 mt-3">
+              <flux:button
+                size="sm"
+                variant="outline"
+                icon="chart-bar"
+                wire:click="$dispatch('open-history-modal', { membership: {{ $membership->id }} })"
+              >
+                Ver Historial
+              </flux:button>
+
+              @if ($membership->status == MembershipStatus::EXPIRED)
+                <flux:button
+                  size="sm"
+                  variant="primary"
+                  icon="plus"
+                  wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
+                >
+                  Nuevo Periodo
+                </flux:button>
+              @endif
+            </div>
+          </div>
+        </div>
+      @endforeach
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-8">
+      {{ $this->memberships->links('pagination.custom') }}
+    </div>
+  @endif
 
   <!-- Create Membership Modal -->
   @if($showCreateModal)
