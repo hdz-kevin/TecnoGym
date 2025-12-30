@@ -124,6 +124,7 @@ class Members extends Component
         }
 
         if ($this->editingMember?->photo) {
+            // Delete existing photo if a new one is uploaded or the existing photo is removed
             if ($this->photo || $this->existing_photo === '') {
                 File::delete(storage_path('app/public/' . $this->editingMember->photo));
             } else {
@@ -135,7 +136,7 @@ class Members extends Component
             $this->editingMember->update($validated);
             $flashMessage = 'Socio actualizado exitosamente.';
         } else {
-            Member::create($validated);
+            Member::create($validated)->generateCode();
             $flashMessage = 'Socio creado exitosamente.';
         }
 
