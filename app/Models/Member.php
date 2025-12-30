@@ -16,6 +16,7 @@ class Member extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'status',
         'gender',
         'birth_date',
@@ -68,6 +69,20 @@ class Member extends Model
         return $this->memberships()
                     ->orderBy('updated_at', 'desc')
                     ->first();
+    }
+
+    /**
+     * Generate a code based on the member's id and save it.
+     * The code is a 4-digit number padded with zeros.
+     *
+     * @return string
+     */
+    public function generateCode(): string
+    {
+        $this->code = Str::padLeft($this->id, 4, '0');
+        $this->save();
+
+        return $this->code;
     }
 
     /**

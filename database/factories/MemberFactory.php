@@ -3,7 +3,9 @@
 namespace Database\Factories;
 
 use App\Enums\MemberGender;
+use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Member>
@@ -25,5 +27,13 @@ class MemberFactory extends Factory
             'birth_date' => fake()->date(),
             'photo' => null,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(fn (Member $member) => $member->generateCode());
     }
 }

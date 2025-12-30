@@ -129,7 +129,9 @@
               </div>
               <div>
                 <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
-                <p class="text-sm text-gray-900">#ID: {{ $member->id }}</p>
+                <p class="text-gray-900">
+                  <span class="text-gray-500">#</span>{{ $member->code }}
+                </p>
               </div>
             </div>
 
