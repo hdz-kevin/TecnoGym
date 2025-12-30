@@ -99,87 +99,107 @@
     </div>
   </div>
 
-  <!-- Members Grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-    @foreach ($this->members as $member)
-      <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative">
-        <!-- Status Badge -->
-        <div class="absolute top-4 right-4">
-          <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
-            {{ $member->status == MemberStatus::ACTIVE ? 'bg-green-100 text-green-800' :
-              ($member->status == MemberStatus::EXPIRED ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-            {{ $member->status->label() }}
-          </span>
+  {{-- Members List --}}
+  @if($this->members->isEmpty())
+    <div class="text-center py-20">
+      <div class="text-gray-400 mb-3">
+        <flux:icon icon="users" class="mx-auto h-12 w-12" />
+      </div>
+      @if ($this->statusFilter || $this->search)
+        <h3 class="mt-2 font-medium text-gray-900">No hay resultados</h3>
+        <p class="mt-1.5 text-sm text-gray-600">No hay socios que coincidan con tu búsqueda.</p>
+      @else
+        <h3 class="mt-2 font-medium text-gray-900">No hay socios registrados</h3>
+        <p class="mt-1.5 text-sm text-gray-600">Comienza registrando un nuevo socio.</p>
+        <div class="mt-6">
+          <flux:button variant="primary" icon="plus" wire:click="createMemberModal">
+            Nuevo Socio
+          </flux:button>
         </div>
+      @endif
+    </div>
+  @else
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+      @foreach ($this->members as $member)
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative">
+          <!-- Status Badge -->
+          <div class="absolute top-4 right-4">
+            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
+              {{ $member->status == MemberStatus::ACTIVE ? 'bg-green-100 text-green-800' :
+                ($member->status == MemberStatus::EXPIRED ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+              {{ $member->status->label() }}
+            </span>
+          </div>
 
-        <div class="p-6">
-          <div class="space-y-3.5">
-            <!-- Member Info -->
-            <div class="flex items-center space-x-4">
-              <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 transition-all">
-                @if($member->photo)
-                  <img
-                    src="{{ Storage::url($member->photo) }}"
-                    class="h-full w-full object-cover"
-                    alt="{{ $member->name }}"
-                  />
-                @else
-                  <span class="text-xl font-semibold text-gray-700">{{ $member->initials() }}</span>
-                @endif
-              </div>
-              <div>
-                <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
-                <p class="text-gray-900">
-                  <span class="text-gray-500">#</span>{{ $member->code }}
-                </p>
-              </div>
-            </div>
-
-            <!-- Member Details -->
-            <div class="space-y-5 py-2.5">
-              @php
-                  $latestMembership = $member->latestMembership();
-              @endphp
-
-              {{-- Plan Info --}}
-              <div>
-                  <div class="text-sm font-medium text-gray-500 mb-1">
-                    Plan actual
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
-                    <span class="font-medium text-gray-800">
-                        {{ $latestMembership?->planName ?? 'Sin plan' }}
-                    </span>
-                  </div>
+          <div class="p-6">
+            <div class="space-y-3.5">
+              <!-- Member Info -->
+              <div class="flex items-center space-x-4">
+                <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 transition-all">
+                  @if($member->photo)
+                    <img
+                      src="{{ Storage::url($member->photo) }}"
+                      class="h-full w-full object-cover"
+                      alt="{{ $member->name }}"
+                    />
+                  @else
+                    <span class="text-xl font-semibold text-gray-700">{{ $member->initials() }}</span>
+                  @endif
+                </div>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
+                  <p class="text-gray-900">
+                    <span class="text-gray-500">#</span>{{ $member->code }}
+                  </p>
+                </div>
               </div>
 
-              {{-- Member Since --}}
-              <div class="flex items-center gap-1.5 text-sm font-medium text-gray-600">
-                 <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-                 <span>Miembro desde {{ $member->created_at->format('d M Y') }}</span>
-              </div>
-            </div>
+              <!-- Member Details -->
+              <div class="space-y-5 py-2.5">
+                @php
+                    $latestMembership = $member->latestMembership();
+                @endphp
 
-            <!-- Actions -->
-            <div class="flex items-center justify-end gap-3">
-              <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
-                Editar
-              </flux:button>
-              <flux:button size="sm" variant="outline" wire:click="$dispatch('show-member-profile', { member: {{ $member->id }} })">
-                Ver
-              </flux:button>
+                {{-- Plan Info --}}
+                <div>
+                    <div class="text-sm font-medium text-gray-500 mb-1">
+                      Plan actual
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
+                      <span class="font-medium text-gray-800">
+                          {{ $latestMembership?->planName ?? 'Sin plan' }}
+                      </span>
+                    </div>
+                </div>
+
+                {{-- Member Since --}}
+                <div class="flex items-center gap-1.5 text-sm font-medium text-gray-600">
+                   <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
+                   <span>Miembro desde {{ $member->created_at->format('d M Y') }}</span>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="flex items-center justify-end gap-3">
+                <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
+                  Editar
+                </flux:button>
+                <flux:button size="sm" variant="outline" wire:click="$dispatch('show-member-profile', { member: {{ $member->id }} })">
+                  Ver
+                </flux:button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    @endforeach
-  </div>
+      @endforeach
+    </div>
 
-  <!-- Pagination -->
-  <div class="mt-8">
-    {{ $this->members->links('pagination.custom') }}
-  </div>
+    <!-- Pagination -->
+    <div class="mt-8">
+      {{ $this->members->links('pagination.custom') }}
+    </div>
+  @endif
 
   <!-- Create/Edit Form Modal -->
   @if ($showFormModal)
