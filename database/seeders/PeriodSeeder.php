@@ -26,8 +26,8 @@ class PeriodSeeder extends Seeder
 
             $periodsToCreate = rand(1, 6);
 
-            // Start a few months ago. Few periods are created on the current date.
-            $startDate = Carbon::now()->subMonths(ceil($periodsToCreate / 1.6) + 1);
+            // Start a few months ago
+            $startDate = Carbon::now()->subMonths(ceil($periodsToCreate / 2.5));
 
             for ($i = 0; $i < $periodsToCreate; $i++) {
                 $periodStart = $startDate->copy();

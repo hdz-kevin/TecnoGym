@@ -41,7 +41,7 @@ class MembershipSeeder extends Seeder
                             ->first();
 
         // Members
-        $members = Member::inRandomOrder()->limit(30)->get();
+        $members = Member::inRandomOrder()->limit(80)->get();
 
         // Plans
         $allPlans = [
