@@ -176,8 +176,9 @@
 
                 <div class="flex items-center gap-2">
                   <flux:icon icon="clock" variant="mini" class="text-gray-500" />
-                <span class="font-medium text-gray-800">
-                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en 3 semanas y 5 días' : 'Venció hace 1 semana y 5 días' }}
+                  <span class="font-medium text-gray-800">
+                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en ' : 'Venció hace ' }}
+                    {{ $membership->expiration_time }}
                   </span>
                 </div>
               </div>

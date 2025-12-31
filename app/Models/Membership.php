@@ -88,6 +88,29 @@ class Membership extends Model
     }
 
     /**
+     * Get the formatted expiration time string.
+     *
+     * @return string|null
+     */
+    public function getExpirationTimeAttribute(): ?string
+    {
+        $lastPeriod = $this->last_period;
+
+        if (!$lastPeriod) {
+            return null;
+        }
+
+        $endDate = $lastPeriod->end_date;
+
+        return $endDate->locale('es')
+                       ->diffForHumans(now(), [
+                           'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
+                           'parts' => 2,
+                           'join' => true,
+                       ]);
+    }
+
+    /**
      * Get the total amount paid for the membership by summing the price_paid of all periods.
      *
      * @return int
