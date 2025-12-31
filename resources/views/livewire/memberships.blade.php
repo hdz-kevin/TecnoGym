@@ -73,7 +73,7 @@
         </div>
         <input
           type="text"
-          placeholder="Buscar por socio..."
+          placeholder="Buscar por socio o código..."
           wire:model.live="search"
           class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500"
         />
@@ -158,23 +158,32 @@
             </div>
 
             <!-- Period Info -->
-            <div>
-              <div class="text-sm font-medium text-gray-500 mb-1">
-                {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
-              </div>
-              <div class="flex items-center gap-2">
-                <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
+              <div class="flex items-end justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-500 mb-1">
+                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
+                    <span class="font-medium text-gray-800">
+                      @php
+                        $last_period = $membership->last_period;
+                      @endphp
+                      {{ $last_period->start_date->format('d M Y') }} -> {{ $last_period->end_date->format('d M Y') }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <flux:icon icon="clock" variant="mini" class="text-gray-500" />
                 <span class="font-medium text-gray-800">
-                  @php
-                    $last_period = $membership->last_period;
-                  @endphp
-                  {{ $last_period->start_date->format('d M Y') }} -> {{ $last_period->end_date->format('d M Y') }}
-                </span>
+                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en 3 semanas y 5 días' : 'Venció hace 1 semana y 5 días' }}
+                  </span>
+                </div>
               </div>
-            </div>
 
             <!-- Actions Footer -->
-            <div class="flex justify-end gap-3 mt-3">
+            <div class="flex justify-end gap-3 mt-7">
               <flux:button
                 size="sm"
                 variant="outline"
