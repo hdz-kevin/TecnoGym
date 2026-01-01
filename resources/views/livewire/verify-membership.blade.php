@@ -20,7 +20,7 @@
                         autofocus
                         autocomplete="off"
                     />
-                    @error('code') <span class="text-red-500 text-sm block text-center">{{ $message }}</span> @enderror
+                    <flux:error name="code" class="text-center text-base!" />
                 </div>
 
                 <button type="submit" class="w-5/6 mx-auto h-14 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full text-lg font-bold hover:opacity-90 transition-opacity">

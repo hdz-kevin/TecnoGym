@@ -4,10 +4,13 @@ namespace App\Livewire;
 
 use App\Enums\MembershipStatus;
 use App\Models\Member;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class VerifyMembership extends Component
 {
+    #[Rule('required', message: 'El código es obligatorio')]
+    #[Rule('size:4', message: 'El código debe tener 4 dígitos')]
     public $code = '';
     public $member = null;
     public $status = null; // 'active', 'expired', 'not_found'
@@ -15,9 +18,7 @@ class VerifyMembership extends Component
 
     public function check()
     {
-        $this->validate([
-            'code' => 'required|string|min:4',
-        ]);
+        $this->validate();
 
         $member = Member::where('code', $this->code)->first();
 
