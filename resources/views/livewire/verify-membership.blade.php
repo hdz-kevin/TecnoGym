@@ -1,12 +1,12 @@
 <div class="flex flex-col md:flex-row h-[calc(100vh-14rem)] w-full max-w-7xl mx-auto items-center">
     {{-- Left Column: Input Form --}}
     <div class="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 space-y-12">
-        <div class="space-y-4">
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white">Verificar Socio</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-xl">Sistema de consulta de estado de membresía en tiempo real.</p>
+        <div class="space-y-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Verificar Membresía</h1>
+            <p class="text-gray-500 dark:text-zinc-400 text-lg">Ingresar el código de socio para verificar su membresía.</p>
         </div>
 
-        <div class="w-full max-w-md">
+        <div class="w-full max-w-md mx-auto">
             <form wire:submit="check" class="flex flex-col gap-8">
                 <div class="space-y-2">
                     <label for="code" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 sr-only">Código de Socio</label>
@@ -15,7 +15,7 @@
                         id="code"
                         wire:model="code"
                         placeholder="0001"
-                        class="block w-full text-center text-6xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-300 bg-transparent py-4 focus:ring-0 focus:border-indigo-600 transition-colors placeholder-zinc-300 outline-none text-zinc-900"
+                        class="block w-full text-center text-5xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-300 bg-transparent py-3 focus:ring-0 focus:border-indigo-600 transition-colors placeholder-gray-300 outline-none text-gray-800"
                         maxlength="4"
                         autofocus
                         autocomplete="off"
@@ -23,15 +23,15 @@
                     @error('code') <span class="text-red-500 text-sm block text-center">{{ $message }}</span> @enderror
                 </div>
 
-                <button type="submit" class="w-full h-16 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full text-xl font-bold hover:opacity-90 transition-opacity">
-                    Consultar Estado
+                <button type="submit" class="w-5/6 mx-auto h-14 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full text-lg font-bold hover:opacity-90 transition-opacity">
+                    Verificar
                 </button>
             </form>
         </div>
     </div>
 
     {{-- Vertical Divider (only visible on md+) --}}
-    <div class="hidden md:block h-3/4 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+    <div class="hidden md:block h-full w-px bg-zinc-200 dark:bg-zinc-800"></div>
 
     {{-- Right Column: Result Display --}}
     <div class="w-full md:w-1/2 h-full flex items-center justify-center px-8 md:px-16">
