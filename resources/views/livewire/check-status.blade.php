@@ -1,4 +1,4 @@
-<div class="flex flex-col md:flex-row h-[calc(100vh-100px)] w-full max-w-7xl mx-auto items-center">
+<div class="flex flex-col md:flex-row h-[calc(100vh-14rem)] w-full max-w-7xl mx-auto items-center">
     {{-- Left Column: Input Form --}}
     <div class="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 space-y-12">
         <div class="space-y-4">
