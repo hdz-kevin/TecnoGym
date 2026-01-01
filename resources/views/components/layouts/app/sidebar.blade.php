@@ -30,6 +30,10 @@
         <flux:navlist.item icon="calendar-days" :href="route('dashboard')" :current="request()->routeIs('/')" wire:navigate>
           {{ __('Visitas') }}
         </flux:navlist.item>
+
+        <flux:navlist.item icon="qr-code" :href="route('check-status')" :current="request()->routeIs('check-status')" wire:navigate>
+          {{ __('Verificar') }}
+        </flux:navlist.item>
       </flux:navlist.group>
 
       <flux:navlist.group :heading="__('Configuración')" class="grid">
