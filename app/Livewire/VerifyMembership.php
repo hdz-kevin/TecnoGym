@@ -6,7 +6,7 @@ use App\Enums\MembershipStatus;
 use App\Models\Member;
 use Livewire\Component;
 
-class CheckStatus extends Component
+class VerifyMembership extends Component
 {
     public $code = '';
     public $member = null;
@@ -47,6 +47,6 @@ class CheckStatus extends Component
 
     public function render()
     {
-        return view('livewire.check-status');
+        return view('livewire.verify-membership');
     }
 }

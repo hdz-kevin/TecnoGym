@@ -6,7 +6,7 @@ use App\Livewire\Plans;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
-use App\Livewire\CheckStatus;
+use App\Livewire\VerifyMembership;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members', Members::class)->name('members.index');
     Route::get('plans', Plans::class)->name('plans.index');
     Route::get('memberships', Memberships::class)->name('memberships.index');
-    Route::get('check-status', CheckStatus::class)->name('check-status');
+    Route::get('verify-membership', VerifyMembership::class)->name('verify-membership');
 });
 
 require __DIR__.'/auth.php';
