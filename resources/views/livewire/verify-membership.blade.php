@@ -116,13 +116,15 @@
         </div>
       @elseif ($status === 'not_found')
         <div class="p-12 text-center flex flex-col items-center justify-center min-h-[580px]">
-             <div class="inline-flex p-8 bg-red-50 dark:bg-red-900/20 rounded-full ring-1 ring-red-100 dark:ring-red-900/30 mb-8">
-                <flux:icon icon="user-minus" class="size-20 text-red-600 dark:text-red-400" variant="solid" />
+             <div class="inline-flex p-8 bg-red-100 rounded-full ring-1 ring-red-200 mb-8">
+                <flux:icon icon="user" class="size-20 text-red-700" variant="solid" />
             </div>
             <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Socio No Encontrado</h2>
-            <p class="text-xl text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-10">{{ $message }}</p>
+            <p class="text-xl text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-8">
+              Código no encontrado. Por favor verifique e intente nuevamente.
+            </p>
 
-            <flux:button wire:click="close" variant="filled" class="min-w-[150px]">
+            <flux:button wire:click="close">
                 Intentar de nuevo
             </flux:button>
         </div>

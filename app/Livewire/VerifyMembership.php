@@ -17,14 +17,6 @@ class VerifyMembership extends Component
     public $message = '';
     public $showModal = false;
 
-    public function mount()
-    {
-        $this->code = '0003';
-        $this->member = Member::where('code', $this->code)->first();
-        $this->status = 'no_membership';
-        $this->showModal = true;
-    }
-
     public function check()
     {
         $this->validate();
