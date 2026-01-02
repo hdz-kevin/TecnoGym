@@ -1,141 +1,127 @@
-<div class="flex flex-col md:flex-row h-[calc(100vh-14rem)] w-full max-w-7xl mx-auto items-center">
-  {{-- Left Column: Input Form --}}
-  <div class="w-full md:w-5/12 flex flex-col justify-center px-8 md:px-16 space-y-12">
+<div class="flex flex-col h-[calc(100vh-14rem)] w-full max-w-7xl mx-auto items-center justify-center">
+  {{-- Centered Input Form --}}
+  <div class="w-full max-w-lg flex flex-col justify-center px-8 space-y-12">
     <div class="space-y-4 text-center">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Verificar Membresía</h1>
-      <p class="text-gray-500 text-lg">Ingresar el código de socio para verificar su membresía.</p>
+      <h1 class="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">Verificar Membresía</h1>
+      <p class="text-gray-500 text-xl">Ingresar el código de socio para verificar status.</p>
     </div>
 
-    <div class="w-full max-w-md mx-auto">
-      <form wire:submit="check" class="flex flex-col gap-8">
+    <div class="w-full">
+      <form wire:submit="check" class="flex flex-col gap-10">
         <div class="space-y-2">
           <label for="code" class="block text-sm font-medium text-zinc-700 sr-only">Código de
             Socio</label>
-          <input type="text" id="code" wire:model="code" placeholder="0001"
-            class="block w-full text-center text-5xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-300 bg-transparent py-3 focus:ring-0 focus:border-indigo-600 transition-colors placeholder-gray-300 outline-none text-gray-800"
+          <input type="text" id="code" wire:model="code" placeholder="0000"
+            class="block w-full text-center text-7xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-200 bg-transparent py-4 focus:ring-0 focus:border-indigo-600 transition-colors placeholder-gray-200 outline-none text-gray-900 "
             maxlength="4" autofocus autocomplete="off" />
-          <flux:error name="code" class="text-center text-base!" />
+          <flux:error name="code" class="text-center text-lg!" />
         </div>
 
         <button type="submit"
-          class="w-5/6 mx-auto h-14 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full text-lg font-bold hover:opacity-90 transition-opacity">
+          class="w-full h-16 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-full text-xl font-bold hover:opacity-90 transition-all transform active:scale-95 shadow-lg">
           Verificar
         </button>
       </form>
     </div>
   </div>
 
-  {{-- Vertical Divider (only visible on md+) --}}
-  <div class="hidden md:block h-3/4 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+  {{-- Result Modal --}}
+  <flux:modal wire:model="showModal" class="min-w-3/5 p-0! overflow-hidden bg-white dark:bg-zinc-900">
+      @if ($member)
+        <div class="grid grid-cols-1 md:grid-cols-12 bg-white dark:bg-zinc-900 min-h-[580px]">
+            {{-- Left Column: Large Image --}}
+            <div class="md:col-span-6 relative bg-gray-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+                @if ($member->photo)
+                    <img src="{{ Storage::url($member->photo) }}" class="absolute inset-0 w-full h-full object-cover"
+                        alt="{{ $member->name }}" />
+                    <div class="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/60 to-transparent pointer-events-none"></div>
+                @else
+                    <div class="flex flex-col items-center justify-center text-gray-400 p-8 text-center">
+                        <div class="w-32 h-32 bg-gray-200 dark:bg-zinc-700 rounded-full flex items-center justify-center mb-4">
+                             <span class="text-5xl font-bold text-gray-400 dark:text-zinc-500">{{ $member->initials() }}</span>
+                        </div>
+                    </div>
+                @endif
 
-  {{-- Right Column: Result Display --}}
-  <div class="w-full md:w-7/12 h-full flex flex-col items-center justify-center px-8 py-12">
-    @if ($status)
-      <div class="w-full max-w-4xl animate-in fade-in slide-in-from-right-8 duration-500">
+                {{-- ID Badge --}}
+                <div
+                  class="absolute bottom-4 left-4 bg-white/90 px-3.5 py-1.5 rounded-lg border border-gray-100 z-20">
+                  <p class="text-lg font-semibold text-gray-900">
+                    <span class="text-gray-600">#</span>{{ $member->code }}
+                  </p>
+                </div>
+            </div>
 
-        @if ($status === 'not_found')
-          <div class="text-center space-y-6">
-            <div class="inline-flex p-8 bg-red-50 dark:bg-red-900/20 rounded-full ring-1 ring-red-100 dark:ring-red-900/30">
+            {{-- Right Column: Details --}}
+            <div class="md:col-span-6 p-10 px-8 flex flex-col justify-between h-full bg-white dark:bg-zinc-900">
+                <div>
+                   <div class="flex justify-between items-start mb-2">
+                        <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight mb-2">
+                            {{ $member->name }}
+                        </h2>
+                   </div>
+                    <p class="text-xl text-gray-700 dark:text-gray-400 font-medium mb-12">
+                         {{ $member->activeMembership()?->plan_name ?? $member->latestMembership()?->plan_name ?? '' }}
+                    </p>
+
+                    <div class="space-y-6">
+                        @if ($status === 'active')
+                            <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-green-100 text-green-800 border border-green-200">
+                                <flux:icon icon="check-circle" class="size-6" variant="mini"/>
+                                <span class="font-bold uppercase text-lg">Membresía Activa</span>
+                            </div>
+
+                            <div>
+                                <p class="text-lg font-semibold text-gray-600 mb-1">Vence en</p>
+                                <p class="text-4xl font-bold text-gray-900 dark:text-white">
+                                    {{ $member->activeMembership()?->expiration_time ?? '-' }}
+                                </p>
+                            </div>
+
+                         @elseif ($status === 'expired')
+                            <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-red-100 text-red-800 border border-red-200">
+                                <flux:icon icon="x-circle" class="size-6" variant="mini"/>
+                                <span class="uppercase font-bold text-lg">Membresía Vencida</span>
+                            </div>
+
+                            <div>
+                                <p class="text-lg font-semibold text-gray-600 mb-1">Venció hace</p>
+                                <p class="text-4xl font-bold text-gray-900 dark:text-white">
+                                     {{ $member->latestMembership()?->expiration_time ?? '-' }}
+                                </p>
+                            </div>
+
+                        @elseif ($status === 'no_membership')
+                            <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
+                                <flux:icon icon="information-circle" class="size-6" variant="mini"/>
+                                <span class="uppercase font-bold text-lg">Sin membresía</span>
+                            </div>
+                            <p class="text-lg text-gray-500 mt-4 leading-relaxed">
+                                El socio aún no cuenta con una membresía.
+                            </p>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-8">
+                     <flux:button wire:click="close" variant="filled" class="w-full md:w-auto min-w-[120px]">
+                        Cerrar
+                    </flux:button>
+                </div>
+            </div>
+        </div>
+      @elseif ($status === 'not_found')
+        <div class="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
+             <div class="inline-flex p-8 bg-red-50 dark:bg-red-900/20 rounded-full ring-1 ring-red-100 dark:ring-red-900/30 mb-8">
                 <flux:icon icon="user-minus" class="size-20 text-red-600 dark:text-red-400" variant="solid" />
             </div>
-            <h2 class="text-4xl font-bold text-zinc-900 dark:text-white">Socio No Encontrado</h2>
-            <p class="text-2xl text-zinc-500 dark:text-zinc-400 max-w-lg mx-auto">{{ $message }}</p>
-          </div>
-        @else
-          {{-- Member Details (Direct Layout, No Card) --}}
-          <div class="flex flex-col lg:flex-row gap-8 items-center lg:items-start text-center lg:text-left">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Socio No Encontrado</h2>
+            <p class="text-xl text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-10">{{ $message }}</p>
 
-            {{-- Photo Column --}}
-            <div class="shrink-0 relative">
-               {{-- Status Indicator on Photo --}}
-                {{-- <div @class([
-                    'absolute -top-2 -right-2 size-8 rounded-full border-4 border-white dark:border-zinc-900 shadow-md',
-                    'bg-emerald-500' => $status === 'active',
-                    'bg-red-500' => $status === 'expired',
-                    'bg-blue-500' => $status === 'no_membership',
-                ])></div> --}}
-
-              @if ($member->photo)
-                <img src="{{ Storage::url($member->photo) }}"
-                      class="size-80 object-cover rounded-3xl shadow-lg bg-zinc-100 dark:bg-zinc-800 ring-1 ring-black/5 dark:ring-white/10"
-                      alt="{{ $member->name }}">
-              @else
-                <div class="size-64 flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-3xl ring-1 ring-black/5 dark:ring-white/10 shadow-lg">
-                  <span class="text-7xl font-bold text-zinc-300 dark:text-zinc-600">{{ $member->initials() }}</span>
-                </div>
-              @endif
-            </div>
-
-            {{-- Details Column --}}
-            <div class="flex-1 min-w-0 w-full py-2">
-              <div class="space-y-3 mb-8">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-white leading-none tracking-tight break-words">{{ $member->name }}</h2>
-                {{-- <div class="flex items-center justify-center lg:justify-start gap-4">
-                    <span class="text-lg font-mono font-medium text-zinc-400 dark:text-zinc-500">
-                    #{{ $member->code }}
-                  </span>
-                </div> --}}
-              </div>
-
-              <div class="mb-7">
-                <p class="text-sm font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-2">Plan Actual</p>
-                <p class="text-xl font-bold text-zinc-800 dark:text-zinc-100 leading-tight">
-                      {{ $member->activeMembership()?->plan_name ?? $member->latestMembership()?->plan_name ?? 'Sin plan asignado' }}
-                </p>
-              </div>
-
-              <div class="space-y-4">
-                @if ($status === 'active')
-                  <div class="inline-flex items-center gap-3 text-emerald-600 dark:text-emerald-400 text-lg font-bold">
-                      <div class="relative flex h-4 w-4">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
-                      </div>
-                      MEMBRESÍA ACTIVA
-                  </div>
-
-                  <div class="mt-2">
-                    <p class="text-sm font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">Vence el</p>
-                    <p class="text-3xl font-black text-zinc-900 dark:text-white tracking-tight">
-                        {{ $member->activeMembership()?->expiration_time ?? 'Fecha desconocida' }}
-                    </p>
-                  </div>
-
-                @elseif ($status === 'expired')
-                   <div class="inline-flex items-center gap-3 text-red-600 dark:text-red-400 text-2xl font-bold">
-                      <flux:icon icon="x-circle" class="size-7 stroke-2" />
-                      MEMBRESÍA VENCIDA
-                  </div>
-
-                  <div class="mt-2">
-                    <p class="text-sm font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">Venció el</p>
-                    <p class="text-4xl font-black text-zinc-900 dark:text-white tracking-tight">
-                          {{ $member->latestMembership()?->expiration_time ?? '-' }}
-                    </p>
-                  </div>
-
-                @elseif ($status === 'no_membership')
-                    <div class="inline-flex items-center gap-3 text-blue-600 dark:text-blue-400 text-2xl font-bold">
-                      <flux:icon icon="information-circle" class="size-7 stroke-2" />
-                      SIN MEMBRESÍA
-                  </div>
-                  <p class="text-xl text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed max-w-md mx-auto lg:mx-0">
-                    El socio no cuenta con un historial de membresías activo.
-                  </p>
-                @endif
-              </div>
-
-            </div>
-          </div>
-        @endif
-
-      </div>
-    @else
-      {{-- Idle State Placeholder --}}
-      <div class="flex flex-col items-center justify-center text-center opacity-30 select-none">
-        <flux:icon icon="qr-code" class="size-48 text-zinc-300 dark:text-zinc-700 mb-8" stroke-width="1" />
-        <p class="text-4xl font-light text-zinc-400 dark:text-zinc-600">Esperando consulta...</p>
-      </div>
-    @endif
-  </div>
+            <flux:button wire:click="close" variant="filled" class="min-w-[150px]">
+                Intentar de nuevo
+            </flux:button>
+        </div>
+      @endif
+  </flux:modal>
 </div>

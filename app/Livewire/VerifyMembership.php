@@ -15,12 +15,14 @@ class VerifyMembership extends Component
     public $member = null;
     public $status = null; // 'active', 'expired', 'not_found'
     public $message = '';
+    public $showModal = false;
 
     public function mount()
     {
-        $this->code = '0002';
+        $this->code = '0003';
         $this->member = Member::where('code', $this->code)->first();
-        $this->status = 'active';
+        $this->status = 'no_membership';
+        $this->showModal = true;
     }
 
     public function check()
@@ -33,7 +35,7 @@ class VerifyMembership extends Component
             $this->status = 'not_found';
             $this->message = 'Código no encontrado. Por favor verifique e intente nuevamente.';
             $this->member = null;
-
+            $this->showModal = true;
             return;
         }
 
@@ -51,6 +53,15 @@ class VerifyMembership extends Component
             $this->status = 'no_membership';
             $this->message = 'Sin Membresía Asignada';
         }
+
+        $this->showModal = true;
+    }
+
+    public function close()
+    {
+        $this->showModal = false;
+        $this->code = '';
+        $this->reset(['member', 'status', 'message']);
     }
 
     public function render()
