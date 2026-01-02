@@ -27,7 +27,7 @@
 
   {{-- Result Modal --}}
   @if ($showModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="close">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="close" wire:keydown.window.escape="close">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
           <div class="transform overflow-hidden rounded-xl bg-white dark:bg-zinc-900 text-left shadow-2xl transition-all w-full max-w-6xl" wire:click.stop>
