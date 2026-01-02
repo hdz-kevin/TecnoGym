@@ -18,7 +18,7 @@ class VerifyMembership extends Component
 
     public function mount()
     {
-        $this->code = '0051';
+        $this->code = '0002';
         $this->member = Member::where('code', $this->code)->first();
         $this->status = 'active';
     }
