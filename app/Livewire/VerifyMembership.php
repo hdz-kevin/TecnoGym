@@ -60,8 +60,7 @@ class VerifyMembership extends Component
     public function close()
     {
         $this->showModal = false;
-        $this->code = '';
-        $this->reset(['member', 'status', 'message']);
+        $this->reset(['code', 'member', 'status', 'message']);
     }
 
     public function render()

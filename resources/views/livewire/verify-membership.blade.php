@@ -26,7 +26,7 @@
   </div>
 
   {{-- Result Modal --}}
-  <flux:modal wire:model="showModal" class="min-w-3/5 p-0! overflow-hidden bg-white dark:bg-zinc-900">
+  <flux:modal wire:model="showModal" closable="{{ false }}" class="min-w-3/5 p-0! overflow-hidden bg-white dark:bg-zinc-900">
       @if ($member)
         <div class="grid grid-cols-1 md:grid-cols-12 bg-white dark:bg-zinc-900 min-h-[580px]">
             {{-- Left Column: Large Image --}}
@@ -53,7 +53,7 @@
             </div>
 
             {{-- Right Column: Details --}}
-            <div class="md:col-span-6 p-10 px-8 flex flex-col justify-between h-full bg-white dark:bg-zinc-900">
+            <div class="md:col-span-6 p-10 px-8 pb-8 flex flex-col justify-between h-full bg-white dark:bg-zinc-900">
                 <div>
                    <div class="flex justify-between items-start mb-2">
                         <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight mb-2">
@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="flex justify-end pt-8">
-                     <flux:button wire:click="close" variant="filled" class="w-full md:w-auto min-w-[120px]">
+                     <flux:button wire:click="close" class="w-full md:w-auto" icon="x-mark">
                         Cerrar
                     </flux:button>
                 </div>
