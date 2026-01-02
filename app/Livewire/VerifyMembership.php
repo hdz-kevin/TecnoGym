@@ -16,6 +16,13 @@ class VerifyMembership extends Component
     public $status = null; // 'active', 'expired', 'not_found'
     public $message = '';
 
+    public function mount()
+    {
+        $this->code = '0051';
+        $this->member = Member::where('code', $this->code)->first();
+        $this->status = 'active';
+    }
+
     public function check()
     {
         $this->validate();
