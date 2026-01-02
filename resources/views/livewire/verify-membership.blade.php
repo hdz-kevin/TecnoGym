@@ -26,7 +26,11 @@
   </div>
 
   {{-- Result Modal --}}
-  <flux:modal wire:model="showModal" closable="{{ false }}" class="min-w-3/5 p-0! overflow-hidden bg-white dark:bg-zinc-900">
+  @if ($showModal)
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="close">
+      <div class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4">
+          <div class="transform overflow-hidden rounded-xl bg-white dark:bg-zinc-900 text-left shadow-2xl transition-all w-full max-w-6xl" wire:click.stop>
       @if ($member)
         <div class="grid grid-cols-1 md:grid-cols-12 bg-white dark:bg-zinc-900 min-h-[580px]">
             {{-- Left Column: Large Image --}}
@@ -111,7 +115,7 @@
             </div>
         </div>
       @elseif ($status === 'not_found')
-        <div class="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
+        <div class="p-12 text-center flex flex-col items-center justify-center min-h-[580px]">
              <div class="inline-flex p-8 bg-red-50 dark:bg-red-900/20 rounded-full ring-1 ring-red-100 dark:ring-red-900/30 mb-8">
                 <flux:icon icon="user-minus" class="size-20 text-red-600 dark:text-red-400" variant="solid" />
             </div>
@@ -123,5 +127,9 @@
             </flux:button>
         </div>
       @endif
-  </flux:modal>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
 </div>
