@@ -5,8 +5,10 @@ namespace App\Livewire;
 use App\Enums\MembershipStatus;
 use App\Models\Member;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('')]
 class VerifyMembership extends Component
 {
     #[Rule('required', message: 'El código es obligatorio')]
