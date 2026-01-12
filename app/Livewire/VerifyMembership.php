@@ -15,8 +15,7 @@ class VerifyMembership extends Component
     #[Rule('size:4', message: 'El código debe tener 4 dígitos')]
     public $code = '';
     public $member = null;
-    public $status = null; // 'active', 'expired', 'not_found'
-    public $message = '';
+    public $membership = null;
     public $showModal = false;
 
     public function check()
@@ -26,27 +25,12 @@ class VerifyMembership extends Component
         $member = Member::where('code', $this->code)->first();
 
         if (! $member) {
-            $this->status = 'not_found';
-            $this->message = 'Código no encontrado. Por favor verifique e intente nuevamente.';
-            $this->member = null;
             $this->showModal = true;
             return;
         }
 
         $this->member = $member;
-        $activeMembership = $member->activeMembership();
-        $latestMembership = $member->latestMembership();
-
-        if ($activeMembership) {
-            $this->status = 'active';
-            $this->message = '¡Membresía Activa!';
-        } elseif ($latestMembership) {
-            $this->status = 'expired';
-            $this->message = 'Membresía Vencida';
-        } else {
-            $this->status = 'no_membership';
-            $this->message = 'Sin Membresía Asignada';
-        }
+        $this->membership = $member->latestMembership();
 
         $this->showModal = true;
     }
@@ -54,7 +38,7 @@ class VerifyMembership extends Component
     public function close()
     {
         $this->showModal = false;
-        $this->reset(['code', 'member', 'status', 'message']);
+        $this->reset(['code', 'member', 'membership']);
     }
 
     public function render()
