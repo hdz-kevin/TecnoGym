@@ -136,7 +136,7 @@ class Members extends Component
             $this->editingMember->update($validated);
             $flashMessage = 'Socio actualizado exitosamente.';
         } else {
-            Member::create($validated)->generateCode();
+            Member::create($validated);
             $flashMessage = 'Socio creado exitosamente.';
         }
 

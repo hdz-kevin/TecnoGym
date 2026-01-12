@@ -30,6 +30,20 @@ class Member extends Model
     ];
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Member $member) {
+            do {
+                $code = (string) random_int(10000, 99999);
+            } while (self::where('code', $code)->exists());
+
+            $member->code = $code;
+        });
+    }
+
+    /**
      * Get the memberships for the member.
      *
      * @return HasMany
@@ -69,20 +83,6 @@ class Member extends Model
         return $this->memberships()
                     ->orderBy('updated_at', 'desc')
                     ->first();
-    }
-
-    /**
-     * Generate a code based on the member's id and save it.
-     * The code is a 4-digit number padded with zeros.
-     *
-     * @return string
-     */
-    public function generateCode(): string
-    {
-        $this->code = Str::padLeft($this->id, 4, '0');
-        $this->save();
-
-        return $this->code;
     }
 
     /**

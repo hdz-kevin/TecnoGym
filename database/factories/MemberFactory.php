@@ -28,12 +28,4 @@ class MemberFactory extends Factory
             'photo' => null,
         ];
     }
-
-    /**
-     * Configure the model factory.
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(fn (Member $member) => $member->generateCode());
-    }
 }
