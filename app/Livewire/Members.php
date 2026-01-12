@@ -212,7 +212,7 @@ class Members extends Component
             })
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('code', 'like', '%' . $this->search);
+                      ->orWhere('code', 'like', $this->search . '%');
             })
             ->orderBy('last_membership_updated_at', 'desc')
             ->paginate(6);

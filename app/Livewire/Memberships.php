@@ -115,7 +115,7 @@ class Memberships extends Component
         ->when($this->search, function ($query) {
             $query->whereHas('member', function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('code', 'like', '%' . $this->search);
+                  ->orWhere('code', 'like', $this->search . '%');
             });
         })
         ->when($this->statusFilter, function ($query) {
