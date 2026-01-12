@@ -25,7 +25,8 @@
                   class="border text-indigo-600! hover:text-indigo-700! hover:bg-indigo-50!"
                   variant="ghost"
                   size="sm"
-                  wire:click="editTypeModal({{ $planType->id }})" icon="pencil"
+                  wire:click="editTypeModal({{ $planType->id }})"
+                  icon="pencil"
                 >
                   Editar
                 </flux:button>
