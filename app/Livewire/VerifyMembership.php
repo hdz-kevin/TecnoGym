@@ -12,7 +12,7 @@ use Livewire\Component;
 class VerifyMembership extends Component
 {
     #[Rule('required', message: 'El código es obligatorio')]
-    #[Rule('size:4', message: 'El código debe tener 4 dígitos')]
+    #[Rule('size:5', message: 'El código debe tener 5 dígitos')]
     public $code = '';
     public $member = null;
     public $membership = null;

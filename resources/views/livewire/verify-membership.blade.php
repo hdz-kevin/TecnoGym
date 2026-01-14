@@ -25,9 +25,9 @@
             type="text"
             id="code"
             wire:model="code"
-            placeholder="0000"
+            placeholder="00000"
             class="block w-full text-center text-7xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-200 bg-transparent py-4 focus:ring-0 focus:border-indigo-600 transition-colors placeholder-gray-200 outline-none text-gray-900 "
-            maxlength="4"
+            maxlength="5"
             autofocus
             autocomplete="off"
           />
