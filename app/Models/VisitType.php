@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class VisitType extends Model
 {
-    //
+    protected $fillable = [
+        'name',
+        'price',
+    ];
 }

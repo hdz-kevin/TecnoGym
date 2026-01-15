@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
             MembershipSeeder::class,
             PeriodSeeder::class,
+            VisitSeeder::class,
         ]);
     }
 }
