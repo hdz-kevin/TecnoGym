@@ -1,7 +1,5 @@
-<x-slot:subtitle>Configura los planes disponibles para tu gimnasio</x-slot:subtitle>
-
 <div>
-  <div class="p-6 pt-4 space-y-6">
+  <div class="p-6 pt-4 -mt-6 space-y-6">
     @if ($planTypes->count() > 0)
       <div class="flex justify-end">
         <flux:button variant="primary" icon="plus" wire:click="createTypeModal">

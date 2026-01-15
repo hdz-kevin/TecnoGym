@@ -2,7 +2,7 @@
 
 use App\Livewire\Members;
 use App\Livewire\Memberships;
-use App\Livewire\Plans;
+use App\Livewire\Prices;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 
     Route::get('members', Members::class)->name('members.index');
-    Route::get('plans', Plans::class)->name('plans.index');
+    Route::get('prices', Prices::class)->name('prices.index');
     Route::get('memberships', Memberships::class)->name('memberships.index');
     Route::get('verify-membership', VerifyMembership::class)->name('verify-membership');
 });
