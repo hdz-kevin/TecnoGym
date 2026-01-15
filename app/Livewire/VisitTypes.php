@@ -15,7 +15,6 @@ class VisitTypes extends Component
 
     #[Rule('required', message: 'El precio es obligatorio')]
     #[Rule('integer', message: 'El precio debe ser un número entero')]
-    #[Rule('min:0', message: 'El precio debe ser mayor o igual a 0')]
     public $price = '';
 
     public $showModal = false;
@@ -23,15 +22,12 @@ class VisitTypes extends Component
 
     public function createModal()
     {
-        $this->resetValidation();
-        $this->resetForm();
         $this->editingVisitType = null;
         $this->showModal = true;
     }
 
     public function editModal(VisitType $visitType)
     {
-        $this->resetValidation();
         $this->editingVisitType = $visitType;
         $this->name = $visitType->name;
         $this->price = $visitType->price;
@@ -61,10 +57,12 @@ class VisitTypes extends Component
     {
         $this->showModal = false;
         $this->resetForm();
+        $this->resetValidation();
     }
 
     public function delete(VisitType $visitType)
     {
+        // Todo: Check if the visit type is associated with any visit
         $visitType->delete();
     }
 

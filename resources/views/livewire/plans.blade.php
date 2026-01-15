@@ -9,7 +9,7 @@
     @endif
 
     <!-- Plan Types Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 items-start">
       @forelse ($planTypes as $planType)
         <div class="bg-white rounded-lg border border-gray-200 shadow-sm" wire:key="{{ $planType->id }}">
           <!-- Plan Type Header -->
