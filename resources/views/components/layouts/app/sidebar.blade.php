@@ -27,7 +27,7 @@
           {{ __('Socios') }}
         </flux:navlist.item>
 
-        <flux:navlist.item icon="calendar-days" :href="route('dashboard')" :current="request()->routeIs('/')" wire:navigate>
+        <flux:navlist.item icon="calendar-days" :href="route('visits.index')" :current="request()->routeIs('visits.index')" wire:navigate>
           {{ __('Visitas') }}
         </flux:navlist.item>
 

@@ -7,6 +7,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\VerifyMembership;
+use App\Livewire\Visits;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('members', Members::class)->name('members.index');
     Route::get('prices', Prices::class)->name('prices.index');
     Route::get('memberships', Memberships::class)->name('memberships.index');
+    Route::get('visits', Visits::class)->name('visits.index');
     Route::get('verify-membership', VerifyMembership::class)->name('verify-membership');
 });
 
