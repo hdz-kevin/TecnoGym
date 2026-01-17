@@ -5,11 +5,6 @@
   <!-- Stats Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
     <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="font-medium text-gray-500">Total</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->total }}</div>
-    </div>
-
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
       <div class="font-medium text-gray-500">Hoy</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->today }}</div>
     </div>
@@ -22,6 +17,11 @@
     <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
       <div class="font-medium text-gray-500">Este mes</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisMonth }}</div>
+    </div>
+
+    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="font-medium text-gray-500">Total</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->total }}</div>
     </div>
   </div>
 
@@ -74,11 +74,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex flex-row gap-2 font-medium text-gray-800">
                     <span>
-                      {{ \Carbon\Carbon::parse($visit->visit_at)->locale('es')->translatedFormat('d F Y') }}
-                    </span>
-                    -
-                    <span>
-                      {{ \Carbon\Carbon::parse($visit->visit_at)->translatedFormat('h:i a') }}
+                      {{ ucfirst(\Carbon\Carbon::parse($visit->visit_at)->locale('es')->translatedFormat('D d F Y - h:i a')) }}
                     </span>
                   </div>
                 </td>
