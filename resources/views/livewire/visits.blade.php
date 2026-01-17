@@ -2,6 +2,29 @@
 <x-slot:subtitle>Registro y control de visitas</x-slot:subtitle>
 
 <div class="p-6 pt-4 space-y-6">
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="font-medium text-gray-500">Total</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->total }}</div>
+    </div>
+
+    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="font-medium text-gray-500">Hoy</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->today }}</div>
+    </div>
+
+    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="font-medium text-gray-500">Esta semana</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisWeek }}</div>
+    </div>
+
+    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="font-medium text-gray-500">Este mes</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisMonth }}</div>
+    </div>
+  </div>
+
   <!-- Action Bar -->
   <div class="flex justify-between items-center">
     <div></div>
@@ -34,14 +57,12 @@
                 Fecha y Hora
               </th>
               <th scope="col" class="px-6 py-3 text-left font-medium text-gray-700">
-                Tipo de Visita
-              </th>
-              <th scope="col"
-                class="px-6 py-3 text-right font-medium text-gray-700">
                 Precio
               </th>
-              <th scope="col"
-                class="px-6 py-3 text-right font-medium text-gray-700">
+              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
+                Tipo de Visita
+              </th>
+              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
                 Acciones
               </th>
             </tr>
@@ -49,6 +70,7 @@
           <tbody class="bg-white divide-y divide-gray-200">
             @foreach ($this->visits as $visit)
               <tr wire:key="{{ $visit->id }}">
+                {{-- DateTime --}}
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex flex-row gap-2 font-medium text-gray-800">
                     <span>
@@ -60,14 +82,17 @@
                     </span>
                   </div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                {{-- Price --}}
+                <td class="px-6 py-4 whitespace-nowrap text-left">
+                  <span class="font-medium text-gray-800">${{ number_format($visit->price_paid) }}</span>
+                </td>
+                {{-- Visit Type --}}
+                <td class="px-6 py-4 whitespace-nowrap text-right">
                   <span class="font-medium text-gray-800 text-sm uppercase tracking-wide">
                     {{ $visit->visitType->name }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right">
-                  <span class="font-medium text-gray-800">${{ number_format($visit->price_paid) }}</span>
-                </td>
+                {{-- Actions --}}
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <flux:dropdown>
                     <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />

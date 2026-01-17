@@ -35,8 +35,34 @@ class Visits extends Component
     public function visits()
     {
         return Visit::with('visitType')
-            ->orderBy('visit_at', 'desc')
-            ->paginate(10);
+                    ->orderBy('visit_at', 'desc')
+                    ->paginate(10);
+    }
+
+    #[Computed]
+    public function total()
+    {
+        return Visit::count();
+    }
+
+    #[Computed]
+    public function today()
+    {
+        return Visit::whereDate('visit_at', Carbon::today())->count();
+    }
+
+    #[Computed]
+    public function thisWeek()
+    {
+        return Visit::whereBetween('visit_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
+    }
+
+    #[Computed]
+    public function thisMonth()
+    {
+        return Visit::whereMonth('visit_at', Carbon::now()->month)
+            ->whereYear('visit_at', Carbon::now()->year)
+            ->count();
     }
 
     public function create()
