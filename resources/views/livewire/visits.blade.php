@@ -52,11 +52,11 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex flex-row gap-2 font-medium text-gray-800">
                     <span>
-                      {{ \Carbon\Carbon::parse($visit->visit_at)->translatedFormat('d F Y') }}
+                      {{ \Carbon\Carbon::parse($visit->visit_at)->locale('es')->translatedFormat('d F Y') }}
                     </span>
                     -
                     <span>
-                      {{ \Carbon\Carbon::parse($visit->visit_at)->format('H:i A') }}
+                      {{ \Carbon\Carbon::parse($visit->visit_at)->translatedFormat('h:i a') }}
                     </span>
                   </div>
                 </td>
