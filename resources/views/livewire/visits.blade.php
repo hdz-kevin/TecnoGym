@@ -88,8 +88,8 @@
     </div>
 
     <!-- Pagination -->
-    <div class="mt-4">
-      {{ $this->visits->links() }}
+    <div class="mt-8">
+      {{ $this->visits->links('pagination.custom') }}
     </div>
   @endif
 
