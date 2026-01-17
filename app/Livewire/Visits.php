@@ -6,6 +6,7 @@ use App\Models\Visit;
 use App\Models\VisitType;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -17,12 +18,23 @@ class Visits extends Component
     public $showFormModal = false;
     public $editingVisit = null;
 
-    // Form fields
+    #[Validate('required', message: 'Elige un tipo de visita')]
+    #[Validate('exists:visit_types,id', message: 'Elige un tipo de visita válido')]
     public $visit_type_id;
-    public $visit_at;
+
+    #[Validate('required', message: 'La fecha es obligatoria')]
+    #[Validate('date', message: 'La fecha debe ser una fecha válida')]
+    public $visit_date;
+
+    #[Validate('required', message: 'La hora es obligatoria')]
+    #[Validate('date_format:H:i', message: 'La hora debe ser una hora válida')]
+    public $visit_time;
+
+    #[Validate('required', message: 'El precio es obligatorio')]
+    #[Validate('numeric', message: 'El precio debe ser un número')]
     public $price_paid;
-    public $visit_date; // separate date for input
-    public $visit_time; // separate time for input
+
+    public $visit_at;
 
     // Cache visit types to avoid repeated queries
     #[Computed]
@@ -109,12 +121,7 @@ class Visits extends Component
 
     public function save()
     {
-        $this->validate([
-            'visit_type_id' => 'required|exists:visit_types,id',
-            'visit_date' => 'required|date',
-            'visit_time' => 'required',
-            'price_paid' => 'required|numeric|min:0',
-        ]);
+        $this->validate();
 
         $dateTime = Carbon::parse($this->visit_date . ' ' . $this->visit_time);
 
