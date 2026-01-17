@@ -30,18 +30,18 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left font-medium text-gray-700">
                 Fecha y Hora
               </th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left font-medium text-gray-700">
                 Tipo de Visita
               </th>
               <th scope="col"
-                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="px-6 py-3 text-right font-medium text-gray-700">
                 Precio
               </th>
               <th scope="col"
-                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="px-6 py-3 text-right font-medium text-gray-700">
                 Acciones
               </th>
             </tr>
@@ -50,23 +50,23 @@
             @foreach ($this->visits as $visit)
               <tr wire:key="{{ $visit->id }}">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex flex-col">
-                    <span class="font-medium text-gray-900">
+                  <div class="flex flex-row gap-2 font-medium text-gray-800">
+                    <span>
                       {{ \Carbon\Carbon::parse($visit->visit_at)->translatedFormat('d F Y') }}
                     </span>
-                    <span class="text-xs text-gray-500">
+                    -
+                    <span>
                       {{ \Carbon\Carbon::parse($visit->visit_at)->format('H:i A') }}
                     </span>
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  <span class="font-medium text-gray-800 text-sm uppercase tracking-wide">
                     {{ $visit->visitType->name }}
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right">
-                  <span class="font-medium text-gray-900">${{ number_format($visit->price_paid, 2) }}</span>
+                  <span class="font-medium text-gray-800">${{ number_format($visit->price_paid) }}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <flux:dropdown>
@@ -75,7 +75,7 @@
                       <flux:menu.item icon="pencil-square" wire:click="edit({{ $visit->id }})">Editar
                       </flux:menu.item>
                       <flux:menu.separator />
-                      <flux:menu.item icon="trash" variant="danger" wire:click="delete({{ $visit->id }})">Eliminar
+                      <flux:menu.item icon="trash" wire:click="delete({{ $visit->id }})">Eliminar
                       </flux:menu.item>
                     </flux:menu>
                   </flux:dropdown>
