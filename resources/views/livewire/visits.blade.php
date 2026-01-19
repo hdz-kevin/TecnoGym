@@ -73,7 +73,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex flex-row gap-2 font-medium text-gray-800">
                     <span>
-                      {{ ucfirst(\Carbon\Carbon::parse($visit->visit_at)->locale('es')->translatedFormat('D d F Y - h:i a')) }}
+                      {{ $visit->formatted_visit_at }}
                     </span>
                   </div>
                 </td>
@@ -92,10 +92,12 @@
                   <flux:dropdown>
                     <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />
                     <flux:menu>
-                      <flux:menu.item icon="pencil-square" wire:click="edit({{ $visit->id }})">Editar
+                      <flux:menu.item icon="pencil-square" wire:click="edit({{ $visit->id }})">
+                        Editar
                       </flux:menu.item>
                       <flux:menu.separator />
-                      <flux:menu.item icon="trash" wire:click="delete({{ $visit->id }})">Eliminar
+                      <flux:menu.item icon="trash" wire:click="delete({{ $visit->id }})">
+                        Eliminar
                       </flux:menu.item>
                     </flux:menu>
                   </flux:dropdown>
