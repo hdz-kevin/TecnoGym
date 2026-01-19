@@ -114,6 +114,11 @@ class Visits extends Component
         $this->price_paid = $visitType->price;
     }
 
+    /**
+     * Save visit or update it if it's being edited
+     *
+     * @return void
+     */
     public function save()
     {
         $this->validate();
@@ -126,20 +131,15 @@ class Visits extends Component
                 'visit_at' => $dateTime,
                 'price_paid' => $this->price_paid,
             ]);
-
-            session()->flash('message', 'Visita actualizada correctamente.');
         } else {
             Visit::create([
                 'visit_type_id' => $this->visit_type_id,
                 'visit_at' => $dateTime,
                 'price_paid' => $this->price_paid,
             ]);
-
-            session()->flash('message', 'Visita registrada correctamente.');
         }
 
-        $this->showFormModal = false;
-        $this->resetForm();
+        $this->closeModal();
     }
 
     public function delete($id)
@@ -148,7 +148,6 @@ class Visits extends Component
 
         if ($visit) {
             $visit->delete();
-            session()->flash('message', 'Visita eliminada correctamente.');
         }
     }
 
