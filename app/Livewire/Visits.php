@@ -15,9 +15,6 @@ class Visits extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    public $showFormModal = false;
-    public $editingVisit = null;
-
     #[Validate('required', message: 'Elige un tipo de visita')]
     #[Validate('exists:visit_types,id', message: 'Elige un tipo de visita válido')]
     public $visit_type_id;
@@ -34,15 +31,20 @@ class Visits extends Component
     #[Validate('numeric', message: 'El precio debe ser un número')]
     public $price_paid;
 
-    public $visit_at;
+    /** Visit date and time */
+    public ?Carbon $visit_at;
 
-    // Cache visit types to avoid repeated queries
-    #[Computed]
-    public function visitTypes()
-    {
-        return VisitType::all();
-    }
+    /** Create/edit visit modal state */
+    public bool $showFormModal = false;
 
+    /** Editing visit instance or null (no editing by default) */
+    public ?Visit $editingVisit = null;
+
+    /**
+     * Get the visits ordered by visit_at desc
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     #[Computed]
     public function visits()
     {
@@ -51,30 +53,15 @@ class Visits extends Component
                     ->paginate(10);
     }
 
+    /**
+     * Cached visit types
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     #[Computed]
-    public function total()
+    public function visitTypes()
     {
-        return Visit::count();
-    }
-
-    #[Computed]
-    public function today()
-    {
-        return Visit::whereDate('visit_at', Carbon::today())->count();
-    }
-
-    #[Computed]
-    public function thisWeek()
-    {
-        return Visit::whereBetween('visit_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
-    }
-
-    #[Computed]
-    public function thisMonth()
-    {
-        return Visit::whereMonth('visit_at', Carbon::now()->month)
-            ->whereYear('visit_at', Carbon::now()->year)
-            ->count();
+        return VisitType::all();
     }
 
     public function create()
@@ -150,6 +137,7 @@ class Visits extends Component
     public function delete($id)
     {
         $visit = Visit::find($id);
+
         if ($visit) {
             $visit->delete();
             session()->flash('message', 'Visita eliminada correctamente.');
@@ -171,6 +159,55 @@ class Visits extends Component
         $this->visit_date = null;
         $this->visit_time = null;
         $this->resetValidation();
+    }
+
+    /** --> Statistics counters <-- */
+
+    /**
+     * Get the number of visits today
+     *
+     * @return int
+     */
+    #[Computed]
+    public function today()
+    {
+        return Visit::whereDate('visit_at', Carbon::today())
+                    ->count();
+    }
+
+    /**
+     * Get the number of visits this week
+     *
+     * @return int
+     */
+    #[Computed]
+    public function thisWeek()
+    {
+        return Visit::whereBetween('visit_at', [now()->startOfWeek(), now()->endOfWeek()])
+                    ->count();
+    }
+
+    /**
+     * Get the number of visits this month
+     *
+     * @return int
+     */
+    #[Computed]
+    public function thisMonth()
+    {
+        return Visit::whereBetween('visit_at', [now()->startOfMonth(), now()->endOfMonth()])
+                    ->count();
+    }
+
+    /**
+     * Get the total number of visits
+     *
+     * @return int
+     */
+    #[Computed]
+    public function total()
+    {
+        return Visit::count();
     }
 
     public function render()

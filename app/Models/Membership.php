@@ -96,7 +96,7 @@ class Membership extends Model
     {
         $lastPeriod = $this->last_period;
 
-        if (!$lastPeriod) {
+        if (! $lastPeriod) {
             return null;
         }
 
