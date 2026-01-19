@@ -89,18 +89,12 @@
                 </td>
                 {{-- Actions --}}
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <flux:dropdown>
-                    <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" />
-                    <flux:menu>
-                      <flux:menu.item icon="pencil-square" wire:click="edit({{ $visit->id }})">
-                        Editar
-                      </flux:menu.item>
-                      <flux:menu.separator />
-                      <flux:menu.item icon="trash" wire:click="delete({{ $visit->id }})">
-                        Eliminar
-                      </flux:menu.item>
-                    </flux:menu>
-                  </flux:dropdown>
+                  <div class="flex items-center justify-end gap-2">
+                    <flux:button variant="ghost" size="sm" icon="pencil-square" class="text-gray-800!" wire:click="edit({{ $visit->id }})" />
+                    <flux:button variant="ghost" size="sm" icon="trash" class="text-gray-800!"
+                    wire:click="delete({{ $visit->id }})"
+                    wire:confirm="¿Seguro que deseas eliminar esta visita?" />
+                  </div>
                 </td>
               </tr>
             @endforeach
