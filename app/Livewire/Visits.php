@@ -103,13 +103,15 @@ class Visits extends Component
         $this->showFormModal = true;
     }
 
-    // Update price when visit type changes
-    public function updatedVisitTypeId($value)
+    /**
+     * Update price when visit type changes
+     *
+     * @param VisitType $visitType
+     * @return void
+     */
+    public function updatedVisitTypeId(VisitType $visitType)
     {
-        $type = $this->visitTypes()->firstWhere('id', $value);
-        if ($type) {
-            $this->price_paid = $type->price;
-        }
+        $this->price_paid = $visitType->price;
     }
 
     public function save()
