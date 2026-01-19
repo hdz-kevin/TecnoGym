@@ -142,13 +142,15 @@ class Visits extends Component
         $this->closeModal();
     }
 
-    public function delete($id)
+    /**
+     * Delete visit from database
+     *
+     * @param Visit $visit
+     * @return void
+     */
+    public function delete(Visit $visit)
     {
-        $visit = Visit::find($id);
-
-        if ($visit) {
-            $visit->delete();
-        }
+        $visit->delete();
     }
 
     /**
@@ -223,6 +225,11 @@ class Visits extends Component
         return Visit::count();
     }
 
+    /**
+     * Render the component
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         return view('livewire.visits');
