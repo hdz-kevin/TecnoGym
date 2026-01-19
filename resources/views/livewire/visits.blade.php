@@ -26,8 +26,7 @@
   </div>
 
   <!-- Action Bar -->
-  <div class="flex justify-between items-center">
-    <div></div>
+  <div class="flex justify-end">
     <flux:button variant="primary" icon="plus" wire:click="create">
       Registrar Visita
     </flux:button>

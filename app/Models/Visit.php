@@ -16,6 +16,10 @@ class Visit extends Model
         'price_paid',
     ];
 
+    protected $casts = [
+        'visit_at' => 'datetime',
+    ];
+
     /**
      * Get the visit type associated with the visit.
      */

@@ -32,7 +32,7 @@ class Visits extends Component
     public $price_paid;
 
     /** Visit date and time */
-    public ?Carbon $visit_at;
+    public ?Carbon $visit_at = null;
 
     /** Create/edit visit modal state */
     public bool $showFormModal = false;
@@ -64,35 +64,41 @@ class Visits extends Component
         return VisitType::all();
     }
 
+    /**
+     * Open create visit modal and set defaults
+     *
+     * @return void
+     */
     public function create()
     {
-        $this->resetForm();
-        $this->showFormModal = true;
-
         // Set defaults
         $this->visit_at = Carbon::now();
         $this->visit_date = $this->visit_at->format('Y-m-d');
         $this->visit_time = $this->visit_at->format('H:i');
 
-        // Default to first visit type if exists
-        $firstType = $this->visitTypes()->first();
-        if ($firstType) {
+        // Set first visit type id and price
+        if ($firstType = $this->visitTypes()->first()) {
             $this->visit_type_id = $firstType->id;
             $this->price_paid = $firstType->price;
         }
+
+        $this->showFormModal = true;
     }
 
+    /**
+     * Open edit visit modal loading visit data
+     *
+     * @param Visit $visit
+     * @return void
+     */
     public function edit(Visit $visit)
     {
-        $this->resetForm();
         $this->editingVisit = $visit;
 
         $this->visit_type_id = $visit->visit_type_id;
+        $this->visit_date = $visit->visit_at->format('Y-m-d');
+        $this->visit_time = $visit->visit_at->format('H:i');
         $this->price_paid = $visit->price_paid;
-
-        $visitAt = Carbon::parse($visit->visit_at);
-        $this->visit_date = $visitAt->format('Y-m-d');
-        $this->visit_time = $visitAt->format('H:i');
 
         $this->showFormModal = true;
     }
@@ -144,20 +150,26 @@ class Visits extends Component
         }
     }
 
+    /**
+     * Close the modal and reset the form
+     *
+     * @return void
+     */
     public function closeModal()
     {
         $this->showFormModal = false;
+        $this->editingVisit = null;
         $this->resetForm();
     }
 
+    /**
+     * Reset the form fields and validation
+     *
+     * @return void
+     */
     private function resetForm()
     {
-        $this->editingVisit = null;
-        $this->visit_type_id = null;
-        $this->visit_at = null;
-        $this->price_paid = null;
-        $this->visit_date = null;
-        $this->visit_time = null;
+        $this->reset(['visit_type_id', 'visit_at', 'price_paid', 'visit_date', 'visit_time']);
         $this->resetValidation();
     }
 
