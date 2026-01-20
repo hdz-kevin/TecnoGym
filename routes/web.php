@@ -7,13 +7,9 @@ use App\Livewire\VerifyMembership;
 use App\Livewire\Visits;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('welcome'))->name('home');
-
-Route::view('dashboard', 'dashboard')
-     ->middleware(['guest'])
-     ->name('dashboard');
-
 Route::middleware(['guest'])->group(function () {
+    Route::redirect('/', 'dashboard');
+    Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::get('members', Members::class)->name('members.index');
     Route::get('prices', Prices::class)->name('prices.index');
     Route::get('memberships', Memberships::class)->name('memberships.index');
