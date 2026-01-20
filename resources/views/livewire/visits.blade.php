@@ -90,10 +90,21 @@
                 {{-- Actions --}}
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex items-center justify-end gap-2">
-                    <flux:button variant="ghost" size="sm" icon="pencil-square" class="text-gray-800!" wire:click="edit({{ $visit->id }})" />
-                    <flux:button variant="ghost" size="sm" icon="trash" class="text-gray-800!"
-                    wire:click="delete({{ $visit->id }})"
-                    wire:confirm="¿Seguro que deseas eliminar esta visita?" />
+                    <flux:button
+                      variant="ghost"
+                      size="sm"
+                      icon="pencil-square"
+                      class="text-indigo-700!"
+                      wire:click="edit({{ $visit->id }})"
+                    />
+                    <flux:button
+                      variant="ghost"
+                      size="sm"
+                      icon="trash"
+                      class="text-red-700!"
+                      wire:click="delete({{ $visit->id }})"
+                      wire:confirm="¿Seguro que deseas eliminar esta visita?"
+                    />
                   </div>
                 </td>
               </tr>
