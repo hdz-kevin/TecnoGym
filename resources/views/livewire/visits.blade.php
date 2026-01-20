@@ -128,9 +128,12 @@
           <div
             class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
             wire:click.stop>
-            <h3 class="px-6 py-4 text-lg font-medium text-gray-900 border-b border-gray-200">
-              {{ $editingVisit ? 'Editar Visita' : 'Registrar Visita' }}
-            </h3>
+
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h3 class="text-lg font-medium text-gray-900">
+                {{ $editingVisit ? 'Editar Visita' : 'Registrar Visita' }}
+              </h3>
+            </div>
 
             <form wire:submit.prevent="save">
               <div class="px-6 py-4 pt-5 space-y-4">
