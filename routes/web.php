@@ -29,5 +29,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('visits', Visits::class)->name('visits.index');
     Route::get('verify-membership', VerifyMembership::class)->name('verify-membership');
 });
-
-require __DIR__.'/auth.php';
