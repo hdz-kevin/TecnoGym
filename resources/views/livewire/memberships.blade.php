@@ -189,7 +189,7 @@
                 size="sm"
                 variant="outline"
                 icon="chart-bar"
-                wire:click="$dispatch('open-history-modal', { membership: {{ $membership->id }} })"
+                wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
               >
                 Ver Historial
               </flux:button>
@@ -328,5 +328,5 @@
 
   <livewire:add-period />
 
-  <livewire:membership-history />
+  <livewire:membership-details />
 </div>

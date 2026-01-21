@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\Member;
 use App\Models\Membership;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
-class MembershipHistory extends Component
+class MembershipDetails extends Component
 {
     /**
      * History modal state
@@ -22,6 +23,14 @@ class MembershipHistory extends Component
      */
     public $membership = null;
 
+    public function mount()
+    {
+        $this->showModal = true;
+        $this->membership = Member::where('code', '19044')->first()->latestMembership();
+        // $this->membership = Member::where('code', '65319')->first()->latestMembership();
+        // $this->membership = Member::where('code', '45043')->first()->latestMembership();
+    }
+
     /**
      * Opens the history modal for a specific membership.
      * Eager loads necessary relationships to display the full history.
@@ -29,7 +38,7 @@ class MembershipHistory extends Component
      * @param Membership $membership
      * @return void
      */
-    #[On('open-history-modal')]
+    #[On('open-details-modal')]
     public function openModal(Membership $membership)
     {
         $this->membership = $membership->load([
@@ -62,6 +71,6 @@ class MembershipHistory extends Component
      */
     public function render()
     {
-        return view('livewire.membership-history');
+        return view('livewire.membership-details');
     }
 }
