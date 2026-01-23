@@ -27,8 +27,6 @@ class MembershipDetails extends Component
     {
         $this->showModal = true;
         $this->membership = Member::where('code', '19044')->first()->latestMembership();
-        // $this->membership = Member::where('code', '65319')->first()->latestMembership();
-        // $this->membership = Member::where('code', '45043')->first()->latestMembership();
     }
 
     /**
