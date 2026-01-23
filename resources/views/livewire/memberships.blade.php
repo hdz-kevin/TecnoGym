@@ -188,22 +188,23 @@
               <flux:button
                 size="sm"
                 variant="outline"
-                icon="chart-bar"
+                icon="eye"
                 wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
               >
-                Ver Historial
+                Ver
               </flux:button>
 
-              @if ($membership->status == MembershipStatus::EXPIRED)
-                <flux:button
-                  size="sm"
-                  variant="primary"
-                  icon="plus"
-                  wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
-                >
-                  Nuevo Periodo
-                </flux:button>
-              @endif
+              {{-- @if ($membership->status == MembershipStatus::EXPIRED) --}}
+              <flux:button
+                size="sm"
+                variant="primary"
+                icon="plus"
+                wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
+              >
+                Nuevo Periodo
+              </flux:button>
+              {{-- @endif --}}
+
             </div>
           </div>
         </div>

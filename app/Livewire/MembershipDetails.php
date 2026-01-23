@@ -23,12 +23,6 @@ class MembershipDetails extends Component
      */
     public $membership = null;
 
-    public function mount()
-    {
-        $this->showModal = true;
-        $this->membership = Member::where('code', '19044')->first()->latestMembership();
-    }
-
     /**
      * Opens the history modal for a specific membership.
      * Eager loads necessary relationships to display the full history.
