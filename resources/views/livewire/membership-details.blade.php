@@ -105,7 +105,7 @@
                           <div class="flex flex-col sm:flex-row sm:items-start justify-between group">
                             <div>
                                <h4 class="text-base font-semibold text-gray-800">
-                                 {{ $period->start_date->format('d M, Y') }} — {{ $period->end_date->format('d M, Y') }}
+                                 {{ $period->formatted_period }}
                                </h4>
                                <div class="mt-1 flex items-center gap-2">
                                  <span class="text-sm font-medium text-gray-500">{{ $period->status->label() }}</span>

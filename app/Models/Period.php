@@ -35,6 +35,13 @@ class Period extends Model
      */
     public function getFormattedPeriodAttribute(): string
     {
-        return $this->start_date->format('d/m/Y') . ' - ' . $this->end_date->format('d/m/Y');
+        $start = $this->start_date->locale('es');
+        $end = $this->end_date->locale('es');
+
+        $startMonth = str_replace('.', '', ucfirst($start->translatedFormat('M')));
+        $endMonth = str_replace('.', '', ucfirst($end->translatedFormat('M')));
+
+        return $start->translatedFormat('d').' '.$startMonth.', '.$start->translatedFormat('Y').' - '.
+                $end->translatedFormat('d').' '.$endMonth.', '.$end->translatedFormat('Y');
     }
 }
