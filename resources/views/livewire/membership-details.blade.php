@@ -41,29 +41,29 @@
                 <div class="space-y-4">
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Plan</p>
-                      <p class="text-lg font-semibold text-gray-800">{{ $membership->plan_name }}</p>
+                      <p class="text-lg font-medium text-gray-800">{{ $membership->plan_name }}</p>
                    </div>
 
                    @if($membership->status == MembershipStatus::ACTIVE)
                     <div>
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Vence en</p>
-                        <p class="text-lg font-semibold text-gray-800">{{ $membership->expiration_time }}</p>
+                        <p class="text-lg font-medium text-gray-800">{{ $membership->expiration_time }}</p>
                     </div>
                    @else
                     <div>
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">venció hace</p>
-                        <p class="text-lg font-semibold text-gray-800">{{ $membership->expiration_time }}</p>
+                        <p class="text-lg font-medium text-gray-800">{{ $membership->expiration_time }}</p>
                     </div>
                    @endif
 
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Periodos</p>
-                      <p class="text-lg font-semibold text-gray-800">{{ $membership->periods->count() }}</p>
+                      <p class="text-lg font-medium text-gray-800">{{ $membership->periods->count() }}</p>
                    </div>
 
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Total Pagado</p>
-                      <p class="text-lg font-semibold text-gray-800">${{ number_format($membership->total_paid) }}</p>
+                      <p class="text-lg font-medium text-gray-800">${{ number_format($membership->total_paid) }}</p>
                    </div>
                 </div>
               </div>
@@ -126,9 +126,9 @@
                     </div>
                   @else
                     <div class="flex flex-col items-center justify-center h-full text-center text-gray-400 py-12">
-                      <flux:icon icon="document-text" class="w-16 h-16 mb-4 opacity-20" />
-                      <p class="text-lg font-medium text-gray-500">Sin historial disponible</p>
-                      <p class="text-sm text-gray-400 mt-1">No hay pagos registrados para esta membresía.</p>
+                      <flux:icon icon="document-text" class="w-16 h-16 mb-4 opacity-20 text-gray-600" />
+                      <p class="text-lg font-medium text-gray-700">Sin historial disponible</p>
+                      <p class="text-sm text-gray-600 mt-1">No se han registrado periodos para esta membresía.</p>
                     </div>
                   @endif
                 </div>
