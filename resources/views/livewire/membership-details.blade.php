@@ -20,17 +20,17 @@
                     @if($membership->member->photo)
                       <img
                         src="{{ Storage::url($membership->member->photo) }}"
-                        class="h-44 w-44 rounded-full object-cover ring-4 ring-white shadow-sm"
+                        class="h-48 w-48 rounded-full object-cover ring-4 ring-white shadow-sm"
                         alt="{{ $membership->member->name }}"
                       />
                     @else
-                      <div class="h-44 w-44 rounded-full bg-white ring-4 ring-white shadow-sm flex items-center justify-center border border-gray-100">
+                      <div class="h-48 w-48 rounded-full bg-white ring-4 ring-white shadow-sm flex items-center justify-center border border-gray-100">
                          <span class="text-3xl font-bold text-gray-300">{{ $membership->member->initials() }}</span>
                       </div>
                     @endif
                   </div>
 
-                  <h2 class="text-xl font-bold text-gray-800 leading-tight mb-0.5">{{ $membership->member->name }}</h2>
+                  <h2 class="text-xl font-medium text-gray-800 leading-tight mb-0.5">{{ $membership->member->name }}</h2>
                   <p class="text-base font-medium text-gray-700">
                     <span class="text-gray-500">#</span>{{ $membership->member->code }}
                   </p>
@@ -41,29 +41,29 @@
                 <div class="space-y-4">
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Plan</p>
-                      <p class="text-lg font-medium text-gray-800">{{ $membership->plan_name }}</p>
+                      <p class="text-base font-medium text-gray-800">{{ $membership->plan_name }}</p>
                    </div>
 
                    @if($membership->status == MembershipStatus::ACTIVE)
                     <div>
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Vence en</p>
-                        <p class="text-lg font-medium text-gray-800">{{ $membership->expiration_time }}</p>
+                        <p class="text-base font-medium text-gray-800">{{ $membership->expiration_time }}</p>
                     </div>
                    @else
                     <div>
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">venció hace</p>
-                        <p class="text-lg font-medium text-gray-800">{{ $membership->expiration_time }}</p>
+                        <p class="text-base font-medium text-gray-800">{{ $membership->expiration_time }}</p>
                     </div>
                    @endif
 
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Periodos</p>
-                      <p class="text-lg font-medium text-gray-800">{{ $membership->periods->count() }}</p>
+                      <p class="text-base font-medium text-gray-800">{{ $membership->periods->count() }}</p>
                    </div>
 
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Total Pagado</p>
-                      <p class="text-lg font-medium text-gray-800">${{ number_format($membership->total_paid) }}</p>
+                      <p class="text-base font-medium text-gray-800">${{ number_format($membership->total_paid) }}</p>
                    </div>
                 </div>
               </div>
@@ -71,7 +71,7 @@
               <!-- Right Content: Payment History -->
               <div class="md:col-span-8 bg-white flex flex-col p-8 h-full">
                 <div class="flex justify-between mb-8 pb-4 border-b border-gray-100">
-                  <h3 class="text-xl font-bold text-gray-800">Historial de membresía</h3>
+                  <h3 class="text-xl font-medium text-gray-800">Historial de membresía</h3>
                    <div class="-mt-0.5">
                       @php
                         $statusColor = match ($membership->status) {
@@ -104,7 +104,7 @@
 
                           <div class="flex flex-col sm:flex-row sm:items-start justify-between group">
                             <div>
-                               <h4 class="text-base font-semibold text-gray-800">
+                               <h4 class="text-base font-medium text-gray-800">
                                  {{ $period->formatted_period }}
                                </h4>
                                <div class="mt-1 flex items-center gap-2">
