@@ -100,16 +100,6 @@ class Member extends Model
     }
 
     /**
-     * Get the member's antiquity in months.
-     *
-     * @return int
-     */
-    public function getAntiquityAttribute(): int
-    {
-        return floor($this->created_at->diffInMonths(now()));
-    }
-
-    /**
      * Get the initials of the member.
      *
      * @return string

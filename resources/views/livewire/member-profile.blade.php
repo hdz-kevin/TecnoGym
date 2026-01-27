@@ -108,22 +108,14 @@
                 </div>
 
                 <!-- Secondary Metadata -->
-                <div class="mt-auto grid grid-cols-2 gap-8 pt-8 border-t border-gray-200">
+                <div class="mt-auto pt-8 border-t border-gray-200">
                   <div>
-                    <span class="block text-xs text-gray-500 font-bold uppercase tracking-wide mb-1.5">
+                    <span class="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1.5">
                       Miembro desde
                     </span>
-                    <span class="font-bold text-gray-700 flex items-center gap-2">
+                    <span class="font-medium text-gray-700 flex items-center gap-2">
                       <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
                       {{ $member->created_at->format('d M, Y') }}
-                    </span>
-                  </div>
-                  <div>
-                    <span
-                      class="block text-xs text-gray-500 font-bold uppercase tracking-wide mb-1.5">Antigüedad</span>
-                    <span class="font-bold text-gray-700 flex items-center gap-2">
-                      <flux:icon icon="clock" variant="mini" class="text-gray-500" />
-                      {{ $member->antiquity }} {{ $member->antiquity === 1 ? 'mes' : 'meses' }}
                     </span>
                   </div>
                 </div>
