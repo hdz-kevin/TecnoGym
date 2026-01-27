@@ -100,6 +100,21 @@ class Member extends Model
     }
 
     /**
+     * Get the member's association date which is the date the member was created formatted.
+     *
+     * @return string
+     */
+    public function getAssociationDateAttribute(): string
+    {
+        $date = $this->created_at->locale('es');
+        $day = $date->translatedFormat('d');
+        $month = str_replace('.', '', ucfirst($date->translatedFormat('M')));
+        $year = $date->translatedFormat('Y');
+
+        return $day.' '.$month.' '.$year;
+    }
+
+    /**
      * Get the initials of the member.
      *
      * @return string

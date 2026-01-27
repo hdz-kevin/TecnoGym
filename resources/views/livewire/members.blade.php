@@ -176,7 +176,7 @@
                 {{-- Member Since --}}
                 <div class="flex items-center gap-1.5 text-sm font-medium text-gray-600">
                    <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-                   <span>Miembro desde {{ $member->created_at->format('d M Y') }}</span>
+                   <span>Miembro desde {{ $member->association_date }}</span>
                 </div>
               </div>
 

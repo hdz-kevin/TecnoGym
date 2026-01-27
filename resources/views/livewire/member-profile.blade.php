@@ -113,9 +113,9 @@
                     <span class="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1.5">
                       Miembro desde
                     </span>
-                    <span class="font-medium text-gray-700 flex items-center gap-2">
+                    <span class="font-semibold text-gray-700 flex items-center gap-2">
                       <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-                      {{ $member->created_at->format('d M, Y') }}
+                      {{ $member->association_date }}
                     </span>
                   </div>
                 </div>
