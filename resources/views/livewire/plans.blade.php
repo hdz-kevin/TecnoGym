@@ -19,27 +19,23 @@
                 <h3 class="text-[19px] font-medium text-gray-900">{{ $planType->name }}</h3>
               </div>
               <div class="flex items-center gap-2">
-                <flux:button
-                  class="border text-indigo-600! hover:text-indigo-700! hover:bg-indigo-50!"
-                  variant="ghost"
-                  size="sm"
-                  wire:click="editTypeModal({{ $planType->id }})"
-                  icon="pencil"
-                >
-                  Editar
-                </flux:button>
                 @if ($planType->plans->count() === 0)
                   <flux:button
-                    class="border text-red-600!  hover:text-red-700! hover:bg-red-50!"
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
-                    icon="trash"
                     wire:click="deleteType({{ $planType->id }})"
                     wire:confirm="¿Estás seguro de eliminar este tipo de plan?"
                   >
                     Eliminar
                   </flux:button>
                 @endif
+                <flux:button
+                  variant="primary"
+                  size="sm"
+                  wire:click="editTypeModal({{ $planType->id }})"
+                >
+                  Editar
+                </flux:button>
               </div>
             </div>
           </div>
@@ -61,17 +57,14 @@
                       </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
-                      <flux:button size="sm" variant="filled" wire:click="editPlanModal({{ $plan->id }})"
-                        class="bg-indigo-50! text-indigo-600! hover:bg-indigo-100! hover:text-indigo-700!">
-                        Editar
-                      </flux:button>
                       @if ($plan->memberships->count() === 0)
-                        <flux:button size="sm" variant="filled" wire:click="deletePlan({{ $plan->id }})"
-                          wire:confirm="¿Estás seguro de eliminar este plan?"
-                          class="bg-red-50! text-red-600! hover:bg-red-100! hover:text-red-700!">
+                        <flux:button size="sm" variant="outline" wire:click="deletePlan({{ $plan->id }})" wire:confirm="¿Estás seguro de eliminar este plan?">
                           Eliminar
                         </flux:button>
                       @endif
+                      <flux:button size="sm" variant="outline" wire:click="editPlanModal({{ $plan->id }})">
+                        Editar
+                      </flux:button>
                     </div>
                   </div>
                 @endforeach

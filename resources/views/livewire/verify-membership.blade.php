@@ -149,7 +149,7 @@
                   Código no encontrado. Por favor verifique e intente nuevamente.
                 </p>
 
-                <flux:button wire:click="close">
+                <flux:button wire:click="close" icon="x-mark">
                   Cerrar
                 </flux:button>
               </div>

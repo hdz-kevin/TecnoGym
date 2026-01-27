@@ -185,26 +185,23 @@
 
             <!-- Actions Footer -->
             <div class="flex justify-end gap-3 mt-7">
-              <flux:button
-                size="sm"
-                variant="outline"
-                icon="eye"
-                wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
-              >
-                Ver
-              </flux:button>
-
               {{-- @if ($membership->status == MembershipStatus::EXPIRED) --}}
               <flux:button
                 size="sm"
-                variant="primary"
-                icon="plus"
+                variant="outline"
                 wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
               >
                 Nuevo Periodo
               </flux:button>
               {{-- @endif --}}
 
+              <flux:button
+                size="sm"
+                variant="primary"
+                wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
+              >
+                Ver
+              </flux:button>
             </div>
           </div>
         </div>

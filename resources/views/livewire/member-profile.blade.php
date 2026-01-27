@@ -130,7 +130,7 @@
 
                 <!-- Footer Actions -->
                 <div class="mt-12 flex justify-end">
-                  <flux:button wire:click="close">
+                  <flux:button wire:click="close" icon="x-mark">
                     Cerrar
                   </flux:button>
                 </div>

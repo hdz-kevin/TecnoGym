@@ -134,7 +134,7 @@
                 </div>
 
                 <div class="mt-4 flex justify-end">
-                  <flux:button wire:click="closeModal">
+                  <flux:button wire:click="closeModal" icon="x-mark">
                     Cerrar
                   </flux:button>
                 </div>

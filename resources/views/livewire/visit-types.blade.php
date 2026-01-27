@@ -19,23 +19,19 @@
               </div>
               <div class="flex items-center gap-2">
                 <flux:button
-                  class="border text-indigo-600! hover:text-indigo-700! hover:bg-indigo-50!"
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  icon="pencil"
-                  wire:click="editModal({{ $visitType->id }})"
-                >
-                  Editar
-                </flux:button>
-                <flux:button
-                  class="border text-red-600! hover:text-red-700! hover:bg-red-50!"
-                  variant="ghost"
-                  size="sm"
-                  icon="trash"
                   wire:click="delete({{ $visitType->id }})"
                   wire:confirm="¿Estás seguro de eliminar este tipo de visita?"
                 >
                   Eliminar
+                </flux:button>
+                <flux:button
+                  variant="primary"
+                  size="sm"
+                  wire:click="editModal({{ $visitType->id }})"
+                >
+                  Editar
                 </flux:button>
               </div>
             </div>
