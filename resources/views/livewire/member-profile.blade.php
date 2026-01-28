@@ -89,12 +89,12 @@
                           </p>
                         </div>
                         <div class="text-right">
-                          <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Periodo</p>
-                          <div class="text-lg font-bold text-gray-800 flex items-center gap-1.5">
-                            <span>{{ $membership->lastPeriod->start_date->format('d M, Y') }}</span>
-                            <span>-></span>
-                            <span>{{ $membership->lastPeriod->end_date->format('d M, Y') }}</span>
-                          </div>
+                          <p class="text-xs font-semibold text-gray-500 uppercase mb-1">
+                            {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
+                          </p>
+                          <p class="text-lg font-bold text-gray-800">
+                            {{ $membership->last_period->formatted_period }}
+                          </p>
                         </div>
                       </div>
                     </div>

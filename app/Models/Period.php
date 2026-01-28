@@ -41,7 +41,8 @@ class Period extends Model
         $startMonth = str_replace('.', '', ucfirst($start->translatedFormat('M')));
         $endMonth = str_replace('.', '', ucfirst($end->translatedFormat('M')));
 
-        return $start->translatedFormat('d').' '.$startMonth.', '.$start->translatedFormat('Y').' - '.
-                $end->translatedFormat('d').' '.$endMonth.', '.$end->translatedFormat('Y');
+        return $start->translatedFormat('d').' '.$startMonth.' '.$start->translatedFormat('Y')
+                .' - '.
+                $end->translatedFormat('d').' '.$endMonth.' '.$end->translatedFormat('Y');
     }
 }

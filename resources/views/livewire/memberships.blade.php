@@ -166,10 +166,7 @@
                   <div class="flex items-center gap-2">
                     <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
                     <span class="font-medium text-gray-800">
-                      @php
-                        $last_period = $membership->last_period;
-                      @endphp
-                      {{ $last_period->start_date->format('d M Y') }} -> {{ $last_period->end_date->format('d M Y') }}
+                      {{ $membership->last_period->formatted_period }}
                     </span>
                   </div>
                 </div>
