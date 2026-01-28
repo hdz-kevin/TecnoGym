@@ -122,7 +122,7 @@ class Memberships extends Component
             $query->where('status', $this->statusFilter->value);
         })
         ->orderBy('updated_at', 'desc')
-        ->paginate(4);
+        ->paginate(6);
     }
 
     /**
