@@ -21,25 +21,14 @@
 
             {{-- Modal Body --}}
             <form wire:submit.prevent="save">
-              <div class="px-6 py-6 space-y-6">
-
-                <div class="space-y-4">
-                  {{-- Start Date --}}
-                  <flux:field>
-                    <flux:label>Fecha de Inicio</flux:label>
-                    <flux:input type="date" wire:model.live="start_date" />
-                    <flux:error name="start_date" />
-                  </flux:field>
-
-                  {{-- Calculated End Date --}}
-                  @if ($this->endDate)
-                    <div class="text-sm text-gray-700 bg-gray-100 p-3 rounded-md mt-2">
-                      El periodo terminará el: <span class="font-medium text-gray-900">{{ $this->endDate->format('d/m/Y') }}</span>
-                    </div>
-                  @endif
-                </div>
+              <div class="px-6 py-6">
+                {{-- Start Date --}}
+                <flux:field>
+                  <flux:label>Fecha de Inicio</flux:label>
+                  <flux:input type="date" wire:model.live="start_date" />
+                  <flux:error name="start_date" />
+                </flux:field>
               </div>
-
               {{-- Modal Footer --}}
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeModal">
