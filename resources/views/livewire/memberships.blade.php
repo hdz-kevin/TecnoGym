@@ -107,7 +107,7 @@
       @endif
     </div>
   @else
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
       @foreach($this->memberships as $membership)
         <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative flex flex-col"
           wire:key="{{ $membership->id }}">
@@ -144,44 +144,40 @@
                 </div>
 
                 <div>
-                  <div class="flex items-center gap-2">
-                    <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
-                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-sm font-medium text-gray-700 border border-gray-200">
-                      <span class="text-gray-500">#</span>{{ $membership->member->code }}
-                    </span>
-                  </div>
-                  <div class="mt-1 flex items-center gap-2.5 text-gray-900">
-                    {{ $membership->plan_name }}
-                  </div>
+                  <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
+                  <p class="text-gray-800">
+                    <span class="text-gray-500">#</span>{{ $membership->member->code }}
+                  </p>
                 </div>
               </div>
             </div>
 
             <!-- Period Info -->
-              <div class="flex items-end justify-between">
+              <div class="space-y-4">
                 <div>
-                  <p class="text-sm font-medium text-gray-500 mb-1">
-                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
-                  </p>
-                  <div class="flex items-center gap-2">
-                    <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
+                  <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Plan</p>
+                  <div class="flex items-center gap-1.5">
+                    <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
                     <span class="font-medium text-gray-800">
-                      {{ $membership->last_period->formatted_period }}
+                      {{ $membership->plan_name }}
                     </span>
                   </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                  <flux:icon icon="clock" variant="mini" class="text-gray-500" />
-                  <span class="font-medium text-gray-800">
-                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en ' : 'Venció hace ' }}
-                    {{ $membership->expiration_time }}
-                  </span>
+                <div>
+                  <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Vencimiento</p>
+                  <div class="flex items-center gap-1.5">
+                    <flux:icon icon="clock" variant="mini" class="text-gray-500" />
+                    <span class="font-medium text-gray-800">
+                      {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en ' : 'Venció hace ' }}
+                      {{ $membership->expiration_time }}
+                    </span>
+                  </div>
                 </div>
               </div>
 
             <!-- Actions Footer -->
-            <div class="flex justify-end gap-3 mt-7">
+            <div class="flex justify-end gap-3 mt-6">
               {{-- @if ($membership->status == MembershipStatus::EXPIRED) --}}
               <flux:button
                 size="sm"
@@ -282,7 +278,7 @@
                   type="submit"
                   variant="primary"
                 >
-                  Crear Membresía
+                  Guardar
                 </flux:button>
               </div>
             </form>
