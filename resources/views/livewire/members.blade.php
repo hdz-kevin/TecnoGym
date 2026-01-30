@@ -4,7 +4,7 @@
 
 <x-slot:subtitle>Gestiona tus socios y su estado</x-slot:subtitle>
 
-<div class="p-6 pt-4 space-y-6">
+<div class="p-4 space-y-6">
   {{-- Membership stats --}}
   @if($this->stats['total'] > 0)
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -366,21 +366,28 @@
     </div>
   @endif
 
+  <livewire:member-profile />
+
   <!-- Flash Messages -->
   @if (session()->has('message'))
-    <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50"
-      x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
+    <div
+      class="fixed text-lg font-medium bottom-8 right-8 bg-green-50 text-green-800 border border-green-400 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
       {{ session('message') }}
     </div>
   @endif
 
   @if (session()->has('error'))
-    <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50" x-data="{ show: true }"
-      x-show="show" x-init="setTimeout(() => show = false, 5000)">
+    <div
+      class="fixed text-lg font-medium bottom-8 right-8 bg-red-50 text-red-800 border border-red-400 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
       {{ session('error') }}
     </div>
   @endif
-
-  <livewire:member-profile />
-
 </div>

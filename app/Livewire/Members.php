@@ -134,14 +134,14 @@ class Members extends Component
 
         if ($this->editingMember) {
             $this->editingMember->update($validated);
-            $flashMessage = 'Socio actualizado exitosamente.';
+            $flashMsg = 'Socio actualizado exitosamente';
         } else {
             Member::create($validated);
-            $flashMessage = 'Socio creado exitosamente.';
+            $flashMsg = 'Socio creado exitosamente';
         }
 
         $this->closeModal();
-        session()->flash('message', $flashMessage);
+        session()->flash('message', $flashMsg);
     }
 
     public function removePhoto()
