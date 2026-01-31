@@ -93,8 +93,8 @@ class AddPeriod extends Component
 
         $this->closeModal();
 
-        // Refresh memberships list on parent component
-        $this->dispatch('refresh-memberships');
+        // Notify the parent component (Memberships) that a new period has been added
+        $this->dispatch('new-period-added');
     }
 
     /**

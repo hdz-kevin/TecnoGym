@@ -126,15 +126,17 @@ class Memberships extends Component
     }
 
     /**
-     * Refresh memberships list
+     * Listen for new period added event
      *
      * @return void
      */
-    #[On('refresh-memberships')]
-    public function refreshMemberships()
+    #[On('new-period-added')]
+    public function newPeriodAdded()
     {
         $this->reset('search', 'statusFilter');
         $this->memberships;
+
+        session()->flash('message', 'Nuevo periodo añadido');
     }
 
     /**
