@@ -247,6 +247,7 @@ class Memberships extends Component
         $membership->member->update(['status' => MemberStatus::ACTIVE]);
 
         $this->closeCreateModal();
+        session()->flash('message', 'Membresía creada exitosamente');
     }
 
     /**
