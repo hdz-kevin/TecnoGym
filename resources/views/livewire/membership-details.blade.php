@@ -41,29 +41,29 @@
                 <div class="space-y-4">
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Plan</p>
-                      <p class="text-base font-medium text-gray-800">{{ $membership->plan_name }}</p>
+                      <p class="text-lg font-medium text-gray-800">{{ $membership->plan_name }}</p>
                    </div>
 
                    @if($membership->status == MembershipStatus::ACTIVE)
                     <div>
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Vence en</p>
-                        <p class="text-base font-medium text-gray-800">{{ $membership->expiration_time }}</p>
+                        <p class="text-lg font-medium text-gray-800">{{ $membership->expiration_time }}</p>
                     </div>
                    @else
                     <div>
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">venció hace</p>
-                        <p class="text-base font-medium text-gray-800">{{ $membership->expiration_time }}</p>
+                        <p class="text-lg font-medium text-gray-800">{{ $membership->expiration_time }}</p>
                     </div>
                    @endif
 
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Periodos</p>
-                      <p class="text-base font-medium text-gray-800">{{ $membership->periods->count() }}</p>
+                      <p class="text-lg font-medium text-gray-800">{{ $membership->periods->count() }}</p>
                    </div>
 
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Total Pagado</p>
-                      <p class="text-base font-medium text-gray-800">${{ number_format($membership->total_paid) }}</p>
+                      <p class="text-lg font-medium text-gray-800">${{ number_format($membership->total_paid) }}</p>
                    </div>
                 </div>
               </div>
@@ -133,7 +133,7 @@
                   @endif
                 </div>
 
-                <div class="mt-4 flex justify-end">
+                <div class="mt-8 flex justify-end">
                   <flux:button wire:click="closeModal" icon="x-mark">
                     Cerrar
                   </flux:button>
