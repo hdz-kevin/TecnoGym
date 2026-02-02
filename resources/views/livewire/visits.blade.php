@@ -174,7 +174,7 @@
 
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">Guardar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingVisit ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
           </div>
@@ -184,10 +184,25 @@
   @endif
 
   <!-- Flash Messages -->
-  {{-- @if (session()->has('message'))
-    <div class="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50" x-data="{ show: true }"
-      x-show="show" x-init="setTimeout(() => show = false, 3000)">
+  @if (session()->has('message'))
+    <div
+      class="fixed font-medium top-5 right-5 bg-green-50 text-green-800 border border-green-300 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
       {{ session('message') }}
     </div>
-  @endif --}}
+  @endif
+
+  @if (session()->has('error'))
+    <div
+      class="fixed font-medium top-5 right-5 bg-red-50 text-red-800 border border-red-300 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
+      {{ session('error') }}
+    </div>
+  @endif
 </div>

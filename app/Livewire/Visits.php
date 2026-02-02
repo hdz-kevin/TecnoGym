@@ -131,15 +131,19 @@ class Visits extends Component
                 'visit_at' => $dateTime,
                 'price_paid' => $this->price_paid,
             ]);
+            $flashMsg = 'Visita actualizada exitosamente';
         } else {
             Visit::create([
                 'visit_type_id' => $this->visit_type_id,
                 'visit_at' => $dateTime,
                 'price_paid' => $this->price_paid,
             ]);
+            $flashMsg = 'Visita registrada exitosamente';
         }
 
         $this->closeModal();
+
+        session()->flash('message', $flashMsg);
     }
 
     /**
@@ -151,6 +155,8 @@ class Visits extends Component
     public function delete(Visit $visit)
     {
         $visit->delete();
+
+        session()->flash('message', 'Visita eliminada exitosamente');
     }
 
     /**
