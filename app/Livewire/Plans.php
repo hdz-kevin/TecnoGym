@@ -76,11 +76,15 @@ class Plans extends Component
 
         if ($this->editingType) {
             $this->editingType->update(['name' => $this->type_name]);
+            $flashMsg = 'Tipo de plan actualizado exitosamente';
         } else {
             PlanType::create(['name' => $this->type_name]);
+            $flashMsg = 'Tipo de plan creado exitosamente';
         }
 
         $this->closeTypeModal();
+
+        $this->dispatch('notify-changes', $flashMsg);
     }
 
     /**
@@ -107,14 +111,14 @@ class Plans extends Component
      */
     public function deleteType(PlanType $type)
     {
-        // Check if type has plans
         if ($type->plans->count() > 0) {
-            session()->flash('error', 'No se puede eliminar un tipo que tiene planes asociados.');
+            $this->dispatch('notify-changes', 'No puedes eliminar este tipo de plan', 'error');
             return;
         }
 
         $type->delete();
-        session()->flash('message', 'Tipo de plan eliminado exitosamente.');
+
+        $this->dispatch('notify-changes', 'Tipo de plan eliminado exitosamente');
     }
 
     /**
@@ -164,11 +168,15 @@ class Plans extends Component
 
         if ($this->editingPlan) {
             $this->editingPlan->update($planData);
+            $flashMsg = 'Plan actualizado exitosamente';
         } else {
             $this->selectedTypeForPlan->plans()->create($planData);
+            $flashMsg = 'Plan creado exitosamente';
         }
 
         $this->closePlanModal();
+
+        $this->dispatch('notify-changes', $flashMsg);
     }
 
     /**
@@ -200,12 +208,13 @@ class Plans extends Component
     public function deletePlan(Plan $plan)
     {
         if ($plan->memberships->count() > 0) {
-            session()->flash('error', 'No se puede eliminar un plan que tiene membresías asociadas.');
+            $this->dispatch('notify-changes', 'No puedes eliminar este plan', 'error');
             return;
         }
 
         $plan->delete();
-        session()->flash('message', 'Plan eliminado exitosamente.');
+
+        $this->dispatch('notify-changes', 'Plan eliminado exitosamente');
     }
 
     public function render()
