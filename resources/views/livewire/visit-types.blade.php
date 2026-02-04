@@ -18,14 +18,16 @@
                 <p class="text-lg font-semibold text-gray-900 mt-1">${{ number_format($visitType->price) }}</p>
               </div>
               <div class="flex items-center gap-2">
-                <flux:button
-                  variant="outline"
-                  size="sm"
-                  wire:click="delete({{ $visitType->id }})"
-                  wire:confirm="¿Estás seguro de eliminar este tipo de visita?"
-                >
-                  Eliminar
-                </flux:button>
+                @if ($visitType->visits->count() == 0)
+                  <flux:button
+                    variant="outline"
+                    size="sm"
+                    wire:click="delete({{ $visitType->id }})"
+                    wire:confirm="¿Estás seguro de eliminar este tipo de visita?"
+                  >
+                    Eliminar
+                  </flux:button>
+                @endif
                 <flux:button
                   variant="primary"
                   size="sm"

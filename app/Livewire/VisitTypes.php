@@ -62,7 +62,10 @@ class VisitTypes extends Component
 
     public function delete(VisitType $visitType)
     {
-        // Todo: Check if the visit type is associated with any visit
+        if ($visitType->visits->count()) {
+            return;
+        }
+
         $visitType->delete();
     }
 
