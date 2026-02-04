@@ -20,12 +20,23 @@ class VisitTypes extends Component
     public $showModal = false;
     public VisitType|null $editingVisitType = null;
 
+    /**
+     * Open create modal
+     *
+     * @return void
+     */
     public function createModal()
     {
         $this->editingVisitType = null;
         $this->showModal = true;
     }
 
+    /**
+     * Open edit modal setting the visit type to edit
+     *
+     * @param VisitType $visitType
+     * @return void
+     */
     public function editModal(VisitType $visitType)
     {
         $this->editingVisitType = $visitType;
@@ -34,6 +45,11 @@ class VisitTypes extends Component
         $this->showModal = true;
     }
 
+    /**
+     * Save the visit type (create or update)
+     *
+     * @return void
+     */
     public function save()
     {
         $this->validate();
@@ -57,6 +73,11 @@ class VisitTypes extends Component
         $this->dispatch('notify-changes', $flashMsg);
     }
 
+    /**
+     * Close the modal and reset the form and validation
+     *
+     * @return void
+     */
     public function closeModal()
     {
         $this->showModal = false;
@@ -64,6 +85,12 @@ class VisitTypes extends Component
         $this->resetValidation();
     }
 
+    /**
+     * Delete the visit type
+     *
+     * @param VisitType $visitType
+     * @return void
+     */
     public function delete(VisitType $visitType)
     {
         if ($visitType->visits->count() > 0) {
@@ -76,12 +103,22 @@ class VisitTypes extends Component
         $this->dispatch('notify-changes', 'Tipo de visita eliminado correctamente');
     }
 
+    /**
+     * Reset the form fields
+     *
+     * @return void
+     */
     private function resetForm()
     {
         $this->name = '';
         $this->price = '';
     }
 
+    /**
+     * Render the component
+     *
+     * @return void
+     */
     public function render()
     {
         $visitTypes = VisitType::all();
