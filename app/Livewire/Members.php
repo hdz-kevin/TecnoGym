@@ -200,13 +200,7 @@ class Members extends Component
     #[Computed]
     public function members()
     {
-        // Order by status and last membership updated at
         return Member::with('memberships')
-            ->addSelect(['last_membership_updated_at' => Membership::select('updated_at')
-                ->whereColumn('member_id', 'members.id')
-                ->latest('updated_at')
-                ->limit(1)
-            ])
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);
             })
@@ -214,7 +208,7 @@ class Members extends Component
                 $query->where('name', 'like', '%' . $this->search . '%')
                       ->orWhere('code', 'like', $this->search . '%');
             })
-            ->orderBy('last_membership_updated_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(6);
     }
 
