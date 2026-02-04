@@ -80,8 +80,8 @@ class Member extends Model
             return null;
         }
 
-        return $this->memberships()
-                    ->orderBy('updated_at', 'desc')
+        return $this->memberships
+                    ->sortByDesc('updated_at')
                     ->first();
     }
 
