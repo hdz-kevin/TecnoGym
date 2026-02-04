@@ -282,7 +282,7 @@ class Memberships extends Component
      */
     public function render()
     {
-        $members = Member::all();
+        $members = Member::orderBy('name')->get();
         $planTypes = PlanType::with('plans')->get();
 
         return view('livewire.memberships', compact('members', 'planTypes'));
