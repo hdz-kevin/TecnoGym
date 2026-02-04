@@ -43,14 +43,18 @@ class VisitTypes extends Component
                 'name' => $this->name,
                 'price' => $this->price,
             ]);
+            $flashMsg = 'Tipo de visita actualizado correctamente';
         } else {
             VisitType::create([
                 'name' => $this->name,
                 'price' => $this->price,
             ]);
+            $flashMsg = 'Tipo de visita creado correctamente';
         }
 
         $this->closeModal();
+
+        $this->dispatch('notify-changes', $flashMsg);
     }
 
     public function closeModal()
@@ -62,11 +66,14 @@ class VisitTypes extends Component
 
     public function delete(VisitType $visitType)
     {
-        if ($visitType->visits->count()) {
+        if ($visitType->visits->count() > 0) {
+            $this->dispatch('notify-changes', 'No se puede eliminar el tipo de visita', 'error');
             return;
         }
 
         $visitType->delete();
+
+        $this->dispatch('notify-changes', 'Tipo de visita eliminado correctamente');
     }
 
     private function resetForm()
