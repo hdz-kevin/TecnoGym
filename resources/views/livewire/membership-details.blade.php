@@ -4,8 +4,8 @@
 
 <div>
   @if ($showModal && $membership)
-    <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
-      <div class="fixed inset-0 z-50 overflow-y-auto">
+    <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-20" wire:click="closeModal">
+      <div class="fixed inset-0 z-20 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
           <div
             class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all w-full max-w-6xl"
@@ -94,9 +94,13 @@
                        <div class="absolute left-3 top-2 bottom-2 w-0.5 bg-gray-100"></div>
 
                       @foreach ($membership->periods as $period)
-                        <div wire:key="{{ $period->id }}" class="relative pl-10">
+                        <div
+                            wire:key="{{ $period->id }}"
+                            class="relative pl-10 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -ml-2 transition-colors"
+                            wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }}, periodId: {{ $period->id }} })"
+                        >
                           <!-- Timeline Dot -->
-                          <div class="absolute left-[13px] top-1.5 h-4 w-4 rounded-full bg-white z-10">
+                          <div class="absolute left-[13px] top-3.5 h-4 w-4 rounded-full bg-white z-10">
                             <div class="absolute inset-0.5 rounded-full
                                   {{ $period->status->value != 'completed' ? 'bg-green-600' : 'bg-gray-300' }}"
                             ></div>

@@ -6,6 +6,7 @@ use App\Enums\DurationUnit;
 use App\Enums\MembershipStatus;
 use App\Enums\PeriodStatus;
 use App\Models\Membership;
+use App\Models\Period;
 use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -23,6 +24,11 @@ class AddPeriod extends Component
     public ?Membership $membership = null;
 
     /**
+     * Period being edited
+     */
+    public ?Period $editingPeriod = null;
+
+    /**
      * Modal state
      */
     public $showModal = false;
@@ -33,10 +39,18 @@ class AddPeriod extends Component
      * @return void
      */
     #[On('open-add-period-modal')]
-    public function openModal(Membership $membership)
+    public function openModal(Membership $membership, ?int $periodId = null)
     {
-        $this->membership = $membership->load(['plan']);
-        $this->start_date = now()->format('Y-m-d');
+        $this->membership = $membership->load(['plan', 'periods']);
+
+        if ($periodId) {
+            $this->editingPeriod = $this->membership->periods->findOrFail($periodId);
+            $this->start_date = $this->editingPeriod->start_date->format('Y-m-d');
+        } else {
+            $this->editingPeriod = null;
+            $this->start_date = now()->format('Y-m-d');
+        }
+
         $this->showModal = true;
         $this->dispatch('disable-scroll');
     }
@@ -79,17 +93,25 @@ class AddPeriod extends Component
         $startDate = Carbon::parse($this->start_date);
         $endDate = $this->endDate;
 
-        $this->membership->periods()->create([
-            'start_date' => $startDate,
-            'end_date' => $endDate,
-            'price_paid' => $this->membership->plan->price,
-            'status' => PeriodStatus::IN_PROGRESS,
-        ]);
+        if ($this->editingPeriod) {
+            $this->editingPeriod->update([
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ]);
+        } else {
+            $this->membership->periods()->create([
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'price_paid' => $this->membership->plan->price,
+                'status' => PeriodStatus::IN_PROGRESS,
+            ]);
 
-        // Update membership status to active
-        $this->membership->update([
-            'status' => MembershipStatus::ACTIVE,
-        ]);
+            // Update membership status to active
+            // Todo: Should we update membership status only on creation?
+            $this->membership->update([
+                'status' => MembershipStatus::ACTIVE,
+            ]);
+        }
 
         $this->closeModal();
 
@@ -106,6 +128,7 @@ class AddPeriod extends Component
     {
         $this->showModal = false;
         $this->membership = null;
+        $this->editingPeriod = null;
         $this->reset(['start_date']);
         $this->dispatch('enable-scroll');
     }
