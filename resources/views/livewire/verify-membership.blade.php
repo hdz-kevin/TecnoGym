@@ -159,4 +159,21 @@
       </div>
     </div>
   @endif
+
+  {{-- Sounds --}}
+  <audio id="sound-success" src="{{ asset('sounds/success.mp3') }}" preload="auto"></audio>
+  <audio id="sound-error" src="{{ asset('sounds/error.mp3') }}" preload="auto"></audio>
+
+  <script>
+    document.addEventListener('livewire:initialized', () => {
+      Livewire.on('play-sound', ({ status }) => {
+        const soundElement = document.getElementById(`sound-${status}`);
+        if (soundElement) {
+          soundElement.currentTime = 0;
+          soundElement.play()
+                      .catch(error => console.log('Error playing sound:', error));
+        }
+      });
+    });
+  </script>
 </div>

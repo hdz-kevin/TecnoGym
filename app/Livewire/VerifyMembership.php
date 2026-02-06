@@ -26,11 +26,18 @@ class VerifyMembership extends Component
 
         if (! $member) {
             $this->showModal = true;
+            $this->dispatch('play-sound', status: 'error');
             return;
         }
 
         $this->member = $member;
         $this->membership = $member->latestMembership();
+
+        if (! $this->membership || $this->membership->status == MembershipStatus::EXPIRED) {
+            $this->dispatch('play-sound', status: 'error');
+        } else {
+            $this->dispatch('play-sound', status: 'success');
+        }
 
         $this->showModal = true;
     }
