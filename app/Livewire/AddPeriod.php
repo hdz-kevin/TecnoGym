@@ -98,6 +98,7 @@ class AddPeriod extends Component
                 'start_date' => $startDate,
                 'end_date' => $endDate,
             ]);
+            $flash = 'Periodo actualizado exitosamente';
         } else {
             $this->membership->periods()->create([
                 'start_date' => $startDate,
@@ -111,12 +112,13 @@ class AddPeriod extends Component
             $this->membership->update([
                 'status' => MembershipStatus::ACTIVE,
             ]);
+            $flash = 'Periodo añadido exitosamente';
         }
 
         $this->closeModal();
 
-        // Notify the parent component (Memberships) that a new period has been added
-        $this->dispatch('new-period-added');
+        // Notify the parent component (Memberships) that a period has been added or edited
+        $this->dispatch('period-saved', $flash);
     }
 
     /**

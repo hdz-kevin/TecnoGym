@@ -126,17 +126,17 @@ class Memberships extends Component
     }
 
     /**
-     * Listen for new period added event
+     * Listen for new period added or edited
      *
      * @return void
      */
-    #[On('new-period-added')]
-    public function newPeriodAdded()
+    #[On('period-saved')]
+    public function periodSaved(string $message)
     {
         $this->reset('search', 'statusFilter');
         $this->memberships;
 
-        session()->flash('message', 'Nuevo periodo añadido');
+        session()->flash('message', $message);
     }
 
     /**
