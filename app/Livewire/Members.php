@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Member;
-use App\Models\Membership;
 use App\Enums\MemberStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\File;
@@ -208,7 +207,7 @@ class Members extends Component
                 $query->where('name', 'like', '%' . $this->search . '%')
                       ->orWhere('code', 'like', $this->search . '%');
             })
-            ->orderBy('id', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(6);
     }
 
