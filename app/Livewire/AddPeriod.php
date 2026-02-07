@@ -117,7 +117,7 @@ class AddPeriod extends Component
 
         $this->closeModal();
 
-        // Notify the parent component (Memberships) that a period has been added or edited
+        // Notify the Memberships and MembershipDetails components that a period has been added or edited
         $this->dispatch('period-saved', $flash);
     }
 

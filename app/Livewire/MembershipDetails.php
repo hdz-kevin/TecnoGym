@@ -45,6 +45,24 @@ class MembershipDetails extends Component
     }
 
     /**
+     * Refresh the membership data when a period is added or edited.
+     *
+     * @return void
+     */
+    #[On('period-saved')]
+    public function refreshMembership()
+    {
+        if ($this->membership) {
+            $this->membership->refresh();
+            $this->membership->load([
+                'member',
+                'plan',
+                'periods',
+            ]);
+        }
+    }
+
+    /**
      * Closes the modal and clears the component state.
      *
      * @return void
