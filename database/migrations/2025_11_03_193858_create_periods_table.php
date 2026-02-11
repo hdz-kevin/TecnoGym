@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('periods', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Membership::class)->constrained()->onDelete('restrict');
+            $table->foreignId('period_type_id')->constrained('period_types', 'id')->onDelete('restrict');
 
             $table->date('start_date');
             $table->date('end_date');

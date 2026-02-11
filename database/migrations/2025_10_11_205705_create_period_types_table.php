@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\DurationUnit;
-use App\Models\PlanType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('period_types', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PlanType::class)->constrained()->onDelete('restrict');
+            $table->foreignId('membership_type_id')->constrained('membership_types', 'id')->onDelete('restrict');
 
             $table->string('name');
             $table->integer('duration_value');
-            $table->enum('duration_unit', DurationUnit::values()); // day, week, month
+            $table->enum('duration_unit', DurationUnit::values());
             $table->integer('duration_in_days'); // For easier ordering
             $table->integer('price');
             $table->timestamps();
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('period_types');
     }
 };
