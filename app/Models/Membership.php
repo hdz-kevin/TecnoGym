@@ -11,8 +11,7 @@ class Membership extends Model
 {
     protected $fillable = [
         'member_id',
-        'plan_id',
-        'plan_type_id',
+        'membership_type_id',
         'status',
     ];
 
@@ -31,23 +30,13 @@ class Membership extends Model
     }
 
     /**
-     * Get the plan that owns the membership.
+     * Get the membership type that owns the membership.
      *
      * @return BelongsTo
      */
-    public function plan()
+    public function membershipType()
     {
-        return $this->belongsTo(Plan::class);
-    }
-
-    /**
-     * Get the plan type that owns the membership.
-     *
-     * @return BelongsTo
-     */
-    public function planType()
-    {
-        return $this->belongsTo(PlanType::class);
+        return $this->belongsTo(MembershipType::class);
     }
 
     /**
