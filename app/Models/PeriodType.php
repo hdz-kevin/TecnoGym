@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Plan extends Model
+class PeriodType extends Model
 {
     protected $fillable = [
+        'membership_type_id',
         'name',
         'duration_value',
         'duration_unit',
         'duration_in_days',
         'price',
-        'plan_type_id',
     ];
 
     protected $casts = [
@@ -23,19 +23,23 @@ class Plan extends Model
     ];
 
     /**
-     * Get the plan type that owns the plan.
+     * Get the membership type that owns the period type.
+     *
+     * @return BelongsTo
      */
-    public function planType(): BelongsTo
+    public function membershipType()
     {
-        return $this->belongsTo(PlanType::class);
+        return $this->belongsTo(MembershipType::class);
     }
 
     /**
-     * Get the memberships for the plan.
+     * Get the periods for the period type.
+     *
+     * @return HasMany
      */
-    public function memberships(): HasMany
+    public function periods()
     {
-        return $this->hasMany(Membership::class);
+        return $this->hasMany(Period::class);
     }
 
     /**

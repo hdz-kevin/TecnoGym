@@ -10,6 +10,7 @@ class Period extends Model
 {
     protected $fillable = [
         'membership_id',
+        'period_type_id',
         'start_date',
         'end_date',
         'price_paid',
@@ -28,6 +29,14 @@ class Period extends Model
     public function membership(): BelongsTo
     {
         return $this->belongsTo(Membership::class);
+    }
+
+    /**
+     * Get the period type that owns the period.
+     */
+    public function periodType(): BelongsTo
+    {
+        return $this->belongsTo(PeriodType::class);
     }
 
     /**

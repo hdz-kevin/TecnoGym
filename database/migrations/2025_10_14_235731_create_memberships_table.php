@@ -2,8 +2,7 @@
 
 use App\Enums\MembershipStatus;
 use App\Models\Member;
-use App\Models\Plan;
-use App\Models\PlanType;
+use App\Models\MembershipType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,8 +17,7 @@ return new class extends Migration
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Member::class)->constrained()->onDelete('restrict');
-            $table->foreignIdFor(Plan::class)->constrained()->onDelete('restrict');
-            $table->foreignIdFor(PlanType::class)->constrained()->onDelete('restrict');
+            $table->foreignIdFor(MembershipType::class)->constrained()->onDelete('restrict');
 
             $table->enum('status', MembershipStatus::values())->default(MembershipStatus::ACTIVE->value);
             $table->timestamps();
