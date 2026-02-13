@@ -30,7 +30,7 @@ class MembershipSeeder extends Seeder
             Membership::create([
                 'member_id' => $member->id,
                 'membership_type_id' => $membershipType->id,
-                'status' => MembershipStatus::ACTIVE->value,
+                'status' => MembershipStatus::EXPIRED->value,
             ]);
         }
     }

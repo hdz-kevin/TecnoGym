@@ -19,55 +19,58 @@ class PeriodSeeder extends Seeder
      */
     public function run(): void
     {
-        $memberships = Membership::with(['plan', 'member'])->get();
+        $memberships = Membership::with('membershipType.periodTypes')->get();
 
         foreach ($memberships as $membership) {
-            $plan = $membership->plan;
-
-            $periodsToCreate = rand(1, 6);
+            $membershipType = $membership->membershipType;
+            $periodsToCreate = rand(1, 9);
 
             // Start a few months ago
-            $startDate = Carbon::now()->subMonths(ceil($periodsToCreate / 2.5));
+            $startDate = Carbon::now()->subMonths(ceil($periodsToCreate / 2));
 
             for ($i = 0; $i < $periodsToCreate; $i++) {
-                $periodStart = $startDate->copy();
-
-                $periodEnd = match ($plan->duration_unit) {
-                    DurationUnit::DAY => $periodStart->copy()->addDays($plan->duration_value),
-                    DurationUnit::WEEK => $periodStart->copy()->addWeeks($plan->duration_value),
-                    DurationUnit::MONTH => $periodStart->copy()->addMonths($plan->duration_value),
-                    default => $periodStart->copy()->addMonth(),
+                $periodType = $membershipType->periodTypes->random();
+                // Calculate dates
+                $periodStartDate = $startDate->copy();
+                $periodEndDate = match ($periodType->duration_unit) {
+                    DurationUnit::DAY => $periodStartDate->copy()->addDays($periodType->duration_value),
+                    DurationUnit::WEEK => $periodStartDate->copy()->addWeeks($periodType->duration_value),
+                    DurationUnit::MONTH => $periodStartDate->copy()->addMonths($periodType->duration_value),
+                    default => $periodStartDate->copy()->addMonth(),
                 };
 
-                // Period status
-                $isCurrentPeriod = $periodStart <= Carbon::now() && Carbon::now() <= $periodEnd;
-                $isFuturePeriod = $periodStart > Carbon::now();
-                $status = match (true) {
-                    $isCurrentPeriod => PeriodStatus::IN_PROGRESS,
-                    $isFuturePeriod => PeriodStatus::IN_PROGRESS,
-                    default => PeriodStatus::COMPLETED
-                };
+                // Get Status
+                $status = PeriodStatus::COMPLETED;
 
-                // Create the period
+                if ($periodStartDate <= Carbon::now() && Carbon::now() <= $periodEndDate) {
+                    $status = PeriodStatus::IN_PROGRESS;
+                } else if ($periodStartDate > Carbon::now()) {
+                    // In case a FUTURE status is added to Period model
+                    $status = PeriodStatus::IN_PROGRESS;
+                }
+
+                // Create Period
                 Period::create([
                     'membership_id' => $membership->id,
-                    'start_date' => $periodStart->toDateString(),
-                    'end_date' => $periodEnd->toDateString(),
-                    'price_paid' => $plan->price,
+                    'period_type_id' => $periodType->id,
+                    'start_date' => $periodStartDate->toDateString(),
+                    'end_date' => $periodEndDate->toDateString(),
+                    'price_paid' => $periodType->price,
                     'status' => $status,
                 ]);
 
                 // Start date of the next period
-                $startDate = $periodEnd;
+                $startDate = $periodEndDate;
 
                 // Simulate some random breaks between periods
-                if (rand(1, 10) <= 3) { // 30% chance of break
+                if (rand(1, 10) <= 3) {
                     $startDate->addDays(rand(2, 30));
                 }
             }
         }
 
-        $memberships->load('periods');
+        // Update Membership status
+        $memberships->load(['periods', 'member']);
 
         $memberships->each(function ($membership) {
             if ($membership->currentPeriod()->first()) {
@@ -76,10 +79,9 @@ class PeriodSeeder extends Seeder
                 $membership->member->save();
                 $membership->save();
             } else {
-                $membership->status = MembershipStatus::EXPIRED;
+                // Membership status is EXPIRED by default
                 $membership->member->status = MemberStatus::EXPIRED;
                 $membership->member->save();
-                $membership->save();
             }
 
             // Set created_at to match first period start date

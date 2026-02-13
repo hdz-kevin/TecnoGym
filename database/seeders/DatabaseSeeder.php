@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Visit;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,8 +19,8 @@ class DatabaseSeeder extends Seeder
             MembershipTypeSeeder::class,
             MembershipSeeder::class,
             PeriodTypeSeeder::class,
-            // PeriodSeeder::class,
-            // VisitSeeder::class,
+            PeriodSeeder::class,
+            VisitSeeder::class,
         ]);
     }
 }
