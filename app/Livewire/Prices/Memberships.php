@@ -148,8 +148,6 @@ class Memberships extends Component
         $this->showPeriodTypeModal = true;
     }
 
-    // TODO: Continue refactoring Plan -> PeriodType CRUD
-
     /**
      * Save plan (create or update).
      */
@@ -178,7 +176,7 @@ class Memberships extends Component
             $flashMsg = 'Plan creado exitosamente';
         }
 
-        $this->closePlanModal();
+        $this->closePeriodTypeModal();
 
         $this->dispatch('notify-changes', $flashMsg);
     }
