@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Prices;
 
 use App\Models\VisitType;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 
-class VisitTypes extends Component
+class Visits extends Component
 {
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('string')]
@@ -123,6 +123,6 @@ class VisitTypes extends Component
     {
         $visitTypes = VisitType::all();
 
-        return view('livewire.visit-types', compact('visitTypes'));
+        return view('livewire.prices.visits', compact('visitTypes'));
     }
 }

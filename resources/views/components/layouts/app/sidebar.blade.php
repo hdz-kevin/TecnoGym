@@ -36,9 +36,13 @@
         </flux:navlist.item>
       </flux:navlist.group>
 
-      <flux:navlist.group :heading="__('Configuración')" class="grid">
-        <flux:navlist.item icon="currency-dollar" :href="route('prices.index')" :current="request()->routeIs('prices.index')" wire:navigate>
-          {{ __('Precios') }}
+      <flux:navlist.group :heading="__('Precios')" class="grid">
+        <flux:navlist.item icon="credit-card" :href="route('prices.memberships')" :current="request()->routeIs('prices.memberships')" wire:navigate>
+          {{ __('Membresías') }}
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="calendar" :href="route('prices.visits')" :current="request()->routeIs('prices.visits')" wire:navigate>
+          {{ __('Visitas') }}
         </flux:navlist.item>
       </flux:navlist.group>
     </flux:navlist>

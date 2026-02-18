@@ -1,6 +1,6 @@
 <div>
   <div class="pt-4 -mt-6 space-y-6">
-    @if ($planTypes->count() > 0)
+    @if ($membershipTypes->count() > 0)
       <div class="flex justify-end">
         <flux:button variant="primary" icon="plus" wire:click="createTypeModal">
           Tipo de Plan
@@ -10,20 +10,20 @@
 
     <!-- Plan Types Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 items-start">
-      @forelse ($planTypes as $planType)
-        <div class="bg-white rounded-lg border border-gray-200 shadow-sm" wire:key="{{ $planType->id }}">
+      @forelse ($membershipTypes as $membershipType)
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm" wire:key="{{ $membershipType->id }}">
           <!-- Plan Type Header -->
           <div class="p-6 border-b border-gray-200">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="text-[19px] font-medium text-gray-900">{{ $planType->name }}</h3>
+                <h3 class="text-[19px] font-medium text-gray-900">{{ $membershipType->name }}</h3>
               </div>
               <div class="flex items-center gap-2">
-                @if ($planType->plans->count() === 0)
+                @if ($membershipType->periodTypes->count() === 0)
                   <flux:button
                     variant="outline"
                     size="sm"
-                    wire:click="deleteType({{ $planType->id }})"
+                    wire:click="deleteType({{ $membershipType->id }})"
                     wire:confirm="¿Estás seguro de eliminar este tipo de plan?"
                   >
                     Eliminar
@@ -32,7 +32,7 @@
                 <flux:button
                   variant="primary"
                   size="sm"
-                  wire:click="editTypeModal({{ $planType->id }})"
+                  wire:click="editTypeModal({{ $membershipType->id }})"
                 >
                   Editar
                 </flux:button>
@@ -42,27 +42,27 @@
 
           <!-- Plans -->
           <div class="p-6">
-            @if ($planType->plans->count() > 0)
+            @if ($membershipType->periodTypes->count() > 0)
               <div class="space-y-3 mb-5">
-                @foreach ($planType->plans as $plan)
-                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg" wire:key="{{ $plan->id }}">
+                @foreach ($membershipType->periodTypes as $periodType)
+                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg" wire:key="{{ $periodType->id }}">
                     <div class="flex-1">
                       <div class="flex items-center gap-2">
-                          <h3 class="font-medium text-gray-900">{{ $plan->name }}</h3>
+                          <h3 class="font-medium text-gray-900">{{ $periodType->name }}</h3>
                           <p>-</p>
-                          <p class="text-lg font-semibold text-gray-900">${{ number_format($plan->price) }}</p>
+                          <p class="text-lg font-semibold text-gray-900">${{ number_format($periodType->price) }}</p>
                       </div>
                       <p class="text-sm text-gray-600">
-                        {{ $plan->formatted_duration }}
+                        {{ $periodType->formatted_duration }}
                       </p>
                     </div>
                     <div class="flex items-center gap-1 ml-4">
-                      @if ($plan->memberships->count() === 0)
-                        <flux:button size="sm" variant="outline" wire:click="deletePlan({{ $plan->id }})" wire:confirm="¿Estás seguro de eliminar este plan?">
+                      @if ($periodType->periods->count() === 0)
+                        <flux:button size="sm" variant="outline" wire:click="deletePlan({{ $periodType->id }})" wire:confirm="¿Estás seguro de eliminar este plan?">
                           Eliminar
                         </flux:button>
                       @endif
-                      <flux:button size="sm" variant="outline" wire:click="editPlanModal({{ $plan->id }})">
+                      <flux:button size="sm" variant="outline" wire:click="editPlanModal({{ $periodType->id }})">
                         Editar
                       </flux:button>
                     </div>
@@ -82,7 +82,7 @@
             @endif
 
             <!-- New Plan Button -->
-            <flux:button variant="outline" icon="plus" wire:click="createPlanModal({{ $planType->id }})"
+            <flux:button variant="outline" icon="plus" wire:click="createPlanModal({{ $membershipType->id }})"
               class="w-full">
               Agregar Plan
             </flux:button>
@@ -108,7 +108,7 @@
   </div>
 
   <!-- Plan Type Modal -->
-  @if ($showTypeModal)
+  @if ($showMembershipTypeModal)
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeTypeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -119,7 +119,7 @@
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingType ? 'Editar Tipo de Plan' : 'Nuevo Tipo de Plan' }}
+                {{ $editingMembershipType ? 'Editar Tipo de Plan' : 'Nuevo Tipo de Plan' }}
               </h3>
             </div>
 
@@ -146,7 +146,7 @@
   @endif
 
   <!-- Plan Modal -->
-  @if ($showPlanModal)
+  @if ($showPeriodTypeModal)
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closePlanModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
