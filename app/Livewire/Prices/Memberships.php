@@ -11,7 +11,7 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Test')]
+#[Title('Precios de Membresías')]
 class Memberships extends Component
 {
     // Form fields for PlanType
@@ -70,7 +70,7 @@ class Memberships extends Component
     /**
      * Save plan type (create or update)
      */
-    public function saveType()
+    public function saveMembershipType()
     {
         $this->validate([
             'membership_type_name' => 'required|string|max:255',

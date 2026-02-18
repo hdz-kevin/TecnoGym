@@ -1,9 +1,11 @@
+<x-slot:subtitle>Gestiona los precios de las membresías disponbles</x-slot:subtitle>
+
 <div>
   <div class="pt-4 -mt-6 space-y-6">
     @if ($membershipTypes->count() > 0)
       <div class="flex justify-end">
-        <flux:button variant="primary" icon="plus" wire:click="createTypeModal">
-          Tipo de Plan
+        <flux:button variant="primary" icon="plus" wire:click="createMembershipTypeModal">
+          Tipo de Membresía
         </flux:button>
       </div>
     @endif
@@ -23,7 +25,7 @@
                   <flux:button
                     variant="outline"
                     size="sm"
-                    wire:click="deleteType({{ $membershipType->id }})"
+                    wire:click="deleteMembershipType({{ $membershipType->id }})"
                     wire:confirm="¿Estás seguro de eliminar este tipo de plan?"
                   >
                     Eliminar
@@ -32,7 +34,7 @@
                 <flux:button
                   variant="primary"
                   size="sm"
-                  wire:click="editTypeModal({{ $membershipType->id }})"
+                  wire:click="editMembershipTypeModal({{ $membershipType->id }})"
                 >
                   Editar
                 </flux:button>
@@ -97,10 +99,10 @@
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay planes configurados</h3>
-          <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de plan</p>
-          <flux:button variant="primary" icon="plus" wire:click="createTypeModal">
-            Crear Uno
+          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay membresías configuradas</h3>
+          <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de membresía</p>
+          <flux:button variant="primary" icon="plus" wire:click="createMembershipTypeModal">
+            Tipo de Membresía
           </flux:button>
         </div>
       @endforelse
@@ -109,7 +111,7 @@
 
   <!-- Plan Type Modal -->
   @if ($showMembershipTypeModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeTypeModal">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeMembershipTypeModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div
@@ -119,24 +121,24 @@
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingMembershipType ? 'Editar Tipo de Plan' : 'Nuevo Tipo de Plan' }}
+                {{ $editingMembershipType ? 'Editar Tipo de Membresía' : 'Nuevo Tipo de Membresía' }}
               </h3>
             </div>
 
-            <form wire:submit.prevent="saveType">
+            <form wire:submit.prevent="saveMembershipType">
               <!-- Modal Body -->
               <div class="px-6 py-4">
                 <flux:field>
-                  <flux:label for="type_name">Nombre</flux:label>
-                  <flux:input wire:model="type_name" id="type_name" placeholder="Ej: General, Estudiante, Premium" />
-                  <flux:error name="type_name" />
+                  <flux:label for="membership_type_name">Nombre</flux:label>
+                  <flux:input wire:model="membership_type_name" id="membership_type_name" placeholder="Ej: General, Estudiante, Premium" />
+                  <flux:error name="membership_type_name" />
                 </flux:field>
               </div>
 
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-                <flux:button variant="ghost" wire:click="closeTypeModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $editingType ? 'Guardar cambios' : 'Guardar' }}</flux:button>
+                <flux:button variant="ghost" wire:click="closeMembershipTypeModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingMembershipType ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
           </div>
