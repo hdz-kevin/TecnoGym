@@ -4,13 +4,14 @@ namespace App\Livewire\Prices;
 
 use App\Models\VisitType;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Precios de Visitas')]
 class Visits extends Component
 {
     #[Rule('required', message: 'El nombre es obligatorio')]
-    #[Rule('string')]
-    #[Rule('max:255')]
+    #[Rule('max:255', 'El nombre es muy largo')]
     public $name = '';
 
     #[Rule('required', message: 'El precio es obligatorio')]
@@ -52,25 +53,19 @@ class Visits extends Component
      */
     public function save()
     {
-        $this->validate();
+        $validated = $this->validate();
 
         if ($this->editingVisitType) {
-            $this->editingVisitType->update([
-                'name' => $this->name,
-                'price' => $this->price,
-            ]);
+            $this->editingVisitType->update($validated);
             $flashMsg = 'Tipo de visita actualizado correctamente';
         } else {
-            VisitType::create([
-                'name' => $this->name,
-                'price' => $this->price,
-            ]);
+            VisitType::create($validated);
             $flashMsg = 'Tipo de visita creado correctamente';
         }
 
         $this->closeModal();
 
-        $this->dispatch('notify-changes', $flashMsg);
+        session()->flash('message', $flashMsg);
     }
 
     /**
@@ -94,13 +89,13 @@ class Visits extends Component
     public function delete(VisitType $visitType)
     {
         if ($visitType->visits->count() > 0) {
-            $this->dispatch('notify-changes', 'No se puede eliminar el tipo de visita', 'error');
+            session()->flash('error', 'No se puede eliminar el tipo de visita');
             return;
         }
 
         $visitType->delete();
 
-        $this->dispatch('notify-changes', 'Tipo de visita eliminado correctamente');
+        session()->flash('message', 'Tipo de visita eliminado correctamente');
     }
 
     /**
