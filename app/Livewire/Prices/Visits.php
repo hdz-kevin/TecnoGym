@@ -7,6 +7,10 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+/**
+ * This component handles the creation, editing, and deletion of visit types.
+ * A visit type contains the name and price.
+ */
 #[Title('Precios de Visitas')]
 class Visits extends Component
 {

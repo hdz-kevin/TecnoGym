@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Prices;
 
-use App\Models\PlanType;
-use App\Models\Plan;
 use App\Enums\DurationUnit;
 use App\Models\MembershipType;
 use App\Models\PeriodType;
@@ -11,15 +9,21 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+/**
+ * Livewire component for managing memberships prices.
+ * This component handles the creation, editing, and deletion of membership types and period types.
+ * Membership type is the type of membership (e.g. General, Student).
+ * Period type is the duration of the membership (e.g. 1 month, 1 year) and its price.
+ */
 #[Title('Precios de Membresías')]
 class Memberships extends Component
 {
-    // Form fields for PlanType
+    // Form fields for MembershipType
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('max:255', message: 'El nombre es muy largo')]
     public $membership_type_name = '';
 
-    // Form fields for Plan
+    // Form fields for PeriodType
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('max:255', message: 'El nombre es muy largo')]
     public $period_type_name = '';
@@ -45,10 +49,11 @@ class Memberships extends Component
     // Editing states
     public MembershipType|null $editingMembershipType = null;
     public PeriodType|null $editingPeriodType = null;
+    /** Selected membership type for new period type */
     public MembershipType|null $selectedMembershipTypeForPeriod = null;
 
     /**
-     * Show the create plan type modal.
+     * Show create MembershipType modal
      */
     public function createMembershipTypeModal()
     {
@@ -57,7 +62,7 @@ class Memberships extends Component
     }
 
     /**
-     * Show the edit plan type modal.
+     * Show edit MembershipType modal.
      */
     public function editMembershipTypeModal(MembershipType $membershipType)
     {
@@ -67,7 +72,7 @@ class Memberships extends Component
     }
 
     /**
-     * Save plan type (create or update)
+     * Save MembershipType (create or update)
      */
     public function saveMembershipType()
     {
@@ -89,7 +94,7 @@ class Memberships extends Component
     }
 
     /**
-     * Close type modal and reset form.
+     * Close MembershipType modal and reset form.
      */
     public function closeMembershipTypeModal()
     {
@@ -100,7 +105,7 @@ class Memberships extends Component
     }
 
     /**
-     * Reset type form fields.
+     * Reset MembershipType form fields.
      */
     private function resetTypeForm()
     {
@@ -108,7 +113,7 @@ class Memberships extends Component
     }
 
     /**
-     * Delete plan type.
+     * Delete MembershipType.
      */
     public function deleteMembershipType(MembershipType $membershipType)
     {
@@ -123,7 +128,7 @@ class Memberships extends Component
     }
 
     /**
-     * Show create plan modal.
+     * Show create PeriodType modal.
      */
     public function createPeriodTypeModal(MembershipType $membershipType)
     {
@@ -133,7 +138,7 @@ class Memberships extends Component
     }
 
     /**
-     * Show edit plan modal.
+     * Show edit PeriodType modal.
      */
     public function editPeriodTypeModal(PeriodType $periodType)
     {
@@ -148,7 +153,7 @@ class Memberships extends Component
     }
 
     /**
-     * Save plan (create or update).
+     * Save PeriodType (create or update).
      */
     public function savePeriodType()
     {
@@ -181,7 +186,7 @@ class Memberships extends Component
     }
 
     /**
-     * Close plan modal and reset form.
+     * Close PeriodType modal and reset form.
      */
     public function closePeriodTypeModal()
     {
@@ -193,7 +198,7 @@ class Memberships extends Component
     }
 
     /**
-     * Reset plan form fields.
+     * Reset PeriodType form fields.
      */
     private function resetPeriodTypeForm()
     {
@@ -204,7 +209,7 @@ class Memberships extends Component
     }
 
     /**
-     * Delete plan.
+     * Delete PeriodType.
      */
     public function deletePeriodType(PeriodType $periodType)
     {
