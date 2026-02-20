@@ -16,14 +16,12 @@ class Memberships extends Component
 {
     // Form fields for PlanType
     #[Rule('required', message: 'El nombre es obligatorio')]
-    #[Rule('string')]
-    #[Rule('max:255')]
+    #[Rule('max:255', message: 'El nombre es muy largo')]
     public $membership_type_name = '';
 
     // Form fields for Plan
-    #[Rule('required', message: 'El nombre del plan es obligatorio')]
-    #[Rule('string')]
-    #[Rule('max:255')]
+    #[Rule('required', message: 'El nombre es obligatorio')]
+    #[Rule('max:255', message: 'El nombre es muy largo')]
     public $period_type_name = '';
 
     #[Rule('required', message: 'La duración es obligatoria')]
@@ -32,6 +30,7 @@ class Memberships extends Component
     public $period_type_duration_value = '';
 
     #[Rule('required', message: 'La unidad de tiempo es obligatoria')]
+    #[Rule('in:day,week,month', message: 'Elige una unidad de tiempo válida')]
     public $period_type_duration_unit = '';
 
     #[Rule('required', message: 'El precio es obligatorio')]
@@ -73,7 +72,7 @@ class Memberships extends Component
     public function saveMembershipType()
     {
         $this->validate([
-            'membership_type_name' => 'required|string|max:255',
+            'membership_type_name' => 'required|max:255',
         ]);
 
         if ($this->editingMembershipType) {
@@ -86,7 +85,7 @@ class Memberships extends Component
 
         $this->closeMembershipTypeModal();
 
-        $this->dispatch('notify-changes', $flashMsg);
+        session()->flash('message', $flashMsg);
     }
 
     /**
@@ -114,13 +113,13 @@ class Memberships extends Component
     public function deleteMembershipType(MembershipType $membershipType)
     {
         if ($membershipType->periodTypes->count() > 0) {
-            $this->dispatch('notify-changes', 'No puedes eliminar este tipo de membresía', 'error');
+            session()->flash('error', 'No se puede eliminar este tipo de membresía');
             return;
         }
 
         $membershipType->delete();
 
-        $this->dispatch('notify-changes', 'Tipo de membresía eliminado exitosamente');
+        session()->flash('message', 'Tipo de membresía eliminado exitosamente');
     }
 
     /**
@@ -154,9 +153,9 @@ class Memberships extends Component
     public function savePeriodType()
     {
         $this->validate([
-            'period_type_name' => 'required|string|max:255',
+            'period_type_name' => 'required|max:255',
             'period_type_duration_value' => 'required|integer|min:1',
-            'period_type_duration_unit' => 'required',
+            'period_type_duration_unit' => 'required|in:day,week,month',
             'period_type_price' => 'required|integer|min:1',
         ]);
 
@@ -170,15 +169,15 @@ class Memberships extends Component
 
         if ($this->editingPeriodType) {
             $this->editingPeriodType->update($periodType);
-            $flashMsg = 'Plan actualizado exitosamente';
+            $flashMsg = 'Periodo actualizado exitosamente';
         } else {
             $this->selectedMembershipTypeForPeriod->periodTypes()->create($periodType);
-            $flashMsg = 'Plan creado exitosamente';
+            $flashMsg = 'Periodo creado exitosamente';
         }
 
         $this->closePeriodTypeModal();
 
-        $this->dispatch('notify-changes', $flashMsg);
+        session()->flash('message', $flashMsg);
     }
 
     /**
@@ -210,13 +209,13 @@ class Memberships extends Component
     public function deletePeriodType(PeriodType $periodType)
     {
         if ($periodType->periods->count() > 0) {
-            $this->dispatch('notify-changes', 'No puedes eliminar este tipo de periodo', 'error');
+            session()->flash('error', 'No se puede eliminar este periodo');
             return;
         }
 
         $periodType->delete();
 
-        $this->dispatch('notify-changes', 'Tipo de periodo eliminado exitosamente');
+        session()->flash('message', 'Periodo eliminado exitosamente');
     }
 
     /**
