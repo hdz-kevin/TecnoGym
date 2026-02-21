@@ -1,3 +1,5 @@
+<x-slot:subtitle>Gestiona los precios de las visitas</x-slot:subtitle>
+
 <div>
   <div class="pt-4 -mt-6 space-y-6">
     @if ($visitTypes->count() > 0)
@@ -48,10 +50,10 @@
                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay tipos de visita configurados</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay precios de visitas configurados</h3>
           <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de visita</p>
           <flux:button variant="primary" icon="plus" wire:click="createModal">
-            Crear Uno
+            Crear
           </flux:button>
         </div>
       @endforelse
@@ -100,6 +102,31 @@
           </div>
         </div>
       </div>
+    </div>
+  @endif
+
+  <!-- Flash Messages -->
+  @if (session()->has('message'))
+    <div
+      wire:key="{{ Str::random() }}"
+      class="fixed font-medium top-5 right-5 bg-green-50 text-green-800 border border-green-300 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
+      {{ session('message') }}
+    </div>
+  @endif
+
+  @if (session()->has('error'))
+    <div
+      wire:key="{{ Str::random() }}"
+      class="fixed font-medium top-5 right-5 bg-red-50 text-red-800 border border-red-300 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
+      {{ session('error') }}
     </div>
   @endif
 </div>

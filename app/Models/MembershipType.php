@@ -22,6 +22,6 @@ class MembershipType extends Model
      */
     public function periodTypes(): HasMany
     {
-        return $this->hasMany(PeriodType::class);//->orderBy('duration_in_days');
+        return $this->hasMany(PeriodType::class)->orderBy('price');
     }
 }
