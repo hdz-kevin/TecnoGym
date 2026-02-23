@@ -3,6 +3,7 @@
 namespace App\Livewire\Prices;
 
 use App\Models\VisitType;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -11,6 +12,7 @@ use Livewire\Component;
  * This component handles the creation, editing, and deletion of visit types.
  * A visit type contains the name and price.
  */
+#[Layout('layouts.app')]
 #[Title('Precios de Visitas')]
 class Visits extends Component
 {

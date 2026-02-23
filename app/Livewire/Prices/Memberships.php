@@ -5,6 +5,7 @@ namespace App\Livewire\Prices;
 use App\Enums\DurationUnit;
 use App\Models\MembershipType;
 use App\Models\PeriodType;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -15,6 +16,7 @@ use Livewire\Component;
  * Membership type is the type of membership (e.g. General, Student).
  * Period type is the duration of the membership (e.g. 1 month, 1 year) and its price.
  */
+#[Layout('layouts.app')]
 #[Title('Precios de Membresías')]
 class Memberships extends Component
 {
