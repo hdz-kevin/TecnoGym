@@ -2,7 +2,7 @@
   use App\Enums\MemberStatus;
 @endphp
 
-<x-slot:subtitle>Gestiona tus socios y su estado</x-slot:subtitle>
+<x-slot:subtitle>Gestiona los socios de tu gimnasio</x-slot:subtitle>
 
 <div class="p-4 space-y-6">
   {{-- Membership stats --}}
@@ -99,7 +99,6 @@
     </div>
   </div>
 
-  {{-- Members List --}}
   @if($this->members->isEmpty())
     <div class="text-center py-20">
       <div class="text-gray-400 mb-3">
@@ -119,6 +118,7 @@
       @endif
     </div>
   @else
+    {{-- Members List --}}
     <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
       @foreach ($this->members as $member)
         <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative">
@@ -132,9 +132,9 @@
           </div>
 
           <div class="p-6">
-            <div class="space-y-3.5">
-              <!-- Member Info -->
-              <div class="flex items-center space-x-4">
+            <div class="space-y-3">
+              <!-- Card Header -->
+              <div class="flex items-center space-x-3.5">
                 <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 transition-all">
                   @if ($member->photo)
                     <img
@@ -148,35 +148,33 @@
                 </div>
                 <div>
                   <h3 class="text-lg font-medium text-gray-900">{{ $member->name }}</h3>
-                  <p class="text-gray-900">
-                    <span class="text-gray-500">#</span>{{ $member->code }}
-                  </p>
                 </div>
               </div>
 
-              <!-- Member Details -->
-              <div class="space-y-5 py-2.5">
-                @php
-                    $latestMembership = $member->latestMembership();
-                @endphp
-
-                {{-- Plan Info --}}
+              <!-- Card Body -->
+              <div class="space-y-4 py-2.5">
+                {{-- Code --}}
                 <div>
-                    <div class="text-sm font-medium text-gray-500 mb-1">
-                      Plan actual
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
-                      <span class="font-medium text-gray-800">
-                          {{ $latestMembership?->membershipType->name }}
-                      </span>
-                    </div>
+                  <div class="text-sm font-medium text-gray-500 mb-1">
+                    Código
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <flux:icon icon="hashtag" variant="mini" class="text-gray-500" />
+                    <span class="font-medium text-gray-800">{{ $member->code }}</span>
+                  </div>
                 </div>
 
-                {{-- Member Since --}}
-                <div class="flex items-center gap-1.5 text-sm font-medium text-gray-600">
-                   <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
-                   <span>Miembro desde {{ $member->association_date }}</span>
+                {{-- Membership --}}
+                <div>
+                  <div class="text-sm font-medium text-gray-500 mb-1">
+                    Membresía
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
+                    <span class="font-medium text-gray-800">
+                        {{ $member->latestMembership()?->membershipType->name ?? '---' }}
+                    </span>
+                  </div>
                 </div>
               </div>
 
