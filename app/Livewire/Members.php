@@ -41,7 +41,7 @@ class Members extends Component
 
     #[Rule('nullable')]
     #[Rule('image', message: 'El archivo debe ser una imagen')]
-    #[Rule('max:4096', message: 'La imagen no debe superar los 4MB')]
+    #[Rule('max:5120', message: 'La imagen no debe superar los 5MB')]
     public $photo = null;
 
     /** Existing photo path */

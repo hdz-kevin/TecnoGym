@@ -310,7 +310,7 @@
                             </button>
                           </div>
 
-                          <p class="text-sm text-gray-500 mt-1">JPG, JPEG, PNG hasta 2MB</p>
+                          <p class="text-sm text-gray-500 mt-1">JPG, JPEG, PNG, WEBP, ...</p>
                         </div>
                       </div>
                     @else
@@ -322,7 +322,7 @@
                           </svg>
                           Subir foto
                         </label>
-                        <p class="text-sm text-gray-500">JPG, JPEG, PNG hasta 2MB</p>
+                        <p class="text-sm text-gray-500">JPG, JPEG, PNG, WEBP, ...</p>
                       </div>
                     @endif
 
