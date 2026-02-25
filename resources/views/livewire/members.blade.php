@@ -136,7 +136,7 @@
               <!-- Member Info -->
               <div class="flex items-center space-x-4">
                 <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 transition-all">
-                  @if($member->photo)
+                  @if ($member->photo)
                     <img
                       src="{{ Storage::url($member->photo) }}"
                       class="h-full w-full object-cover"
@@ -168,7 +168,7 @@
                     <div class="flex items-center gap-2">
                       <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
                       <span class="font-medium text-gray-800">
-                          {{ $latestMembership?->planName ?? 'Sin plan' }}
+                          {{ $latestMembership?->membershipType->name }}
                       </span>
                     </div>
                 </div>
@@ -280,12 +280,12 @@
 
                   <!-- Preview and Upload Container -->
                   <div class="mt-1">
-                    @if($existing_photo || $photo)
+                    @if ($existing_photo || $photo)
                       <!-- Photo Preview -->
                       <div class="flex items-center space-x-4">
                         <div class="shrink-0">
                           <div class="h-36 w-40 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                            @if($photo)
+                            @if ($photo)
                               <img src="{{ $photo->temporaryUrl() }}" alt="Vista previa" class="h-full w-full object-cover">
                               @elseif ($existing_photo)
                               <img src="{{ Storage::url($existing_photo) }}" alt="Vista previa" class="h-full w-full object-cover">

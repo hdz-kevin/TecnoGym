@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\File;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
+#[Layout('layouts.app')]
 #[Title('Socios')]
 class Members extends Component
 {
@@ -207,7 +209,7 @@ class Members extends Component
                 $query->where('name', 'like', '%' . $this->search . '%')
                       ->orWhere('code', 'like', $this->search . '%');
             })
-            ->orderBy('updated_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(6);
     }
 
