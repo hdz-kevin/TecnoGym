@@ -9,7 +9,7 @@
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
           <div
-            class="transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all max-w-6xl w-full"
+            class="transform overflow-hidden rounded-lg bg-white text-left shadow-2xl transition-all max-w-6xl w-full"
             wire:click.stop>
 
             <div class="grid grid-cols-1 md:grid-cols-12 bg-white min-h-[580px]">
@@ -34,9 +34,10 @@
                 <!-- ID Badge on Image -->
                 <div
                   class="absolute bottom-4 left-4 bg-white/90 px-3.5 py-1.5 rounded-lg border border-gray-100 z-20">
-                  <p class="text-base font-semibold text-gray-900">
-                    <span class="text-gray-500">#</span>{{ $member->code }}
-                  </p>
+                  <div class="flex items-center gap-1">
+                    <flux:icon icon="hashtag" variant="mini" class="text-gray-600" />
+                    <p class="text-base font-semibold text-gray-900">{{ $member->code }}</p>
+                  </div>
                 </div>
               </div>
 
@@ -83,17 +84,17 @@
                     <div class="bg-gray-50 rounded-xl border border-gray-100 p-6">
                       <div class="flex justify-between items-center gap-8">
                         <div>
-                          <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Plan</p>
+                          <p class="text-xs font-semibold text-gray-500 uppercase mb-1">Tipo</p>
                           <p class="text-lg font-bold text-gray-800">
-                            {{ $membership->planType->name }} - {{ $membership->plan->name }}
+                            {{ $membership->membershipType->name }}
                           </p>
                         </div>
                         <div class="text-right">
                           <p class="text-xs font-semibold text-gray-500 uppercase mb-1">
-                            {{ $membership->status == MembershipStatus::ACTIVE ? 'Periodo actual' : 'Último periodo' }}
+                            {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en' : 'Venció hace' }}
                           </p>
                           <p class="text-lg font-bold text-gray-800">
-                            {{ $membership->last_period->formatted_period }}
+                            {{ $membership->expiration_time }}
                           </p>
                         </div>
                       </div>
@@ -101,7 +102,7 @@
                   @else
                     <div class="text-center py-9 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                       <p class="text-base font-medium text-gray-600">
-                        No tiene una membresía asignada
+                        No tiene ninguna membresía asignada
                       </p>
                     </div>
                   @endif
@@ -113,7 +114,7 @@
                     <span class="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1.5">
                       Miembro desde
                     </span>
-                    <span class="font-semibold text-gray-700 flex items-center gap-2">
+                    <span class="font-medium text-gray-700 flex items-center gap-2">
                       <flux:icon icon="calendar-days" variant="mini" class="text-gray-500" />
                       {{ $member->association_date }}
                     </span>

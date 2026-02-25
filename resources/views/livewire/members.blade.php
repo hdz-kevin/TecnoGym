@@ -167,7 +167,7 @@
                 {{-- Membership --}}
                 <div>
                   <div class="text-sm font-medium text-gray-500 mb-1">
-                    Membresía
+                    Membresía actual
                   </div>
                   <div class="flex items-center gap-2">
                     <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
