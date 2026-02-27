@@ -4,10 +4,12 @@ namespace App\Livewire;
 
 use App\Enums\MembershipStatus;
 use App\Models\Member;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Layout('layouts.app')]
 #[Title('')]
 class VerifyMembership extends Component
 {
