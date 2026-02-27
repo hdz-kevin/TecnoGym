@@ -235,39 +235,39 @@
                 </flux:field>
 
                 {{-- Plan type and period --}}
-                <div class="space-y-4">
-                  <flux:label class="mb-4!">Plan</flux:label>
+                <div class="grid grid-cols-2 gap-4">
+                  {{-- Plan type --}}
+                  <flux:field>
+                    <flux:label>Tipo</flux:label>
+                    <flux:select wire:model.live="membership_type_id" placeholder="Elige un tipo de membresía">
+                      @foreach($membershipTypes as $membershipType)
+                        <flux:select.option value="{{ $membershipType->id }}">
+                          {{ $membershipType->name }}
+                        </flux:select.option>
+                      @endforeach
+                    </flux:select>
+                    <flux:error name="membership_type_id" />
+                  </flux:field>
 
-                  <div class="grid grid-cols-2 gap-4">
-                    {{-- Plan type --}}
-                    <flux:field>
-                      <flux:label class="text-sm text-gray-700">Tipo</flux:label>
-                      <flux:select wire:model.live="plan_type_id" placeholder="Selecciona un tipo">
-                        @foreach($planTypes as $planType)
-                          <flux:select.option value="{{ $planType->id }}">{{ $planType->name }}</flux:select.option>
-                        @endforeach
-                      </flux:select>
-                      <flux:error name="plan_type_id" />
-                    </flux:field>
-
-                    {{-- Period --}}
-                    <flux:field>
-                      <flux:label class="text-sm text-gray-700">Periodo</flux:label>
-                      <flux:select wire:model.live="plan_id" placeholder="Selecciona un periodo">
-                        @foreach($this->availablePlans as $plan)
-                          <flux:select.option value="{{ $plan->id }}">{{ $plan->name }}</flux:select.option>
-                        @endforeach
-                      </flux:select>
-                      <flux:error name="plan_id" />
-                    </flux:field>
-                  </div>
+                  {{-- Period --}}
+                  <flux:field>
+                    <flux:label>Primer Periodo</flux:label>
+                    <flux:select wire:model.live="plan_id" placeholder="Elige un periodo">
+                      @foreach($this->periodTypes as $periodType)
+                        <flux:select.option value="{{ $periodType->id }}">
+                          {{ $periodType->name }}
+                        </flux:select.option>
+                      @endforeach
+                    </flux:select>
+                    <flux:error name="plan_id" />
+                  </flux:field>
                 </div>
 
-                  <flux:field>
-                    <flux:label>Fecha de Inicio</flux:label>
-                    <flux:input type="date" wire:model.live="start_date" />
-                    <flux:error name="start_date" />
-                  </flux:field>
+                <flux:field>
+                  <flux:label>Fecha de Inicio</flux:label>
+                  <flux:input type="date" wire:model.live="start_date" />
+                  <flux:error name="start_date" />
+                </flux:field>
               </div>
 
               <!-- Modal Footer -->

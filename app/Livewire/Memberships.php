@@ -10,6 +10,7 @@ use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\MembershipType;
+use App\Models\PeriodType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -33,8 +34,8 @@ class Memberships extends Component
     public $member_id = '';
 
     #[Validate('required', message: 'Elige un tipo de plan')]
-    #[Validate('exists:plan_types,id', message: 'Elige un tipo de plan válido')]
-    public $plan_type_id = '';
+    #[Validate('exists:membership_types,id', message: 'Elige un tipo de plan válido')]
+    public $membership_type_id = '';
 
     #[Validate('required', message: 'Elige un plan')]
     #[Validate('exists:plans,id', message: 'Elige un plan válido')]
@@ -54,9 +55,9 @@ class Memberships extends Component
     /**
      * Available plans for selected plan type
      *
-     * @var Collection<Plan>
+     * @var Collection<PeriodType>
      */
-    public $availablePlans;
+    public $periodTypes;
 
     /**
      * Current status filter for memberships list
@@ -78,7 +79,10 @@ class Memberships extends Component
      */
     public function mount()
     {
-        $this->availablePlans = collect([]);
+        $this->periodTypes = collect([]);
+
+
+        $this->createMembershipModal();
     }
 
     /**
@@ -98,6 +102,74 @@ class Memberships extends Component
     {
         $this->statusFilter = null;
         $this->resetPage();
+    }
+
+    /**
+     * Open create membership modal
+     */
+    public function createMembershipModal()
+    {
+        $this->showCreateModal = true;
+        $this->start_date = now()->format('Y-m-d');
+
+        // Disable background scroll
+        $this->dispatch('disable-scroll');
+    }
+
+    /**
+     * When plan type changes, update available plans
+     */
+    public function updatedMembershipTypeId($membershipTypeId)
+    {
+        $this->plan_id = '';
+
+        if ($membershipTypeId) {
+            $this->periodTypes = PeriodType::where('membership_type_id', $membershipTypeId)
+                                        ->orderBy('price')
+                                        ->get();
+        } else {
+            $this->periodTypes = collect([]);
+        }
+
+        // TODO: Its necessary to reset the end date?
+        // Reset end date to calculate it again
+        $this->end_date = null;
+    }
+
+    /**
+     * When plan (period) changes, update end date
+     *
+     * @param Plan|null $plan
+     * @return void
+     */
+    public function updatedPlanId(Plan|null $plan)
+    {
+        if ($plan == null) {
+            return;
+        }
+
+        try {
+            $startDate = Carbon::parse($this->start_date);
+
+            $this->end_date = match ($plan->duration_unit) {
+                DurationUnit::DAY => $startDate->addDays($plan->duration_value),
+                DurationUnit::WEEK => $startDate->addWeeks($plan->duration_value),
+                DurationUnit::MONTH => $startDate->addMonths($plan->duration_value),
+            };
+        } catch (\Exception $e) {
+            $this->end_date = null;
+        }
+    }
+
+    /**
+     * When start date changes, update end date
+     *
+     * @param string $startDate
+     * @return void
+     */
+    public function updatedStartDate($startDate)
+    {
+        $this->updatedPlanId(Plan::find($this->plan_id));
     }
 
     /**
@@ -158,73 +230,6 @@ class Memberships extends Component
     }
 
     /**
-     * Open create membership modal
-     */
-    public function createMembershipModal()
-    {
-        $this->showCreateModal = true;
-        $this->start_date = now()->format('Y-m-d');
-
-        // Disable background scroll
-        $this->dispatch('disable-scroll');
-    }
-
-    /**
-     * When plan type changes, update available plans
-     */
-    public function updatedPlanTypeId($planTypeId)
-    {
-        $this->plan_id = '';
-
-        if ($planTypeId) {
-            $this->availablePlans = Plan::where('plan_type_id', $planTypeId)
-                                        ->orderBy('duration_in_days')
-                                        ->get();
-        } else {
-            $this->availablePlans = collect([]);
-        }
-
-        // Reset end date to calculate it again
-        $this->end_date = null;
-    }
-
-    /**
-     * When plan (period) changes, update end date
-     *
-     * @param Plan|null $plan
-     * @return void
-     */
-    public function updatedPlanId(Plan|null $plan)
-    {
-        if ($plan == null) {
-            return;
-        }
-
-        try {
-            $startDate = Carbon::parse($this->start_date);
-
-            $this->end_date = match ($plan->duration_unit) {
-                DurationUnit::DAY => $startDate->addDays($plan->duration_value),
-                DurationUnit::WEEK => $startDate->addWeeks($plan->duration_value),
-                DurationUnit::MONTH => $startDate->addMonths($plan->duration_value),
-            };
-        } catch (\Exception $e) {
-            $this->end_date = null;
-        }
-    }
-
-    /**
-     * When start date changes, update end date
-     *
-     * @param string $startDate
-     * @return void
-     */
-    public function updatedStartDate($startDate)
-    {
-        $this->updatedPlanId(Plan::find($this->plan_id));
-    }
-
-    /**
      * Save new membership
      */
     public function saveMembership()
@@ -272,10 +277,10 @@ class Memberships extends Component
     private function resetForm()
     {
         $this->member_id = '';
-        $this->plan_type_id = '';
+        $this->membership_type_id = '';
         $this->plan_id = '';
         $this->end_date = null;
-        $this->availablePlans = collect([]);
+        $this->periodTypes = collect([]);
     }
 
     /**
