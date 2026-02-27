@@ -9,17 +9,19 @@ use App\Models\Plan;
 use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
-use App\Models\PlanType;
+use App\Models\MembershipType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Livewire\WithPagination;
 
+#[Layout('layouts.app')]
 #[Title('Membresías')]
 class Memberships extends Component
 {
@@ -108,8 +110,7 @@ class Memberships extends Component
     {
         return Membership::with([
             'member',
-            'plan',
-            'planType',
+            'membershipType',
             'periods',
         ])
         ->when($this->search, function ($query) {
@@ -283,8 +284,8 @@ class Memberships extends Component
     public function render()
     {
         $members = Member::orderBy('name')->get();
-        $planTypes = PlanType::with('plans')->get();
+        $membershipTypes = MembershipType::with('periodTypes')->get();
 
-        return view('livewire.memberships', compact('members', 'planTypes'));
+        return view('livewire.memberships', compact('members', 'membershipTypes'));
     }
 }

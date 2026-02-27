@@ -126,8 +126,8 @@
           </div>
 
           <div class="p-6 flex-1">
+            <!-- Card Header -->
             <div class="flex items-center mb-6">
-              <!-- Left: Member and Plan Info -->
               <div class="flex items-center space-x-4">
                 <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center">
                   @if($membership->member->photo)
@@ -152,31 +152,32 @@
               </div>
             </div>
 
-            <!-- Period Info -->
-              <div class="space-y-4">
-                <div>
-                  <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Plan</p>
-                  <div class="flex items-center gap-1.5">
-                    <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
-                    <span class="font-medium text-gray-800">
-                      {{ $membership->plan_name }}
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Vencimiento</p>
-                  <div class="flex items-center gap-1.5">
-                    <flux:icon icon="clock" variant="mini" class="text-gray-500" />
-                    <span class="font-medium text-gray-800">
-                      {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en ' : 'Venció hace ' }}
-                      {{ $membership->expiration_time }}
-                    </span>
-                  </div>
+            {{-- Membership Info --}}
+            <div class="space-y-4">
+              <div>
+                <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Tipo</p>
+                <div class="flex items-center gap-1.5">
+                  <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
+                  <span class="font-medium text-gray-800">
+                    {{ $membership->membershipType->name }}
+                  </span>
                 </div>
               </div>
 
-            <!-- Actions Footer -->
+              <div>
+                <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">
+                    {{ $membership->status == MembershipStatus::ACTIVE ? 'Vence en ' : 'Venció hace ' }}
+                </p>
+                <div class="flex items-center gap-1.5">
+                  <flux:icon icon="clock" variant="mini" class="text-gray-500" />
+                  <span class="font-medium text-gray-800">
+                    {{ $membership->expiration_time }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {{-- Actions --}}
             <div class="flex justify-end gap-3 mt-6">
               {{-- @if ($membership->status == MembershipStatus::EXPIRED) --}}
               <flux:button
@@ -193,7 +194,7 @@
                 variant="primary"
                 wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
               >
-                Ver
+                Historial
               </flux:button>
             </div>
           </div>
@@ -201,7 +202,7 @@
       @endforeach
     </div>
 
-    <!-- Pagination -->
+    {{-- Pagination --}}
     <div class="mt-8">
       {{ $this->memberships->links('pagination.custom') }}
     </div>
