@@ -92,7 +92,7 @@
                       </h2>
                     </div>
                     <p class="text-xl text-gray-700 dark:text-gray-400 font-medium mb-12">
-                      {{ $membership?->plan_name }}
+                      {{ $membership?->membershipType->name }}
                     </p>
 
                     @if ($membership?->status === MembershipStatus::ACTIVE)
