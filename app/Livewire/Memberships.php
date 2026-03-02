@@ -4,13 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Member;
 use App\Models\Membership;
-use App\Models\Plan;
 use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\MembershipType;
 use App\Models\Period;
 use App\Models\PeriodType;
+
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as SupportCollection;
@@ -31,19 +31,19 @@ class Memberships extends Component
     // Properties for new membership form
     #[Validate('required', message: 'Elige un socio')]
     #[Validate('exists:members,id', message: 'Elige un socio válido')]
-    public $member_id = '';
+    public int|string $member_id = '';
 
     #[Validate('required', message: 'Elige un tipo de membresía')]
     #[Validate('exists:membership_types,id', message: 'Elige un tipo de membresía válido')]
-    public $membership_type_id = '';
+    public int|string $membership_type_id = '';
 
     #[Validate('required', message: 'Elige un periodo')]
     #[Validate('exists:period_types,id', message: 'Elige un periodo válido')]
-    public $period_type_id = '';
+    public int|string $period_type_id = '';
 
     #[Validate('required', message: 'La fecha de inicio es obligatoria')]
     #[Validate('date', message: 'La fecha de inicio debe ser una fecha válida')]
-    public $start_date = '';
+    public string $start_date = '';
 
     /**
      * Available period types for selected membership type
@@ -58,14 +58,14 @@ class Memberships extends Component
     public ?MembershipStatus $statusFilter = null;
 
     /**
-     * Membership search by member name
+     * Membership search by member name or code
      */
-    public $search = '';
+    public string $search = '';
 
     /**
-     * Create membership modal state
+     * Create-membership modal state
      */
-    public $showCreateModal = false;
+    public bool $showCreateModal = false;
 
     /**
      * Mount the component
@@ -77,8 +77,11 @@ class Memberships extends Component
 
     /**
      * Update status filter
+     *
+     * @param ?MembershipStatus $status
+     * @return void
      */
-    public function setStatusFilter(MembershipStatus|null $status = null)
+    public function setStatusFilter(?MembershipStatus $status = null)
     {
         $this->statusFilter = $status;
         $this->search = '';
@@ -95,7 +98,7 @@ class Memberships extends Component
     }
 
     /**
-     * Open create membership modal
+     * Open create-membership modal
      */
     public function createMembershipModal()
     {
@@ -108,8 +111,11 @@ class Memberships extends Component
 
     /**
      * When membership type changes, update available period types
+     *
+     * @param int|string $membershipTypeId
+     * @return void
      */
-    public function updatedMembershipTypeId(int $membershipTypeId)
+    public function updatedMembershipTypeId(int|string $membershipTypeId)
     {
         $this->period_type_id = '';
 
@@ -156,7 +162,7 @@ class Memberships extends Component
     }
 
     /**
-     * Close create modal
+     * Close create-membership modal
      */
     public function closeCreateModal()
     {
@@ -241,7 +247,7 @@ class Memberships extends Component
      */
     public function render()
     {
-        $membershipTypes = MembershipType::with('periodTypes')->get();
+        $membershipTypes = MembershipType::all();
         $members = Member::orderBy('name')->get();
 
         return view('livewire.memberships', compact('members', 'membershipTypes'));
