@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Enums\DurationUnit;
 use App\Models\Member;
 use App\Models\Membership;
 use App\Models\Plan;
@@ -10,6 +9,7 @@ use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\MembershipType;
+use App\Models\Period;
 use App\Models\PeriodType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,27 +33,20 @@ class Memberships extends Component
     #[Validate('exists:members,id', message: 'Elige un socio válido')]
     public $member_id = '';
 
-    #[Validate('required', message: 'Elige un tipo de plan')]
-    #[Validate('exists:membership_types,id', message: 'Elige un tipo de plan válido')]
+    #[Validate('required', message: 'Elige un tipo de membresía')]
+    #[Validate('exists:membership_types,id', message: 'Elige un tipo de membresía válido')]
     public $membership_type_id = '';
 
-    #[Validate('required', message: 'Elige un plan')]
-    #[Validate('exists:plans,id', message: 'Elige un plan válido')]
-    public $plan_id = '';
+    #[Validate('required', message: 'Elige un periodo')]
+    #[Validate('exists:period_types,id', message: 'Elige un periodo válido')]
+    public $period_type_id = '';
 
     #[Validate('required', message: 'La fecha de inicio es obligatoria')]
     #[Validate('date', message: 'La fecha de inicio debe ser una fecha válida')]
-    public $start_date;
+    public $start_date = '';
 
     /**
-     * Automatically calculated end date of the first period
-     *
-     * @var Carbon|null
-     */
-    public Carbon|null $end_date = null;
-
-    /**
-     * Available plans for selected plan type
+     * Available period types for selected membership type
      *
      * @var Collection<PeriodType>
      */
@@ -80,9 +73,6 @@ class Memberships extends Component
     public function mount()
     {
         $this->periodTypes = collect([]);
-
-
-        $this->createMembershipModal();
     }
 
     /**
@@ -117,59 +107,76 @@ class Memberships extends Component
     }
 
     /**
-     * When plan type changes, update available plans
+     * When membership type changes, update available period types
      */
-    public function updatedMembershipTypeId($membershipTypeId)
+    public function updatedMembershipTypeId(int $membershipTypeId)
     {
-        $this->plan_id = '';
+        $this->period_type_id = '';
 
-        if ($membershipTypeId) {
-            $this->periodTypes = PeriodType::where('membership_type_id', $membershipTypeId)
-                                        ->orderBy('price')
-                                        ->get();
-        } else {
+        if (! $membershipTypeId) {
             $this->periodTypes = collect([]);
-        }
-
-        // TODO: Its necessary to reset the end date?
-        // Reset end date to calculate it again
-        $this->end_date = null;
-    }
-
-    /**
-     * When plan (period) changes, update end date
-     *
-     * @param Plan|null $plan
-     * @return void
-     */
-    public function updatedPlanId(Plan|null $plan)
-    {
-        if ($plan == null) {
             return;
         }
 
-        try {
-            $startDate = Carbon::parse($this->start_date);
-
-            $this->end_date = match ($plan->duration_unit) {
-                DurationUnit::DAY => $startDate->addDays($plan->duration_value),
-                DurationUnit::WEEK => $startDate->addWeeks($plan->duration_value),
-                DurationUnit::MONTH => $startDate->addMonths($plan->duration_value),
-            };
-        } catch (\Exception $e) {
-            $this->end_date = null;
-        }
+        $this->periodTypes = PeriodType::where('membership_type_id', $membershipTypeId)
+                                       ->orderBy('price')
+                                       ->get();
     }
 
     /**
-     * When start date changes, update end date
-     *
-     * @param string $startDate
-     * @return void
+     * Save new membership
      */
-    public function updatedStartDate($startDate)
+    public function saveMembership()
     {
-        $this->updatedPlanId(Plan::find($this->plan_id));
+        $validated = $this->validate();
+
+        $membership = Membership::create([
+            'member_id' => $validated['member_id'],
+            'membership_type_id' => $validated['membership_type_id'],
+            'status' => MembershipStatus::ACTIVE,
+        ]);
+
+        $periodType = PeriodType::find($validated['period_type_id']);
+
+        // Initialize first period
+        $membership->periods()->create([
+            'period_type_id' => $validated['period_type_id'],
+            'start_date' => $validated['start_date'],
+            'end_date' => Period::calculateEndDate(Carbon::parse($validated['start_date']), $periodType),
+            'price_paid' => $periodType->price,
+            'status' => PeriodStatus::IN_PROGRESS,
+        ]);
+
+        // Update member status
+        $membership->member->update(['status' => MemberStatus::ACTIVE]);
+
+        $this->closeCreateModal();
+
+        session()->flash('message', 'Membresía creada exitosamente');
+    }
+
+    /**
+     * Close create modal
+     */
+    public function closeCreateModal()
+    {
+        $this->showCreateModal = false;
+        $this->resetForm();
+
+        // Enable background scroll
+        $this->dispatch('enable-scroll');
+    }
+
+    /**
+     * Reset form fields
+     */
+    private function resetForm()
+    {
+        $this->member_id = '';
+        $this->membership_type_id = '';
+        $this->period_type_id = '';
+        $this->start_date = '';
+        $this->periodTypes = collect([]);
     }
 
     /**
@@ -230,66 +237,12 @@ class Memberships extends Component
     }
 
     /**
-     * Save new membership
-     */
-    public function saveMembership()
-    {
-        $validated = $this->validate();
-
-        $membership = Membership::create([
-            'member_id' => $validated['member_id'],
-            'plan_id' => $validated['plan_id'],
-            'plan_type_id' => $validated['plan_type_id'],
-            'status' => MembershipStatus::ACTIVE,
-        ]);
-
-        // Initialize first period
-        $membership->periods()->create([
-            'start_date' => $validated['start_date'],
-            'end_date' => $this->end_date,
-            'price_paid' => $membership->plan->price,
-            'status' => PeriodStatus::IN_PROGRESS,
-        ]);
-
-        // Update member status
-        $membership->member->update(['status' => MemberStatus::ACTIVE]);
-
-        $this->closeCreateModal();
-
-        session()->flash('message', 'Membresía creada exitosamente');
-    }
-
-    /**
-     * Close create modal
-     */
-    public function closeCreateModal()
-    {
-        $this->showCreateModal = false;
-        $this->resetForm();
-
-        // Enable background scroll
-        $this->dispatch('enable-scroll');
-    }
-
-    /**
-     * Reset form fields
-     */
-    private function resetForm()
-    {
-        $this->member_id = '';
-        $this->membership_type_id = '';
-        $this->plan_id = '';
-        $this->end_date = null;
-        $this->periodTypes = collect([]);
-    }
-
-    /**
      * Render the component view
      */
     public function render()
     {
-        $members = Member::orderBy('name')->get();
         $membershipTypes = MembershipType::with('periodTypes')->get();
+        $members = Member::orderBy('name')->get();
 
         return view('livewire.memberships', compact('members', 'membershipTypes'));
     }

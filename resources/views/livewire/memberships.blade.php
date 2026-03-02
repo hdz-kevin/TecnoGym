@@ -252,20 +252,20 @@
                   {{-- Period --}}
                   <flux:field>
                     <flux:label>Primer Periodo</flux:label>
-                    <flux:select wire:model.live="plan_id" placeholder="Elige un periodo">
+                    <flux:select wire:model.live="period_type_id" placeholder="Elige un tipo de periodo">
                       @foreach($this->periodTypes as $periodType)
                         <flux:select.option value="{{ $periodType->id }}">
                           {{ $periodType->name }}
                         </flux:select.option>
                       @endforeach
                     </flux:select>
-                    <flux:error name="plan_id" />
+                    <flux:error name="period_type_id" />
                   </flux:field>
                 </div>
 
                 <flux:field>
                   <flux:label>Fecha de Inicio</flux:label>
-                  <flux:input type="date" wire:model.live="start_date" />
+                  <flux:input type="date" wire:model="start_date" />
                   <flux:error name="start_date" />
                 </flux:field>
               </div>
