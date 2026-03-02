@@ -179,23 +179,23 @@
 
             {{-- Actions --}}
             <div class="flex justify-end gap-3 mt-6">
-              {{-- @if ($membership->status == MembershipStatus::EXPIRED) --}}
               <flux:button
                 size="sm"
                 variant="outline"
-                wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
-              >
-                Nuevo Periodo
-              </flux:button>
-              {{-- @endif --}}
-
-              <flux:button
-                size="sm"
-                variant="primary"
                 wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
               >
                 Historial
               </flux:button>
+
+              {{-- @if ($membership->status == MembershipStatus::EXPIRED) --}}
+              <flux:button
+                size="sm"
+                variant="{{ $membership->status == MembershipStatus::EXPIRED ? 'primary' : 'outline' }}"
+                wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
+              >
+                Renovar
+              </flux:button>
+              {{-- @endif --}}
             </div>
           </div>
         </div>
