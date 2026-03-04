@@ -7,7 +7,7 @@ use App\Models\Membership;
 use Livewire\Component;
 use Livewire\Attributes\On;
 
-class MembershipDetails extends Component
+class MembershipHistory extends Component
 {
     /**
      * History modal state
@@ -24,19 +24,19 @@ class MembershipDetails extends Component
     public $membership = null;
 
     /**
-     * Opens the history modal for a specific membership.
-     * Eager loads necessary relationships to display the full history.
+     * Opens the history modal for a membership.
+     * Eager loads necessary relationships to display the membership information.
      *
      * @param Membership $membership
      * @return void
      */
-    #[On('open-details-modal')]
+    #[On('open-history-modal')]
     public function openModal(Membership $membership)
     {
         $this->membership = $membership->load([
             'member',
-            'plan',
-            'planType',
+            // 'plan',
+            'membershipType',
             'periods',
         ]);
 
@@ -81,6 +81,6 @@ class MembershipDetails extends Component
      */
     public function render()
     {
-        return view('livewire.membership-details');
+        return view('livewire.membership-history');
     }
 }

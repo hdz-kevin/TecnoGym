@@ -41,7 +41,7 @@
                 <div class="space-y-4">
                    <div>
                       <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Plan</p>
-                      <p class="text-lg font-medium text-gray-800">{{ $membership->plan_name }}</p>
+                      <p class="text-lg font-medium text-gray-800">{{ $membership->membershipType->name }}</p>
                    </div>
 
                    @if($membership->status == MembershipStatus::ACTIVE)
