@@ -1,4 +1,4 @@
-<x-slot:subtitle>Gestiona los precios de las membresías disponbles</x-slot:subtitle>
+<x-slot:subtitle>Gestiona los precios de las membresías disponibles</x-slot:subtitle>
 
 <div>
   <div class="pt-4 -mt-6 space-y-6">
@@ -95,7 +95,7 @@
             <!-- New Plan Button -->
             <flux:button variant="outline" icon="plus" wire:click="createPeriodTypeModal({{ $membershipType->id }})"
               class="w-full">
-              Nuevo Periodo
+              Añadir Periodo
             </flux:button>
           </div>
         </div>
