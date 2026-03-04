@@ -60,7 +60,7 @@ class Memberships extends Component
     /**
      * Membership search by member name or code
      */
-    public string $search = '';
+    public ?string $search = null;
 
     /**
      * Create-membership modal state
@@ -208,6 +208,7 @@ class Memberships extends Component
             $query->where('status', $this->statusFilter->value);
         })
         ->orderBy('updated_at', 'desc')
+        ->orderBy('id', 'desc')
         ->paginate(6);
     }
 
@@ -220,7 +221,7 @@ class Memberships extends Component
     public function periodSaved(string $message)
     {
         $this->reset('search', 'statusFilter');
-        $this->memberships;
+        $this->resetPage();
 
         session()->flash('message', $message);
     }

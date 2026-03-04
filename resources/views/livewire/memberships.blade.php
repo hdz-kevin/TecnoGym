@@ -159,7 +159,7 @@
                 <div class="flex items-center gap-1.5">
                   <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
                   <span class="font-medium text-gray-800">
-                    {{ $membership->membershipType->name }}
+                    {{ $membership->membershipType->name }} - {{ $membership->id  }}
                   </span>
                 </div>
               </div>
@@ -182,7 +182,7 @@
               <flux:button
                 size="sm"
                 variant="outline"
-                wire:click="$dispatch('open-details-modal', { membership: {{ $membership->id }} })"
+                wire:click="$dispatch('open-history-modal', { membership: {{ $membership->id }} })"
               >
                 Historial
               </flux:button>
@@ -291,7 +291,7 @@
 
   <livewire:add-period />
 
-  <livewire:membership-details />
+  <livewire:membership-history />
 
   <script>
     document.addEventListener('livewire:init', () => {
