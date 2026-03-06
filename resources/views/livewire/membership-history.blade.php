@@ -114,7 +114,7 @@
 
                                <div class="ml-1 mt-2 flex items-center gap-2.5">
                                 <p class="text-sm font-medium text-gray-700">
-                                  Tipo: <span class="text-gray-500 ml-0.5"> {{ $period->periodType->name }}</span>
+                                  Duración: <span class="text-gray-500 ml-0.5"> {{ $period->periodDuration->name }}</span>
                                 </p>
                                  <span class="text-sm text-gray-600">-</span>
                                 <p class="text-sm font-medium text-gray-700">
