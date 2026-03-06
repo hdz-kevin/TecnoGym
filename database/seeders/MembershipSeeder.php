@@ -16,14 +16,12 @@ class MembershipSeeder extends Seeder
      */
     public function run(): void
     {
-        // Membership Types
         $general = MembershipType::where('name', 'General')->first();
         $student = MembershipType::where('name', 'Estudiante')->first();
 
-        // Members
         $members = Member::inRandomOrder()->limit(70)->get();
 
-        // Create memberships
+        // Create a membership for each member
         foreach ($members as $member) {
             $membershipType = (rand(1, 7) <= 4) ? $general : $student;
 
