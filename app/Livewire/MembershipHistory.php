@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\Member;
 use App\Models\Membership;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -25,7 +24,7 @@ class MembershipHistory extends Component
 
     /**
      * Opens the history modal for a membership.
-     * Eager loads necessary relationships to display the membership information.
+     * Eager loads necessary relationships to display the rest of membership info.
      *
      * @param Membership $membership
      * @return void
@@ -35,9 +34,8 @@ class MembershipHistory extends Component
     {
         $this->membership = $membership->load([
             'member',
-            // 'plan',
             'membershipType',
-            'periods',
+            'periods.periodType',
         ]);
 
         $this->showModal = true;

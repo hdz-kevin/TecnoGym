@@ -3,7 +3,7 @@
 @endphp
 
 <div>
-  @if ($showModal && $membership)
+  @if ($showModal)
     <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-20" wire:click="closeModal">
       <div class="fixed inset-0 z-20 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
@@ -40,7 +40,7 @@
                 <!-- Membership Specifics -->
                 <div class="space-y-4">
                    <div>
-                      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Plan</p>
+                      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Tipo de Membresía</p>
                       <p class="text-lg font-medium text-gray-800">{{ $membership->membershipType->name }}</p>
                    </div>
 
@@ -57,7 +57,7 @@
                    @endif
 
                    <div>
-                      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Periodos</p>
+                      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Periodos Pagados</p>
                       <p class="text-lg font-medium text-gray-800">{{ $membership->periods->count() }}</p>
                    </div>
 
@@ -71,7 +71,7 @@
               <!-- Right Content: Payment History -->
               <div class="md:col-span-8 bg-white flex flex-col p-8 h-full">
                 <div class="flex justify-between mb-8 pb-4 border-b border-gray-100">
-                  <h3 class="text-xl font-medium text-gray-800">Historial de membresía</h3>
+                  <h3 class="text-xl font-medium text-gray-800">Historial</h3>
                    <div class="-mt-0.5">
                       @php
                         $statusColor = match ($membership->status) {
@@ -111,8 +111,15 @@
                                <h4 class="text-base font-medium text-gray-800">
                                  {{ $period->formatted_period }}
                                </h4>
-                               <div class="mt-1 flex items-center gap-2">
-                                 <span class="text-sm font-medium text-gray-500">{{ $period->status->label() }}</span>
+
+                               <div class="ml-1 mt-2 flex items-center gap-2.5">
+                                <p class="text-sm font-medium text-gray-700">
+                                  Tipo: <span class="text-gray-500 ml-0.5"> {{ $period->periodType->name }}</span>
+                                </p>
+                                 <span class="text-sm text-gray-600">-</span>
+                                <p class="text-sm font-medium text-gray-700">
+                                 Estado: <span class="text-gray-500 ml-0.5">{{ $period->status->label() }}</span>
+                                </p>
                               </div>
                                 {{-- <span
                                   class="mt-1.5 inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
