@@ -19,7 +19,7 @@ class PeriodSeeder extends Seeder
      */
     public function run(): void
     {
-        $memberships = Membership::with('membershipType.periodTypes')->get();
+        $memberships = Membership::with('membershipType.periodDurations')->get();
 
         foreach ($memberships as $membership) {
             $membershipType = $membership->membershipType;
@@ -29,13 +29,13 @@ class PeriodSeeder extends Seeder
             $startDate = Carbon::now()->subMonths(ceil($periodsToCreate / 2));
 
             for ($i = 0; $i < $periodsToCreate; $i++) {
-                $periodType = $membershipType->periodTypes->random();
+                $periodDuration = $membershipType->periodDurations->random();
                 // Calculate dates
                 $periodStartDate = $startDate->copy();
-                $periodEndDate = match ($periodType->duration_unit) {
-                    DurationUnit::DAY => $periodStartDate->copy()->addDays($periodType->duration_value),
-                    DurationUnit::WEEK => $periodStartDate->copy()->addWeeks($periodType->duration_value),
-                    DurationUnit::MONTH => $periodStartDate->copy()->addMonths($periodType->duration_value),
+                $periodEndDate = match ($periodDuration->duration_unit) {
+                    DurationUnit::DAY => $periodStartDate->copy()->addDays($periodDuration->duration_value),
+                    DurationUnit::WEEK => $periodStartDate->copy()->addWeeks($periodDuration->duration_value),
+                    DurationUnit::MONTH => $periodStartDate->copy()->addMonths($periodDuration->duration_value),
                     default => $periodStartDate->copy()->addMonth(),
                 };
 
@@ -52,10 +52,10 @@ class PeriodSeeder extends Seeder
                 // Create Period
                 Period::create([
                     'membership_id' => $membership->id,
-                    'period_type_id' => $periodType->id,
+                    'period_duration_id' => $periodDuration->id,
                     'start_date' => $periodStartDate->toDateString(),
                     'end_date' => $periodEndDate->toDateString(),
-                    'price_paid' => $periodType->price,
+                    'price_paid' => $periodDuration->price,
                     'status' => $status,
                 ]);
 
