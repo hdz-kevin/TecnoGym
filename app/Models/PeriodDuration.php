@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PeriodType extends Model
+class PeriodDuration extends Model
 {
     protected $fillable = [
         'membership_type_id',
         'name',
         'duration_value',
         'duration_unit',
-        'duration_in_days',
         'price',
     ];
 
@@ -23,7 +22,7 @@ class PeriodType extends Model
     ];
 
     /**
-     * Get the membership type that owns the period type.
+     * Get the membership type that owns the period duration
      *
      * @return BelongsTo
      */
@@ -33,7 +32,7 @@ class PeriodType extends Model
     }
 
     /**
-     * Get the periods for the period type.
+     * Get the periods for the period duration
      *
      * @return HasMany
      */

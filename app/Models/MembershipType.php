@@ -18,10 +18,10 @@ class MembershipType extends Model
     }
 
     /**
-     * Get the available period types for the membership type.
+     * Get the available period durations for the membership type.
      */
-    public function periodTypes(): HasMany
+    public function periodDurations(): HasMany
     {
-        return $this->hasMany(PeriodType::class)->orderBy('price');
+        return $this->hasMany(PeriodDuration::class)->orderBy('price');
     }
 }

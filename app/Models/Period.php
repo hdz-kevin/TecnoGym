@@ -12,7 +12,7 @@ class Period extends Model
 {
     protected $fillable = [
         'membership_id',
-        'period_type_id',
+        'period_duration_id',
         'start_date',
         'end_date',
         'price_paid',
@@ -34,11 +34,11 @@ class Period extends Model
     }
 
     /**
-     * Get the period type that owns the period.
+     * Get the `periodDuration` that owns the period.
      */
-    public function periodType(): BelongsTo
+    public function periodDuration(): BelongsTo
     {
-        return $this->belongsTo(PeriodType::class);
+        return $this->belongsTo(PeriodDuration::class);
     }
 
     /**
@@ -58,20 +58,20 @@ class Period extends Model
     }
 
     /**
-     * Calculate the end date of a period based on the start date and period type.
+     * Calculate the end date of a period based on the `startDate` and `periodDuration`.
      *
      * @param Carbon $startDate
-     * @param PeriodType $periodType
+     * @param PeriodDuration $periodDuration
      * @return Carbon
      */
-    public static function calculateEndDate(Carbon $startDate, PeriodType $periodType): Carbon
+    public static function calculateEndDate(Carbon $startDate, PeriodDuration $periodDuration): Carbon
     {
         $startDate = $startDate->copy();
 
-        return match ($periodType->duration_unit) {
-            DurationUnit::DAY => $startDate->addDays($periodType->duration_value),
-            DurationUnit::WEEK => $startDate->addWeeks($periodType->duration_value),
-            DurationUnit::MONTH => $startDate->addMonths($periodType->duration_value),
+        return match ($periodDuration->duration_unit) {
+            DurationUnit::DAY => $startDate->addDays($periodDuration->duration_value),
+            DurationUnit::WEEK => $startDate->addWeeks($periodDuration->duration_value),
+            DurationUnit::MONTH => $startDate->addMonths($periodDuration->duration_value),
         };
     }
 }
