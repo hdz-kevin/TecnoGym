@@ -9,6 +9,7 @@ use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\MembershipType;
 use App\Models\Period;
+use App\Models\PeriodDuration;
 use App\Models\PeriodType;
 
 use Carbon\Carbon;
@@ -37,20 +38,20 @@ class Memberships extends Component
     #[Validate('exists:membership_types,id', message: 'Elige un tipo de membresía válido')]
     public int|string $membership_type_id = '';
 
-    #[Validate('required', message: 'Elige un periodo')]
-    #[Validate('exists:period_types,id', message: 'Elige un periodo válido')]
-    public int|string $period_type_id = '';
+    #[Validate('required', message: 'Elige una duración')]
+    #[Validate('exists:period_durations,id', message: 'Elige una duración válida')]
+    public int|string $period_duration_id = '';
 
     #[Validate('required', message: 'La fecha de inicio es obligatoria')]
     #[Validate('date', message: 'La fecha de inicio debe ser una fecha válida')]
     public string $start_date = '';
 
     /**
-     * Available period types for selected membership type
+     * Available period durations for selected membership type
      *
-     * @var Collection<PeriodType>
+     * @var Collection<PeriodDuration>
      */
-    public $periodTypes;
+    public $periodDurations;
 
     /**
      * Current status filter for memberships list
@@ -72,7 +73,7 @@ class Memberships extends Component
      */
     public function mount()
     {
-        $this->periodTypes = collect([]);
+        $this->periodDurations = collect([]);
     }
 
     /**
@@ -110,21 +111,21 @@ class Memberships extends Component
     }
 
     /**
-     * When membership type changes, update available period types
+     * When membership type changes, update available period durations
      *
      * @param int|string $membershipTypeId
      * @return void
      */
     public function updatedMembershipTypeId(int|string $membershipTypeId)
     {
-        $this->period_type_id = '';
+        $this->period_duration_id = '';
 
         if (! $membershipTypeId) {
-            $this->periodTypes = collect([]);
+            $this->periodDurations = collect([]);
             return;
         }
 
-        $this->periodTypes = PeriodType::where('membership_type_id', $membershipTypeId)
+        $this->periodDurations = PeriodDuration::where('membership_type_id', $membershipTypeId)
                                        ->orderBy('price')
                                        ->get();
     }
@@ -142,14 +143,14 @@ class Memberships extends Component
             'status' => MembershipStatus::ACTIVE,
         ]);
 
-        $periodType = PeriodType::find($validated['period_type_id']);
-
         // Initialize first period
+        $periodDuration = PeriodDuration::find($validated['period_duration_id']);
+
         $membership->periods()->create([
-            'period_type_id' => $validated['period_type_id'],
+            'period_duration_id' => $validated['period_duration_id'],
             'start_date' => $validated['start_date'],
-            'end_date' => Period::calculateEndDate(Carbon::parse($validated['start_date']), $periodType),
-            'price_paid' => $periodType->price,
+            'end_date' => Period::calculateEndDate(Carbon::parse($validated['start_date']), $periodDuration),
+            'price_paid' => $periodDuration->price,
             'status' => PeriodStatus::IN_PROGRESS,
         ]);
 
@@ -180,9 +181,9 @@ class Memberships extends Component
     {
         $this->member_id = '';
         $this->membership_type_id = '';
-        $this->period_type_id = '';
+        $this->period_duration_id = '';
         $this->start_date = '';
-        $this->periodTypes = collect([]);
+        $this->periodDurations = collect([]);
     }
 
     /**

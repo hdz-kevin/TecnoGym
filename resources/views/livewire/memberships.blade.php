@@ -213,7 +213,7 @@
     <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeCreateModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center p-4">
-          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-xl" wire:click.stop>
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:w-full sm:max-w-[650px]" wire:click.stop>
 
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-gray-200">
@@ -238,7 +238,7 @@
                 <div class="grid grid-cols-2 gap-4">
                   {{-- Plan type --}}
                   <flux:field>
-                    <flux:label>Tipo</flux:label>
+                    <flux:label>Tipo de Membresía</flux:label>
                     <flux:select wire:model.live="membership_type_id" placeholder="Elige un tipo de membresía">
                       @foreach($membershipTypes as $membershipType)
                         <flux:select.option value="{{ $membershipType->id }}">
@@ -249,17 +249,17 @@
                     <flux:error name="membership_type_id" />
                   </flux:field>
 
-                  {{-- Period --}}
+                  {{-- Period Duration --}}
                   <flux:field>
                     <flux:label>Primer Periodo</flux:label>
-                    <flux:select wire:model.live="period_type_id" placeholder="Elige un tipo de periodo">
-                      @foreach($this->periodTypes as $periodType)
-                        <flux:select.option value="{{ $periodType->id }}">
-                          {{ $periodType->name }}
+                    <flux:select wire:model.live="period_duration_id" placeholder="Elige la duración del primer periodo">
+                      @foreach($this->periodDurations as $periodDuration)
+                        <flux:select.option value="{{ $periodDuration->id }}">
+                          {{ $periodDuration->name }}
                         </flux:select.option>
                       @endforeach
                     </flux:select>
-                    <flux:error name="period_type_id" />
+                    <flux:error name="period_duration_id" />
                   </flux:field>
                 </div>
 
