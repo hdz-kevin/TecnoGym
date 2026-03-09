@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('period_durations', function (Blueprint $table) {
+        Schema::create('durations', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(MembershipType::class)->constrained()->onDelete('restrict');
 
             $table->string('name');
-            $table->integer('duration_value');
-            $table->enum('duration_unit', DurationUnit::values());
+            $table->integer('amount');
+            $table->enum('unit', DurationUnit::values());
             $table->integer('price');
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('period_types');
+        Schema::dropIfExists('durations');
     }
 };

@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.6.0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.6.1">
   <diagram name="Page-1" id="t_ZjzlIveFX3uH3_dq2D">
-    <mxGraphModel dx="6260" dy="961" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="6358" dy="1012" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -195,8 +195,8 @@
             <mxRectangle height="30" width="138.4421773976294" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ZmS3aK9wkaC02EFSY0Xw-54" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;" value="period_durations" vertex="1">
-          <mxGeometry height="210" width="180.1788085937501" x="-3799" y="992" as="geometry" />
+        <mxCell id="ZmS3aK9wkaC02EFSY0Xw-54" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;" value="durations" vertex="1">
+          <mxGeometry height="210" width="180.1788085937501" x="-3799" y="993" as="geometry" />
         </mxCell>
         <mxCell id="ZmS3aK9wkaC02EFSY0Xw-55" parent="ZmS3aK9wkaC02EFSY0Xw-54" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" value="" vertex="1">
           <mxGeometry height="30" width="180.1788085937501" y="30" as="geometry" />
@@ -245,7 +245,7 @@
             <mxRectangle height="30" width="41.7366311961207" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ZmS3aK9wkaC02EFSY0Xw-66" parent="ZmS3aK9wkaC02EFSY0Xw-64" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="duration_value" vertex="1">
+        <mxCell id="ZmS3aK9wkaC02EFSY0Xw-66" parent="ZmS3aK9wkaC02EFSY0Xw-64" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="amount" vertex="1">
           <mxGeometry height="30" width="138.4421773976294" x="41.7366311961207" as="geometry">
             <mxRectangle height="30" width="138.4421773976294" as="alternateBounds" />
           </mxGeometry>
@@ -258,7 +258,7 @@
             <mxRectangle height="30" width="41.7366311961207" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ZmS3aK9wkaC02EFSY0Xw-69" parent="ZmS3aK9wkaC02EFSY0Xw-67" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="duration_unit" vertex="1">
+        <mxCell id="ZmS3aK9wkaC02EFSY0Xw-69" parent="ZmS3aK9wkaC02EFSY0Xw-67" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="unit" vertex="1">
           <mxGeometry height="30" width="138.4421773976294" x="41.7366311961207" as="geometry">
             <mxRectangle height="30" width="138.4421773976294" as="alternateBounds" />
           </mxGeometry>
