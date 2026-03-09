@@ -7,22 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PeriodDuration extends Model
+class Duration extends Model
 {
     protected $fillable = [
         'membership_type_id',
         'name',
-        'duration_value',
-        'duration_unit',
+        'amount',
+        'unit',
         'price',
     ];
 
     protected $casts = [
-        'duration_unit' => DurationUnit::class,
+        'unit' => DurationUnit::class,
     ];
 
     /**
-     * Get the membership type that owns the period duration
+     * Get the membership type that owns the duration
      *
      * @return BelongsTo
      */
@@ -32,7 +32,7 @@ class PeriodDuration extends Model
     }
 
     /**
-     * Get the periods for the period duration
+     * Get the periods associated with the duration
      *
      * @return HasMany
      */
@@ -44,8 +44,8 @@ class PeriodDuration extends Model
     /**
      * Get formatted duration string (e.g., "15 días", "1 mes", "3 meses").
      */
-    public function getFormattedDurationAttribute(): string
+    public function getFormattedAttribute(): string
     {
-        return $this->duration_value . ' ' . $this->duration_unit->label($this->duration_value);
+        return $this->amount . ' ' . $this->unit->label($this->amount);
     }
 }

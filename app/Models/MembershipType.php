@@ -10,7 +10,7 @@ class MembershipType extends Model
     protected $fillable = ['name'];
 
     /**
-     * Get the memberships for the membership type.
+     * Get the memberships for the membership type
      */
     public function memberships(): HasMany
     {
@@ -18,10 +18,10 @@ class MembershipType extends Model
     }
 
     /**
-     * Get the available period durations for the membership type.
+     * Get the available durations for the membership type
      */
-    public function periodDurations(): HasMany
+    public function durations(): HasMany
     {
-        return $this->hasMany(PeriodDuration::class)->orderBy('price');
+        return $this->hasMany(Duration::class)->orderBy('price');
     }
 }

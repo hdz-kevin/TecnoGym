@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\PeriodStatus;
+use App\Models\Duration;
 use App\Models\Membership;
-use App\Models\PeriodDuration;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,13 +17,12 @@ return new class extends Migration
         Schema::create('periods', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Membership::class)->constrained()->onDelete('restrict');
-            // $table->foreignIdFor(PeriodDuration::class)->constrained()->onDelete('restrict');
-            $table->foreignId('duration_id')->constrained('durations')->onDelete('restrict');
+            $table->foreignIdFor(Duration::class)->constrained()->onDelete('restrict');
 
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('price_paid');
-            $table->enum('status', PeriodStatus::values())->default(PeriodStatus::IN_PROGRESS->value);
+            $table->enum('status', PeriodStatus::values())->default(PeriodStatus::IN_PROGRESS);
             $table->timestamps();
         });
     }

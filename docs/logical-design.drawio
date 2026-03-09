@@ -395,7 +395,7 @@
             <mxRectangle height="30" width="41.7366311961207" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="a3-u2XsbHSHHmARzdzoU-43" parent="a3-u2XsbHSHHmARzdzoU-41" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="period_duration_id" vertex="1">
+        <mxCell id="a3-u2XsbHSHHmARzdzoU-43" parent="a3-u2XsbHSHHmARzdzoU-41" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="duration_id" vertex="1">
           <mxGeometry height="30" width="146.53261835315834" x="41.7366311961207" as="geometry">
             <mxRectangle height="30" width="146.53261835315834" as="alternateBounds" />
           </mxGeometry>
