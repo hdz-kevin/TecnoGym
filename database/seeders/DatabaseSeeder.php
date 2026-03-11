@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             MemberSeeder::class,
             MembershipTypeSeeder::class,
             MembershipSeeder::class,
-            PeriodDurationSeeder::class,
+            DurationSeeder::class,
             PeriodSeeder::class,
             VisitSeeder::class,
         ]);

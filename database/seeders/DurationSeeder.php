@@ -6,44 +6,46 @@ use App\Enums\DurationUnit;
 use App\Models\MembershipType;
 use Illuminate\Database\Seeder;
 
-class PeriodDurationSeeder extends Seeder
+class DurationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        /** @var MembershipType $general */
         $general = MembershipType::where('name', 'General')->first();
+        /** @var MembershipType $student */
         $student = MembershipType::where('name', 'Estudiante')->first();
 
-        $general->periodDurations()
+        $general->durations()
                 ->createMany([
                     [
                         'name' => '2 Semanas',
-                        'duration_value' => 2,
-                        'duration_unit' => DurationUnit::WEEK,
+                        'amount' => 2,
+                        'unit' => DurationUnit::WEEK,
                         'price' => 250,
                     ],
                     [
                         'name' => 'Mensual',
-                        'duration_value' => 1,
-                        'duration_unit' => DurationUnit::MONTH,
+                        'amount' => 1,
+                        'unit' => DurationUnit::MONTH,
                         'price' => 400,
                     ],
                 ]);
 
-        $student->periodDurations()
+        $student->durations()
                 ->createMany([
                     [
                         'name' => '2 Semanas',
-                        'duration_value' => 2,
-                        'duration_unit' => DurationUnit::WEEK,
+                        'amount' => 2,
+                        'unit' => DurationUnit::WEEK,
                         'price' => 200,
                     ],
                     [
                         'name' => 'Mensual',
-                        'duration_value' => 1,
-                        'duration_unit' => DurationUnit::MONTH,
+                        'amount' => 1,
+                        'unit' => DurationUnit::MONTH,
                         'price' => 350,
                     ],
                 ]);

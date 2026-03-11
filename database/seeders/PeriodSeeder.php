@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\DurationUnit;
 use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
@@ -19,27 +18,22 @@ class PeriodSeeder extends Seeder
      */
     public function run(): void
     {
-        $memberships = Membership::with('membershipType.periodDurations')->get();
+        $memberships = Membership::with('membershipType.durations')->get();
 
         foreach ($memberships as $membership) {
             $membershipType = $membership->membershipType;
             $periodsToCreate = rand(1, 9);
 
             // Start a few months ago
-            $startDate = Carbon::now()->subMonths(ceil($periodsToCreate / 2));
+            $startDate = Carbon::now()->subMonths($periodsToCreate - 1);
 
             for ($i = 0; $i < $periodsToCreate; $i++) {
-                $periodDuration = $membershipType->periodDurations->random();
+                $duration = $membershipType->durations->random();
                 // Calculate dates
                 $periodStartDate = $startDate->copy();
-                $periodEndDate = match ($periodDuration->duration_unit) {
-                    DurationUnit::DAY => $periodStartDate->copy()->addDays($periodDuration->duration_value),
-                    DurationUnit::WEEK => $periodStartDate->copy()->addWeeks($periodDuration->duration_value),
-                    DurationUnit::MONTH => $periodStartDate->copy()->addMonths($periodDuration->duration_value),
-                    default => $periodStartDate->copy()->addMonth(),
-                };
+                $periodEndDate = Period::calculateEndDate($periodStartDate, $duration);
 
-                // Get Status
+                // Set Status
                 $status = PeriodStatus::COMPLETED;
 
                 if ($periodStartDate <= Carbon::now() && Carbon::now() <= $periodEndDate) {
@@ -52,10 +46,10 @@ class PeriodSeeder extends Seeder
                 // Create Period
                 Period::create([
                     'membership_id' => $membership->id,
-                    'period_duration_id' => $periodDuration->id,
+                    'duration_id' => $duration->id,
                     'start_date' => $periodStartDate->toDateString(),
                     'end_date' => $periodEndDate->toDateString(),
-                    'price_paid' => $periodDuration->price,
+                    'price_paid' => $duration->price,
                     'status' => $status,
                 ]);
 
@@ -64,7 +58,7 @@ class PeriodSeeder extends Seeder
 
                 // Simulate some random breaks between periods
                 if (rand(1, 10) <= 3) {
-                    $startDate->addDays(rand(2, 30));
+                    $startDate->addDays(rand(1, 20));
                 }
             }
         }

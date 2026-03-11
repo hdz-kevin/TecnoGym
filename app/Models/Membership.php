@@ -59,8 +59,8 @@ class Membership extends Model
      */
     public function currentPeriod()
     {
+        // future memberships are included
         return $this->hasMany(Period::class)
-                    // future memberships are included
                     // ->where('start_date', '<=', now())
                     ->where('end_date', '>=', now())
                     ->latest('start_date');
