@@ -4,6 +4,7 @@ namespace App\Livewire\Prices;
 
 use App\Enums\DurationUnit;
 use App\Models\MembershipType;
+use App\Models\PeriodDuration;
 use App\Models\PeriodType;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
@@ -28,31 +29,31 @@ class Memberships extends Component
     // Form fields for PeriodType
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('max:255', message: 'El nombre es muy largo')]
-    public $period_type_name = '';
+    public $period_duration_name = '';
 
-    #[Rule('required', message: 'La duración es obligatoria')]
-    #[Rule('integer', message: 'La duración debe ser un número')]
-    #[Rule('min:1', message: 'La duración debe ser mayor a 0')]
-    public $period_type_duration_value = '';
+    #[Rule('required', message: 'La cantidad es obligatoria')]
+    #[Rule('integer', message: 'La cantidad debe ser un número')]
+    #[Rule('min:1', message: 'La cantidad debe ser mayor a 0')]
+    public $period_duration_value = '';
 
     #[Rule('required', message: 'La unidad de tiempo es obligatoria')]
     #[Rule('in:day,week,month', message: 'Elige una unidad de tiempo válida')]
-    public $period_type_duration_unit = '';
+    public $period_duration_unit = '';
 
     #[Rule('required', message: 'El precio es obligatorio')]
     #[Rule('integer', message: 'El precio debe ser un número entero')]
     #[Rule('min:1', message: 'El precio debe ser mayor a 0')]
-    public $period_type_price = '';
+    public $period_duration_price = '';
 
     // Modal states
     public $showMembershipTypeModal = false;
-    public $showPeriodTypeModal = false;
+    public $showPeriodDurationModal = false;
 
     // Editing states
     public MembershipType|null $editingMembershipType = null;
-    public PeriodType|null $editingPeriodType = null;
-    /** Selected membership type for new period type */
-    public MembershipType|null $selectedMembershipTypeForPeriod = null;
+    public PeriodDuration|null $editingPeriodDuration = null;
+    /** Selected membership type for new period duration */
+    public MembershipType|null $selectedMembershipType = null;
 
     /**
      * Show create MembershipType modal
@@ -102,14 +103,14 @@ class Memberships extends Component
     {
         $this->showMembershipTypeModal = false;
         $this->editingMembershipType = null;
-        $this->resetTypeForm();
+        $this->resetMembershipTypeForm();
         $this->resetValidation();
     }
 
     /**
      * Reset MembershipType form fields.
      */
-    private function resetTypeForm()
+    private function resetMembershipTypeForm()
     {
         $this->membership_type_name = '';
     }
@@ -119,7 +120,7 @@ class Memberships extends Component
      */
     public function deleteMembershipType(MembershipType $membershipType)
     {
-        if ($membershipType->periodTypes->count() > 0) {
+        if ($membershipType->durations->count() > 0) {
             session()->flash('error', 'No se puede eliminar este tipo de membresía');
             return;
         }
@@ -130,84 +131,83 @@ class Memberships extends Component
     }
 
     /**
-     * Show create PeriodType modal.
+     * Show create PeriodDuration modal.
      */
-    public function createPeriodTypeModal(MembershipType $membershipType)
+    public function createPeriodDurationModal(MembershipType $membershipType)
     {
-        $this->editingPeriodType = null;
-        $this->selectedMembershipTypeForPeriod = $membershipType;
-        $this->showPeriodTypeModal = true;
+        $this->editingPeriodDuration = null;
+        $this->selectedMembershipType = $membershipType;
+        $this->showPeriodDurationModal = true;
     }
 
     /**
      * Show edit PeriodType modal.
      */
-    public function editPeriodTypeModal(PeriodType $periodType)
+    public function editPeriodDurationModal(PeriodDuration $periodDuration)
     {
-        $this->editingPeriodType = $periodType;
+        $this->editingPeriodDuration = $periodDuration;
 
-        $this->period_type_name = $periodType->name;
-        $this->period_type_duration_value = $periodType->duration_value;
-        $this->period_type_duration_unit = $periodType->duration_unit->value;
-        $this->period_type_price = $periodType->price;
+        $this->period_duration_name = $periodDuration->name;
+        $this->period_duration_value = $periodDuration->duration_value;
+        $this->period_duration_unit = $periodDuration->duration_unit->value;
+        $this->period_duration_price = $periodDuration->price;
 
-        $this->showPeriodTypeModal = true;
+        $this->showPeriodDurationModal = true;
     }
 
     /**
-     * Save PeriodType (create or update).
+     * Save PeriodDuration (create or update).
      */
-    public function savePeriodType()
+    public function savePeriodDuration()
     {
         $this->validate([
-            'period_type_name' => 'required|max:255',
-            'period_type_duration_value' => 'required|integer|min:1',
-            'period_type_duration_unit' => 'required|in:day,week,month',
-            'period_type_price' => 'required|integer|min:1',
+            'period_duration_name' => 'required|max:255',
+            'period_duration_value' => 'required|integer|min:1',
+            'period_duration_unit' => 'required|in:day,week,month',
+            'period_duration_price' => 'required|integer|min:1',
         ]);
 
-        $periodType = [
-            'name' => $this->period_type_name,
-            'duration_value' => $this->period_type_duration_value,
-            'duration_unit' => DurationUnit::from($this->period_type_duration_unit),
-            'duration_in_days' => DurationUnit::from($this->period_type_duration_unit)->toDays() * $this->period_type_duration_value,
-            'price' => $this->period_type_price,
+        $periodDuration = [
+            'name' => $this->period_duration_name,
+            'duration_value' => $this->period_duration_value,
+            'duration_unit' => DurationUnit::from($this->period_duration_unit),
+            'price' => $this->period_duration_price,
         ];
 
-        if ($this->editingPeriodType) {
-            $this->editingPeriodType->update($periodType);
-            $flashMsg = 'Periodo actualizado exitosamente';
+        if ($this->editingPeriodDuration) {
+            $this->editingPeriodDuration->update($periodDuration);
+            $flashMsg = 'Duración actualizada exitosamente';
         } else {
-            $this->selectedMembershipTypeForPeriod->periodTypes()->create($periodType);
-            $flashMsg = 'Periodo creado exitosamente';
+            $this->selectedMembershipType->periodDurations()->create($periodDuration);
+            $flashMsg = 'Duración creada exitosamente';
         }
 
-        $this->closePeriodTypeModal();
+        $this->closePeriodDurationModal();
 
         session()->flash('message', $flashMsg);
     }
 
     /**
-     * Close PeriodType modal and reset form.
+     * Close PeriodDuration modal and reset form.
      */
-    public function closePeriodTypeModal()
+    public function closePeriodDurationModal()
     {
-        $this->showPeriodTypeModal = false;
-        $this->editingPeriodType = null;
-        $this->selectedMembershipTypeForPeriod = null;
-        $this->resetPeriodTypeForm();
+        $this->showPeriodDurationModal = false;
+        $this->editingPeriodDuration = null;
+        $this->selectedMembershipType = null;
+        $this->resetPeriodDurationForm();
         $this->resetValidation();
     }
 
     /**
-     * Reset PeriodType form fields.
+     * Reset PeriodDuration form fields.
      */
-    private function resetPeriodTypeForm()
+    private function resetPeriodDurationForm()
     {
-        $this->period_type_name = '';
-        $this->period_type_duration_value = '';
-        $this->period_type_duration_unit = '';
-        $this->period_type_price = '';
+        $this->period_duration_name = '';
+        $this->period_duration_value = '';
+        $this->period_duration_unit = '';
+        $this->period_duration_price = '';
     }
 
     /**
@@ -230,7 +230,7 @@ class Memberships extends Component
      */
     public function render()
     {
-        $membershipTypes = MembershipType::with(['periodTypes'])->get();
+        $membershipTypes = MembershipType::with(['durations.periods'])->get();
 
         return view('livewire.prices.memberships', compact('membershipTypes'));
     }
