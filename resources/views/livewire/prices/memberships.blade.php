@@ -72,7 +72,7 @@
                       <flux:button
                         size="sm"
                         variant="outline"
-                        wire:click="editPeriodDurationModal({{ $duration->id }})"
+                        wire:click="editDurationModal({{ $duration->id }})"
                       >
                         Editar
                       </flux:button>

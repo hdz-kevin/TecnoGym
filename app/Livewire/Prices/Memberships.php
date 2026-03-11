@@ -140,18 +140,19 @@ class Memberships extends Component
     }
 
     /**
-     * Show edit PeriodType modal.
+     * Show edit Duration modal.
      */
-    public function editPeriodDurationModal(PeriodDuration $periodDuration)
+    public function editDurationModal(Duration $duration)
     {
-        $this->editingPeriodDuration = $periodDuration;
+        $this->editingDuration = $duration;
 
-        $this->period_duration_name = $periodDuration->name;
-        $this->period_duration_value = $periodDuration->duration_value;
-        $this->period_duration_unit = $periodDuration->duration_unit->value;
-        $this->period_duration_price = $periodDuration->price;
+        $this->duration_name = $duration->name;
+        $this->duration_amount = $duration->amount;
+        $this->duration_unit = $duration->unit->value;
+        $this->duration_price = $duration->price;
 
-        $this->showPeriodDurationModal = true;
+        $this->selectedMembershipType = $duration->membershipType;
+        $this->showDurationModal = true;
     }
 
     /**
