@@ -42,7 +42,7 @@
             </div>
           </div>
 
-          <!-- Plans -->
+          <!-- Durations -->
           <div class="p-6">
             @if ($membershipType->durations->count() > 0)
               <div class="space-y-3 mb-5">
@@ -92,8 +92,8 @@
               </div>
             @endif
 
-            <!-- New Plan Button -->
-            <flux:button variant="outline" icon="plus" wire:click="createPeriodDurationModal({{ $membershipType->id }})"
+            <!-- New Duration Button -->
+            <flux:button variant="outline" icon="plus" wire:click="createDurationModal({{ $membershipType->id }})"
               class="w-full">
               Añadir Duración
             </flux:button>
@@ -157,63 +157,63 @@
   @endif
 
   <!-- Plan Modal -->
-  @if ($showPeriodDurationModal)
-    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closePeriodDurationModal">
+  @if ($showDurationModal)
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeDurationModal">
       <div class="fixed inset-0 z-50 overflow-y-auto">
         <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div
-            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl"
             wire:click.stop>
 
             <!-- Header -->
             <div class="px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingPeriodDuration ? 'Editar Duración' : 'Nueva Duración' }}
+                {{ ($editingDuration ? 'Editar Duración' : 'Nueva Duración').' - '.$selectedMembershipType->name }}
               </h3>
             </div>
 
-            <form wire:submit.prevent="savePeriodDuration">
+            <form wire:submit.prevent="saveDuration">
               <!-- Body -->
               <div class="px-6 py-4 space-y-4">
               <!-- Name -->
                 <flux:field>
-                  <flux:label for="period_duration_name">Nombre</flux:label>
-                  <flux:input wire:model="period_duration_name" id="period_duration_name" placeholder="Ej: Semanal, Mensual, Bimestral" />
-                  <flux:error name="period_duration_name" />
+                  <flux:label for="duration_name">Nombre</flux:label>
+                  <flux:input wire:model="duration_name" id="duration_name" placeholder="Ej: Semanal, Mensual, Bimestral" />
+                  <flux:error name="duration_name" />
                 </flux:field>
 
               <!-- Duration -->
                 <div class="grid grid-cols-2 gap-4">
                   <flux:field>
-                    <flux:label for="period_duration_value">Cantidad</flux:label>
-                    <flux:input wire:model="period_duration_value" id="period_duration_value" type="number" min="1"
-                      placeholder="1" />
-                    <flux:error name="period_duration_value" />
+                    <flux:label for="duration_amount">Cantidad</flux:label>
+                    <flux:input wire:model="duration_amount" id="duration_amount" type="number" min="1"
+                      placeholder="Ej: 1, 2, 3" />
+                    <flux:error name="duration_amount" />
                   </flux:field>
 
                   <flux:field>
-                    <flux:label for="period_duration_unit">Unidad</flux:label>
-                    <flux:select wire:model="period_duration_unit" id="period_duration_unit" placeholder="Seleccionar">
-                      <flux:select.option value="day">Día</flux:select.option>
-                      <flux:select.option value="week">Semana</flux:select.option>
-                      <flux:select.option value="month">Mes</flux:select.option>
+                    <flux:label for="duration_unit">Unidad de tiempo</flux:label>
+                    <flux:select wire:model="duration_unit" id="duration_unit" placeholder="Elige una unidad de tiempo">
+                      <flux:select.option value="day">Día(s)</flux:select.option>
+                      <flux:select.option value="week">Semana(s)</flux:select.option>
+                      <flux:select.option value="month">Mes(es)</flux:select.option>
                     </flux:select>
-                    <flux:error name="period_duration_unit" />
+                    <flux:error name="duration_unit" />
                   </flux:field>
                 </div>
 
               <!-- Price -->
                 <flux:field>
-                  <flux:label for="period_duration_price">Precio</flux:label>
-                  <flux:input wire:model="period_duration_price" id="period_duration_price" type="number" min="1" placeholder="400" />
-                  <flux:error name="period_duration_price" />
+                  <flux:label for="duration_price">Precio</flux:label>
+                  <flux:input wire:model="duration_price" id="duration_price" type="number" min="1" placeholder="El precio de la duración" />
+                  <flux:error name="duration_price" />
                 </flux:field>
               </div>
 
               <!-- Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
-                <flux:button variant="ghost" wire:click="closePeriodDurationModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">{{ $editingPeriodDuration ? 'Guardar cambios' : 'Guardar' }}</flux:button>
+                <flux:button variant="ghost" wire:click="closeDurationModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingDuration ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
           </div>
