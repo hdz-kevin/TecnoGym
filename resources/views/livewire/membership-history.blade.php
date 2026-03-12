@@ -1,5 +1,6 @@
 @php
   use App\Enums\MembershipStatus;
+  use App\Enums\PeriodStatus;
 @endphp
 
 <div>
@@ -77,7 +78,6 @@
                         $statusColor = match ($membership->status) {
                             MembershipStatus::ACTIVE => 'bg-green-100 text-green-700 border-green-200',
                             MembershipStatus::EXPIRED => 'bg-red-100 text-red-700 border-red-200',
-                            default => 'bg-yellow-100 text-yellow-700 border-yellow-200',
                         };
                       @endphp
                       <span
@@ -89,20 +89,19 @@
 
                 <div class="flex-1 overflow-y-auto pr-3 max-h-[400px]">
                   @if ($membership->periods->count() > 0)
-                    <div class="relative pl-1 space-y-8">
+                    <div class="relative pl-1 space-y-6">
                        <!-- Vertical Line -->
-                       <div class="absolute left-3 top-2 bottom-2 w-0.5 bg-gray-100"></div>
-
+                      <div class="absolute left-3 top-2 bottom-2 w-0.5 bg-gray-100"></div>
                       @foreach ($membership->periods as $period)
                         <div
                             wire:key="{{ $period->id }}"
-                            class="relative pl-10 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -ml-2 transition-colors"
+                            class="relative pl-10 cursor-pointer hover:bg-gray-50 rounded-lg px-2 py-3 -ml-2 transition-colors"
                             wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }}, periodId: {{ $period->id }} })"
                         >
                           <!-- Timeline Dot -->
                           <div class="absolute left-[13px] top-3.5 h-4 w-4 rounded-full bg-white z-10">
                             <div class="absolute inset-0.5 rounded-full
-                                  {{ $period->status->value != 'completed' ? 'bg-green-600' : 'bg-gray-300' }}"
+                                  {{ $period->status == PeriodStatus::IN_PROGRESS ? 'bg-green-600' : 'bg-gray-300' }}"
                             ></div>
                           </div>
 
@@ -114,7 +113,7 @@
 
                                <div class="ml-1 mt-2 flex items-center gap-2.5">
                                 <p class="text-sm font-medium text-gray-700">
-                                  Duración: <span class="text-gray-500 ml-0.5"> {{ $period->periodDuration->name }}</span>
+                                  Duración: <span class="text-gray-500 ml-0.5"> {{ $period->duration->name }}</span>
                                 </p>
                                  <span class="text-sm text-gray-600">-</span>
                                 <p class="text-sm font-medium text-gray-700">

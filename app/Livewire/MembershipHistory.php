@@ -35,7 +35,7 @@ class MembershipHistory extends Component
         $this->membership = $membership->load([
             'member',
             'membershipType',
-            'periods.periodDuration',
+            'periods.duration',
         ]);
 
         $this->showModal = true;
