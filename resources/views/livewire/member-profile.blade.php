@@ -73,7 +73,7 @@
                   </div>
                 </div>
 
-                <!-- Membership Section (Simplified) -->
+                <!-- Membership Section -->
                 <div class="mb-10">
                   <div class="flex items-center gap-2 mb-3">
                     <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />

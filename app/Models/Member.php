@@ -100,7 +100,7 @@ class Member extends Model
     }
 
     /**
-     * Get the member's association date which is the date the member was created formatted.
+     * Get the member's association date.
      *
      * @return string
      */
