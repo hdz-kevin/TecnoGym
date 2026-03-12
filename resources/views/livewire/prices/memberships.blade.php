@@ -1,4 +1,4 @@
-<x-slot:subtitle>Gestiona los precios de las membresías disponibles</x-slot:subtitle>
+<x-slot:subtitle>Gestiona los precios de las membresías y sus duraciones</x-slot:subtitle>
 
 <div>
   <div class="pt-4 -mt-6 space-y-6">
@@ -63,8 +63,8 @@
                         <flux:button
                           size="sm"
                           variant="outline"
-                          wire:click="deletePeriodType({{ $duration->id }})"
-                          wire:confirm="¿Estás seguro de eliminar este periodo?"
+                          wire:click="deleteDuration({{ $duration->id }})"
+                          wire:confirm="¿Estás seguro de eliminar esta duración?"
                         >
                           Eliminar
                         </flux:button>
@@ -88,7 +88,7 @@
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <p class="text-sm text-gray-500 mb-3">No hay periodos configurados</p>
+                <p class="text-sm text-gray-500 mb-3">No hay duraciones configuradas</p>
               </div>
             @endif
 
@@ -108,7 +108,7 @@
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay membresías configuradas</h3>
+          <h3 class="text-lg font-medium text-gray-900 mb-1">No hay precios de membresías configurados</h3>
           <p class="text-gray-500 mb-6">Comienza creando tu primer tipo de membresía</p>
           <flux:button variant="primary" icon="plus" wire:click="createMembershipTypeModal">
             Tipo de Membresía

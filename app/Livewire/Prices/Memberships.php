@@ -188,21 +188,21 @@ class Memberships extends Component
     }
 
     /**
-     * Close PeriodDuration modal and reset form.
+     * Close Duration modal and reset form.
      */
     public function closeDurationModal()
     {
         $this->showDurationModal = false;
         $this->editingDuration = null;
         $this->selectedMembershipType = null;
-        $this->resetPeriodDurationForm();
+        $this->resetDurationForm();
         $this->resetValidation();
     }
 
     /**
-     * Reset PeriodDuration form fields.
+     * Reset Duration form fields.
      */
-    private function resetPeriodDurationForm()
+    private function resetDurationForm()
     {
         $this->duration_name = '';
         $this->duration_amount = '';
@@ -211,18 +211,18 @@ class Memberships extends Component
     }
 
     /**
-     * Delete PeriodType.
+     * Delete Duration.
      */
-    public function deletePeriodType(PeriodType $periodType)
+    public function deleteDuration(Duration $duration)
     {
-        if ($periodType->periods->count() > 0) {
-            session()->flash('error', 'No se puede eliminar este periodo');
+        if ($duration->periods->count() > 0) {
+            session()->flash('error', 'No se puede eliminar esta duración');
             return;
         }
 
-        $periodType->delete();
+        $duration->delete();
 
-        session()->flash('message', 'Periodo eliminado exitosamente');
+        session()->flash('message', 'Duración eliminada exitosamente');
     }
 
     /**
