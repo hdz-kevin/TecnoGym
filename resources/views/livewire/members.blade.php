@@ -89,7 +89,7 @@
         </div>
         <input type="text" placeholder="Buscar por nombre o código..."
           wire:model.live="search"
-          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600" />
+          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600" />
       </div>
     </div>
     <div>
