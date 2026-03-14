@@ -209,6 +209,7 @@ class Memberships extends Component
             $query->where('status', $this->statusFilter->value);
         })
         ->orderBy('updated_at', 'desc')
+        // TODO: If updated_at don't match, its no necessary sord by id too.
         ->orderBy('id', 'desc')
         ->paginate(6);
     }

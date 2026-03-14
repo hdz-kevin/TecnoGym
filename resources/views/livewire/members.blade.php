@@ -158,7 +158,7 @@
                   <div class="text-sm font-medium text-gray-500 mb-1">
                     Código
                   </div>
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-0.5">
                     <flux:icon icon="hashtag" variant="mini" class="text-gray-500" />
                     <span class="font-medium text-gray-800">{{ $member->code }}</span>
                   </div>
