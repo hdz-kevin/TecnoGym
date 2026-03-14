@@ -2,9 +2,9 @@
 
 namespace App\Livewire;
 
-use App\Enums\DurationUnit;
 use App\Enums\MembershipStatus;
 use App\Enums\PeriodStatus;
+use App\Models\Duration;
 use App\Models\Membership;
 use App\Models\Period;
 use Carbon\Carbon;
@@ -12,16 +12,28 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 
+/**
+ * Handle the renewal of a membership by adding new periods
+ */
 class AddPeriod extends Component
 {
     #[Rule('required', message: 'La fecha de inicio es obligatoria')]
     #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
     public $start_date;
 
+    #[Rule('required', message: 'Selecciona una duración')]
+    #[Rule('exists:durations,id', message: 'Selecciona una duración válida')]
+    public $duration_id;
+
     /**
-     * The membership to add the period to
+     * The membership to renew
      */
     public ?Membership $membership = null;
+
+    /**
+     * The durations of the membership type
+     */
+    public $durations = [];
 
     /**
      * Period being edited
@@ -36,49 +48,19 @@ class AddPeriod extends Component
     /**
      * Open modal when open-add-period-modal event is dispatched
      *
+     * @param Membership $membership
+     * @param int|null $periodId
      * @return void
      */
     #[On('open-add-period-modal')]
     public function openModal(Membership $membership, ?int $periodId = null)
     {
-        $this->membership = $membership->load(['plan', 'periods']);
-
-        if ($periodId) {
-            $this->editingPeriod = $this->membership->periods->findOrFail($periodId);
-            $this->start_date = $this->editingPeriod->start_date->format('Y-m-d');
-        } else {
-            $this->editingPeriod = null;
-            $this->start_date = now()->format('Y-m-d');
-        }
+        $this->membership = $membership->load(['periods', 'membershipType']);
+        $this->durations = $this->membership->membershipType->durations;
+        $this->start_date = now()->format('Y-m-d');
 
         $this->showModal = true;
         $this->dispatch('disable-scroll');
-    }
-
-    /**
-     * Calculate the end date based on the start date and plan duration.
-     *
-     * @return \Carbon\Carbon|null
-     */
-    public function getEndDateProperty()
-    {
-        if (!$this->membership || !$this->start_date) {
-            return null;
-        }
-
-        try {
-            $endDate = Carbon::parse($this->start_date);
-            $durationUnit = $this->membership->plan->duration_unit;
-            $durationValue = $this->membership->plan->duration_value;
-
-            return match ($durationUnit) {
-                DurationUnit::DAY => $endDate->addDays($durationValue),
-                DurationUnit::WEEK => $endDate->addWeeks($durationValue),
-                DurationUnit::MONTH => $endDate->addMonths($durationValue),
-            };
-        } catch (\Exception $e) {
-            return null;
-        }
     }
 
     /**
@@ -88,10 +70,12 @@ class AddPeriod extends Component
      */
     public function save()
     {
-        $this->validate();
+        $validated = $this->validate();
 
+        /** @var Duration */
+        $duration = Duration::find($this->duration_id);
         $startDate = Carbon::parse($this->start_date);
-        $endDate = $this->endDate;
+        $endDate = Period::calculateEndDate($startDate, $duration);
 
         if ($this->editingPeriod) {
             $this->editingPeriod->update([
@@ -101,9 +85,10 @@ class AddPeriod extends Component
             $flash = 'Periodo actualizado exitosamente';
         } else {
             $this->membership->periods()->create([
+                'duration_id' => $validated['duration_id'],
                 'start_date' => $startDate,
                 'end_date' => $endDate,
-                'price_paid' => $this->membership->plan->price,
+                'price_paid' => $duration->price,
                 'status' => PeriodStatus::IN_PROGRESS,
             ]);
 
@@ -112,7 +97,7 @@ class AddPeriod extends Component
             $this->membership->update([
                 'status' => MembershipStatus::ACTIVE,
             ]);
-            $flash = 'Periodo añadido exitosamente';
+            $flash = 'Membresía renovada exitosamente';
         }
 
         $this->closeModal();
@@ -122,7 +107,7 @@ class AddPeriod extends Component
     }
 
     /**
-     * Close the modal and reset the form
+     * Close the modal and reset properties
      *
      * @return void
      */
@@ -130,8 +115,9 @@ class AddPeriod extends Component
     {
         $this->showModal = false;
         $this->membership = null;
+        $this->durations = [];
         $this->editingPeriod = null;
-        $this->reset(['start_date']);
+        $this->reset(['start_date', 'duration_id']);
         $this->dispatch('enable-scroll');
     }
 

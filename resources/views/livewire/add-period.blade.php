@@ -10,7 +10,7 @@
             {{-- Modal Header --}}
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                {{ $editingPeriod ? 'Editar Periodo' : 'Nuevo Periodo' }}
+                {{ $editingPeriod ? 'Editar Periodo' : 'Renovar Membresía' }}
               </h3>
               <button wire:click="closeModal" class="text-gray-400 hover:text-gray-600 transition-colors">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -21,7 +21,19 @@
 
             {{-- Modal Body --}}
             <form wire:submit.prevent="save">
-              <div class="px-6 py-6">
+              <div class="px-6 py-6 space-y-6">
+                {{-- Duration --}}
+                <flux:field>
+                  <flux:label>Duración</flux:label>
+                  <flux:select wire:model="duration_id">
+                    <option value="">Selecciona la duración del nuevo periodo</option>
+                    @foreach ($durations as $duration)
+                      <option value="{{ $duration->id }}">{{ $duration->name }}</option>
+                    @endforeach
+                  </flux:select>
+                  <flux:error name="duration_id" />
+                </flux:field>
+
                 {{-- Start Date --}}
                 <flux:field>
                   <flux:label>Fecha de Inicio</flux:label>
