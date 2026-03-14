@@ -28,7 +28,7 @@
                   <flux:select wire:model="duration_id">
                     <option value="">Selecciona la duración del nuevo periodo</option>
                     @foreach ($durations as $duration)
-                      <option value="{{ $duration->id }}">{{ $duration->name }}</option>
+                      <option value="{{ $duration->id }}">{{ $duration->name }} - ${{ $duration->price }}</option>
                     @endforeach
                   </flux:select>
                   <flux:error name="duration_id" />

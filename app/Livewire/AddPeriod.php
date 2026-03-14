@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Enums\MembershipStatus;
+use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\Duration;
 use App\Models\Membership;
@@ -97,6 +98,9 @@ class AddPeriod extends Component
             $this->membership->update([
                 'status' => MembershipStatus::ACTIVE,
             ]);
+            // Update member status to active
+            $this->membership->member->update(['status' => MemberStatus::ACTIVE]);
+
             $flash = 'Membresía renovada exitosamente';
         }
 
