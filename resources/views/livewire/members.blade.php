@@ -155,9 +155,7 @@
               <div class="space-y-4 py-2.5">
                 {{-- Code --}}
                 <div>
-                  <div class="text-sm font-medium text-gray-500 mb-1">
-                    Código
-                  </div>
+                  <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Código</p>
                   <div class="flex items-center gap-0.5">
                     <flux:icon icon="hashtag" variant="mini" class="text-gray-500" />
                     <span class="font-medium text-gray-800">{{ $member->code }}</span>
@@ -166,13 +164,11 @@
 
                 {{-- Membership --}}
                 <div>
-                  <div class="text-sm font-medium text-gray-500 mb-1">
-                    Membresía actual
-                  </div>
+                  <p class="text-xs font-semibold uppercase text-gray-500 tracking-wide mb-1">Membresía actual</p>
                   <div class="flex items-center gap-2">
-                    <flux:icon icon="credit-card" variant="mini" class="text-gray-500" />
+                    <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
                     <span class="font-medium text-gray-800">
-                        {{ $member->latestMembership()?->membershipType->name ?? '---' }}
+                        {{ $member->latestMembership()?->membershipType->name ?? 'Ninguna' }}
                     </span>
                   </div>
                 </div>
