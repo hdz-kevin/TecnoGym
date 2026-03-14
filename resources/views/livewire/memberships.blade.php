@@ -117,9 +117,7 @@
               $status = $membership->status;
             @endphp
             <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium
-              {{
-                $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-              }}"
+              {{ $status == MembershipStatus::ACTIVE ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800" }}"
             >
               {{ $status->label() }}
             </span>
@@ -227,7 +225,7 @@
                 {{-- Member  --}}
                 <flux:field>
                   <flux:label>Socio</flux:label>
-                  <flux:select wire:model.live="member_id" placeholder="Selecciona un socio">
+                  <flux:select wire:model="member_id" placeholder="Selecciona un socio">
                     @foreach($members as $member)
                       <flux:select.option value="{{ $member->id }}">{{ $member->name }}</flux:select.option>
                     @endforeach
@@ -235,32 +233,28 @@
                   <flux:error name="member_id" />
                 </flux:field>
 
-                {{-- Plan type and period --}}
+                {{-- Membership type and duration --}}
                 <div class="grid grid-cols-2 gap-4">
-                  {{-- Plan type --}}
+                  {{-- Membership type --}}
                   <flux:field>
                     <flux:label>Tipo de Membresía</flux:label>
                     <flux:select wire:model.live="membership_type_id" placeholder="Elige un tipo de membresía">
                       @foreach($membershipTypes as $membershipType)
-                        <flux:select.option value="{{ $membershipType->id }}">
-                          {{ $membershipType->name }}
-                        </flux:select.option>
+                        <flux:select.option value="{{ $membershipType->id }}">{{ $membershipType->name }}</flux:select.option>
                       @endforeach
                     </flux:select>
                     <flux:error name="membership_type_id" />
                   </flux:field>
 
-                  {{-- Period Duration --}}
+                  {{-- Duration --}}
                   <flux:field>
                     <flux:label>Primer Periodo</flux:label>
-                    <flux:select wire:model.live="period_duration_id" placeholder="Elige la duración del primer periodo">
-                      @foreach($this->periodDurations as $periodDuration)
-                        <flux:select.option value="{{ $periodDuration->id }}">
-                          {{ $periodDuration->name }}
-                        </flux:select.option>
+                    <flux:select wire:model.live="duration_id" placeholder="Elige la duración del primer periodo">
+                      @foreach($durations as $duration)
+                        <flux:select.option value="{{ $duration->id }}">{{ $duration->name }} - ${{ $duration->price }}</flux:select.option>
                       @endforeach
                     </flux:select>
-                    <flux:error name="period_duration_id" />
+                    <flux:error name="duration_id" />
                   </flux:field>
                 </div>
 

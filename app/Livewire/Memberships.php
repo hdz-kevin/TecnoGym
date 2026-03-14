@@ -7,10 +7,9 @@ use App\Models\Membership;
 use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
+use App\Models\Duration;
 use App\Models\MembershipType;
 use App\Models\Period;
-use App\Models\PeriodDuration;
-use App\Models\PeriodType;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,29 +28,29 @@ class Memberships extends Component
 {
     use WithPagination;
 
-    // Properties for new membership form
+    // Properties for the new membership
     #[Validate('required', message: 'Elige un socio')]
     #[Validate('exists:members,id', message: 'Elige un socio válido')]
-    public int|string $member_id = '';
+    public $member_id = '';
 
     #[Validate('required', message: 'Elige un tipo de membresía')]
     #[Validate('exists:membership_types,id', message: 'Elige un tipo de membresía válido')]
-    public int|string $membership_type_id = '';
+    public $membership_type_id = '';
 
     #[Validate('required', message: 'Elige una duración')]
-    #[Validate('exists:period_durations,id', message: 'Elige una duración válida')]
-    public int|string $period_duration_id = '';
+    #[Validate('exists:durations,id', message: 'Elige una duración válida')]
+    public $duration_id = '';
 
-    #[Validate('required', message: 'La fecha de inicio es obligatoria')]
-    #[Validate('date', message: 'La fecha de inicio debe ser una fecha válida')]
-    public string $start_date = '';
+    #[Validate('required', message: 'Elige una fecha de inicio')]
+    #[Validate('date', message: 'Elige una fecha de inicio válida')]
+    public $start_date = '';
 
     /**
-     * Available period durations for selected membership type
+     * Available durations for selected membership type
      *
-     * @var Collection<PeriodDuration>
+     * @var Collection<Duration>
      */
-    public $periodDurations;
+    public $durations;
 
     /**
      * Current status filter for memberships list
@@ -73,7 +72,7 @@ class Memberships extends Component
      */
     public function mount()
     {
-        $this->periodDurations = collect([]);
+        $this->durations = collect([]);
     }
 
     /**
@@ -111,23 +110,18 @@ class Memberships extends Component
     }
 
     /**
-     * When membership type changes, update available period durations
+     * When membership type changes, update available durations
      *
-     * @param int|string $membershipTypeId
+     * @param mixed $membershipTypeId
      * @return void
      */
-    public function updatedMembershipTypeId(int|string $membershipTypeId)
+    public function updatedMembershipTypeId($membershipTypeId)
     {
-        $this->period_duration_id = '';
+        $this->durations = Duration::where('membership_type_id', $membershipTypeId)
+                                   ->orderBy('price')
+                                   ->get();
 
-        if (! $membershipTypeId) {
-            $this->periodDurations = collect([]);
-            return;
-        }
-
-        $this->periodDurations = PeriodDuration::where('membership_type_id', $membershipTypeId)
-                                       ->orderBy('price')
-                                       ->get();
+        $this->duration_id = '';
     }
 
     /**
@@ -143,14 +137,14 @@ class Memberships extends Component
             'status' => MembershipStatus::ACTIVE,
         ]);
 
-        // Initialize first period
-        $periodDuration = PeriodDuration::find($validated['period_duration_id']);
+        $duration = Duration::find($validated['duration_id']);
 
+        // Initialize first period
         $membership->periods()->create([
-            'period_duration_id' => $validated['period_duration_id'],
+            'duration_id' => $duration->id,
             'start_date' => $validated['start_date'],
-            'end_date' => Period::calculateEndDate(Carbon::parse($validated['start_date']), $periodDuration),
-            'price_paid' => $periodDuration->price,
+            'end_date' => Period::calculateEndDate(Carbon::parse($validated['start_date']), $duration),
+            'price_paid' => $duration->price,
             'status' => PeriodStatus::IN_PROGRESS,
         ]);
 
@@ -181,9 +175,9 @@ class Memberships extends Component
     {
         $this->member_id = '';
         $this->membership_type_id = '';
-        $this->period_duration_id = '';
+        $this->duration_id = '';
         $this->start_date = '';
-        $this->periodDurations = collect([]);
+        $this->durations = collect([]);
     }
 
     /**
@@ -209,8 +203,6 @@ class Memberships extends Component
             $query->where('status', $this->statusFilter->value);
         })
         ->orderBy('updated_at', 'desc')
-        // TODO: If updated_at don't match, its no necessary sord by id too.
-        ->orderBy('id', 'desc')
         ->paginate(6);
     }
 
