@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Carbon\Carbon;
+
 enum PeriodStatus: string
 {
     case IN_PROGRESS = 'in_progress';
@@ -24,5 +26,20 @@ enum PeriodStatus: string
             self::IN_PROGRESS => 'En Curso',
             self::COMPLETED => 'Completado',
         };
+    }
+
+    /**
+     * Determine the period status based on start and end dates.
+     */
+    public static function fromDates(Carbon $startDate, Carbon $endDate): self
+    {
+        $now = now()->startOfDay();
+        
+        if ($now->isAfter($endDate->startOfDay())) {
+            return self::COMPLETED;
+        }
+
+        // If current date is within the range or before start_date
+        return self::IN_PROGRESS;
     }
 }

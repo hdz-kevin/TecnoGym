@@ -73,7 +73,7 @@
         </div>
         <input
           type="text"
-          placeholder="Buscar por socio o código..."
+          placeholder="Buscar por nombre o código..."
           wire:model.live="search"
           class="block w-full pl-10 pr-3 py-2 text-[16px] border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600"
         />
@@ -158,7 +158,7 @@
                 <div class="flex items-center gap-1.5">
                   <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
                   <span class="font-medium text-gray-800">
-                    {{ $membership->membershipType->name }}
+                    {{ $membership->membershipType->name }} - {{ $membership->id  }}
                   </span>
                 </div>
               </div>

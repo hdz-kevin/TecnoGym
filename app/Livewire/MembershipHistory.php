@@ -54,8 +54,8 @@ class MembershipHistory extends Component
             $this->membership->refresh();
             $this->membership->load([
                 'member',
-                'plan',
-                'periods',
+                'membershipType',
+                'periods.duration',
             ]);
         }
     }

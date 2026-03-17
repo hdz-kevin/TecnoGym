@@ -47,6 +47,7 @@ class AddPeriod extends Component
     public $showModal = false;
 
     /**
+     * TODO: Refactor doc
      * Open modal when open-add-period-modal event is dispatched
      *
      * @param Membership $membership
@@ -54,11 +55,23 @@ class AddPeriod extends Component
      * @return void
      */
     #[On('open-add-period-modal')]
-    public function openModal(Membership $membership, ?int $periodId = null)
+    public function openModal(Membership $membership, ?Period $period = null)
     {
-        $this->membership = $membership->load(['periods', 'membershipType']);
+        if ($period?->status == PeriodStatus::COMPLETED) {
+            // TODO: Show error message
+            return;
+        }
+
+        $this->membership = $membership->load(['membershipType.durations']);
         $this->durations = $this->membership->membershipType->durations;
-        $this->start_date = now()->format('Y-m-d');
+
+        if (! empty($period->attributesToArray())) {
+            $this->editingPeriod = $period;
+            $this->duration_id = $period->duration_id;
+            $this->start_date = $period->start_date->format('Y-m-d');
+        } else {
+            $this->start_date = now()->format('Y-m-d');
+        }
 
         $this->showModal = true;
         $this->dispatch('disable-scroll');
@@ -74,19 +87,23 @@ class AddPeriod extends Component
         $validated = $this->validate();
 
         /** @var Duration */
-        $duration = Duration::find($this->duration_id);
+        $duration = Duration::find($validated['duration_id']);
         $startDate = Carbon::parse($this->start_date);
         $endDate = Period::calculateEndDate($startDate, $duration);
 
         if ($this->editingPeriod) {
             $this->editingPeriod->update([
+                'duration_id' => $duration->id,
                 'start_date' => $startDate,
                 'end_date' => $endDate,
+                'price_paid' => $duration->price,
             ]);
             $flash = 'Periodo actualizado exitosamente';
+
+            $this->membership->setUpdatedAt(now())->save();
         } else {
             $this->membership->periods()->create([
-                'duration_id' => $validated['duration_id'],
+                'duration_id' => $duration->id,
                 'start_date' => $startDate,
                 'end_date' => $endDate,
                 'price_paid' => $duration->price,
@@ -94,7 +111,6 @@ class AddPeriod extends Component
             ]);
 
             // Update membership status to active
-            // Todo: Should we update membership status only on creation?
             $this->membership->update([
                 'status' => MembershipStatus::ACTIVE,
             ]);
