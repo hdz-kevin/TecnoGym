@@ -71,29 +71,14 @@
                       </div>
                     </div>
                   @endif
-
-                  {{-- ID Badge --}}
-                  <div
-                    class="absolute bottom-4 left-4 bg-white/90 px-3.5 py-1.5 rounded-lg border border-gray-100 z-20">
-                    <p class="text-lg font-semibold text-gray-900">
-                      <span class="text-gray-600">#</span>{{ $member->code }}
-                    </p>
-                  </div>
                 </div>
 
                 {{-- Right Column: Details --}}
-                <div
-                  class="md:col-span-6 p-10 px-8 pb-8 flex flex-col justify-between h-full bg-white dark:bg-zinc-900">
+                <div class="md:col-span-6 pt-12 px-8 pb-7 pr-8 flex flex-col justify-between h-full bg-white dark:bg-zinc-900">
                   <div>
-                    <div class="flex justify-between items-start mb-2">
-                      <h2
-                        class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight mb-2">
-                        {{ $member->name }}
-                      </h2>
-                    </div>
-                    <p class="text-xl text-gray-700 dark:text-gray-400 font-medium mb-12">
-                      {{ $membership?->membershipType->name }}
-                    </p>
+                    <h2 class="text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight leading-tight mb-12">
+                      {{ $member->name }}
+                    </h2>
 
                     @if ($membership?->status === MembershipStatus::ACTIVE)
                       <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-green-100 text-green-800 border border-green-200">
@@ -102,8 +87,8 @@
                       </div>
 
                       <div class="mt-10">
-                        <p class="text-lg font-semibold text-gray-600 mb-1">Vence en</p>
-                        <p class="text-4xl font-bold text-gray-900 dark:text-white">
+                        <p class="text-lg font-semibold text-gray-700 mb-1.5">Vence en</p>
+                        <p class="text-3xl font-bold text-gray-800 dark:text-white">
                           {{ $membership->expiration_time ?? '-' }}
                         </p>
                       </div>
@@ -115,8 +100,8 @@
                       </div>
 
                       <div class="mt-10">
-                        <p class="text-lg font-semibold text-gray-600 mb-1">Venció hace</p>
-                        <p class="text-4xl font-bold text-gray-900 dark:text-white">
+                        <p class="text-lg font-semibold text-gray-700 mb-1.5">Venció hace</p>
+                        <p class="text-3xl font-bold text-gray-800 dark:text-white">
                           {{ $membership->expiration_time ?? '-' }}
                         </p>
                       </div>
@@ -144,7 +129,7 @@
                 <div class="inline-flex p-8 bg-red-100 rounded-full ring-1 ring-red-200 mb-8">
                   <flux:icon icon="user" class="size-20 text-red-700" variant="solid" />
                 </div>
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Socio No Encontrado</h2>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Socio no encontrado</h2>
                 <p class="text-xl text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-8">
                   Código no encontrado. Por favor verifique e intente nuevamente.
                 </p>
