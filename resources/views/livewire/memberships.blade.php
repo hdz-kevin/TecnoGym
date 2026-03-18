@@ -190,7 +190,7 @@
               <flux:button
                 size="sm"
                 variant="{{ $membership->status == MembershipStatus::EXPIRED ? 'primary' : 'outline' }}"
-                wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }} })"
+                wire:click="$dispatch('open-period-modal', { membership: {{ $membership->id }} })"
               >
                 Renovar
               </flux:button>

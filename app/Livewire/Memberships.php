@@ -207,17 +207,28 @@ class Memberships extends Component
     }
 
     /**
-     * Listen for new period added or edited
+     * Listen for renewed membership
      *
      * @return void
      */
-    #[On('period-saved')]
-    public function periodSaved(string $message)
+    #[On('renewed-membership')]
+    public function renewedMembership(string $message)
     {
         $this->reset('search', 'statusFilter');
         $this->resetPage();
 
         session()->flash('message', $message);
+    }
+
+    /**
+     * Listen for error alert
+     *
+     * @return void
+     */
+    #[On('error-alert')]
+    public function errorAlert(string $message)
+    {
+        session()->flash('error', $message);
     }
 
     /**

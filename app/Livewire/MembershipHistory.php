@@ -43,11 +43,11 @@ class MembershipHistory extends Component
     }
 
     /**
-     * Refresh the membership data when a period is added or edited.
+     * Refresh the membership data when a period is edited.
      *
      * @return void
      */
-    #[On('period-saved')]
+    #[On('renewed-membership')]
     public function refreshMembership()
     {
         if ($this->membership) {

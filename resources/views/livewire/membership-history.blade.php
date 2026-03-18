@@ -95,8 +95,9 @@
                       @foreach ($membership->periods as $period)
                         <div
                             wire:key="{{ $period->id }}"
-                            class="relative pl-10 hover:bg-gray-50 rounded-lg px-2 py-3 -ml-2 transition-colors {{ $period->status == PeriodStatus::IN_PROGRESS ? 'cursor-pointer' : ''  }}"
-                            wire:click="$dispatch('open-add-period-modal', { membership: {{ $membership->id }}, period: {{ $period->id }} })"
+                            class="relative pl-10 hover:bg-gray-50 rounded-lg px-2 py-3 -ml-2 transition-colors
+                              {{ $period->status == PeriodStatus::IN_PROGRESS ? 'cursor-pointer' : ''  }}"
+                            wire:click="$dispatch('open-period-modal', { membership: {{ $membership->id }}, period: {{ $period->id }} })"
                         >
                           <!-- Timeline Dot -->
                           <div class="absolute left-[13px] top-3.5 h-4 w-4 rounded-full bg-white z-10">

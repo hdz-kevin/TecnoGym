@@ -14,7 +14,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 
 /**
- * Handle the renewal of a membership by adding new periods
+ * This component handles the membership renewals by adding new periods, and period edition
  */
 class AddPeriod extends Component
 {
@@ -47,18 +47,17 @@ class AddPeriod extends Component
     public $showModal = false;
 
     /**
-     * TODO: Refactor doc
-     * Open modal when open-add-period-modal event is dispatched
+     * Open form modal and initialize the properties for create or edit a period
      *
-     * @param Membership $membership
-     * @param int|null $periodId
+     * @param Membership $membership - The membership to renew adding a new period if `$period` is null
+     * @param Period|null $period - The period to edit if provided
      * @return void
      */
-    #[On('open-add-period-modal')]
+    #[On('open-period-modal')]
     public function openModal(Membership $membership, ?Period $period = null)
     {
         if ($period?->status == PeriodStatus::COMPLETED) {
-            // TODO: Show error message
+            $this->dispatch('error-alert', 'No se pueden editar periodos completados');
             return;
         }
 
@@ -91,30 +90,22 @@ class AddPeriod extends Component
         $startDate = Carbon::parse($this->start_date);
         $endDate = Period::calculateEndDate($startDate, $duration);
 
+        $periodData = [
+            'duration_id' => $duration->id,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'price_paid' => $duration->price,
+            'status' => PeriodStatus::IN_PROGRESS,
+        ];
+
         if ($this->editingPeriod) {
-            $this->editingPeriod->update([
-                'duration_id' => $duration->id,
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'price_paid' => $duration->price,
-            ]);
-            $flash = 'Periodo actualizado exitosamente';
-
+            $this->editingPeriod->update($periodData);
             $this->membership->setUpdatedAt(now())->save();
-        } else {
-            $this->membership->periods()->create([
-                'duration_id' => $duration->id,
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'price_paid' => $duration->price,
-                'status' => PeriodStatus::IN_PROGRESS,
-            ]);
 
-            // Update membership status to active
-            $this->membership->update([
-                'status' => MembershipStatus::ACTIVE,
-            ]);
-            // Update member status to active
+            $flash = 'Periodo actualizado exitosamente';
+        } else {
+            $this->membership->periods()->create($periodData);
+            $this->membership->update(['status' => MembershipStatus::ACTIVE]);
             $this->membership->member->update(['status' => MemberStatus::ACTIVE]);
 
             $flash = 'Membresía renovada exitosamente';
@@ -122,8 +113,8 @@ class AddPeriod extends Component
 
         $this->closeModal();
 
-        // Notify the Memberships and MembershipHistory components that a period has been added or edited
-        $this->dispatch('period-saved', $flash);
+        // Notify the Memberships and MembershipHistory that the membership has been renewed
+        $this->dispatch('renewed-membership', $flash);
     }
 
     /**
