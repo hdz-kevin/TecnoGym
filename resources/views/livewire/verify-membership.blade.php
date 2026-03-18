@@ -10,8 +10,8 @@
   <div class="w-full max-w-lg flex flex-col justify-center px-8 space-y-12">
     <div class="space-y-4 text-center">
       <h1 class="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">Verificar Membresía</h1>
-      <p class="text-gray-500 text-xl">
-        Ingresa el código de un socio para verificar el estado de su membresía
+      <p class="text-gray-600 text-xl">
+        Ingresa el código de un socio para verificar su membresía
       </p>
     </div>
 
