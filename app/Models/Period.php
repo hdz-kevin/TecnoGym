@@ -20,8 +20,8 @@ class Period extends Model
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
         'status' => PeriodStatus::class,
     ];
 
@@ -58,20 +58,22 @@ class Period extends Model
     }
 
     /**
-     * Calculate the end date of a period based on the `$startDate` and `$duration` model
+     * Get the end date for a period based on the `$startDate` and `$duration` model
      *
      * @param Carbon $startDate
      * @param Duration $duration
      * @return Carbon
      */
-    public static function calculateEndDate(Carbon $startDate, Duration $duration): Carbon
+    public static function endDateFrom(Carbon $startDate, Duration $duration): Carbon
     {
         $startDate = $startDate->copy();
 
-        return match ($duration->unit) {
+        $endDate = match ($duration->unit) {
             DurationUnit::DAY => $startDate->addDays($duration->amount),
             DurationUnit::WEEK => $startDate->addWeeks($duration->amount),
             DurationUnit::MONTH => $startDate->addMonths($duration->amount),
         };
+        
+        return $endDate->endOfDay();
     }
 }

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignIdFor(Membership::class)->constrained()->onDelete('restrict');
             $table->foreignIdFor(Duration::class)->constrained()->onDelete('restrict');
 
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->integer('price_paid');
             $table->enum('status', PeriodStatus::values())->default(PeriodStatus::IN_PROGRESS);
             $table->timestamps();
