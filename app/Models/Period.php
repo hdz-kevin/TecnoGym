@@ -26,6 +26,22 @@ class Period extends Model
     ];
 
     /**
+     * The "booted" method of the model.
+     *
+     * Apply the format to the start and end dates before saving
+     *  
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (Period $period) {
+            $period->start_date = $period->start_date->startOfDay();
+
+            $period->end_date = $period->end_date->endOfDay();
+        });
+    }
+
+    /**
      * Get the membership that owns the period.
      */
     public function membership(): BelongsTo
