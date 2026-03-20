@@ -30,25 +30,17 @@ class PeriodSeeder extends Seeder
             for ($i = 0; $i < $periodsToCreate; $i++) {
                 $duration = $membershipType->durations->random();
                 // Calculate dates
-                $periodStartDate = $startDate->copy();
-                $periodEndDate = Period::calculateEndDate($periodStartDate, $duration);
-
+                $periodStartDate = $startDate;
+                $periodEndDate = Period::endDateFrom($periodStartDate, $duration);
                 // Set Status
-                $status = PeriodStatus::COMPLETED;
-
-                if ($periodStartDate <= Carbon::now() && Carbon::now() <= $periodEndDate) {
-                    $status = PeriodStatus::IN_PROGRESS;
-                } else if ($periodStartDate > Carbon::now()) {
-                    // In case a FUTURE status is added to Period model
-                    $status = PeriodStatus::IN_PROGRESS;
-                }
+                $status = PeriodStatus::fromDates($periodStartDate, $periodEndDate);
 
                 // Create Period
                 Period::create([
                     'membership_id' => $membership->id,
                     'duration_id' => $duration->id,
-                    'start_date' => $periodStartDate->toDateString(),
-                    'end_date' => $periodEndDate->toDateString(),
+                    'start_date' => $periodStartDate,
+                    'end_date' => $periodEndDate,
                     'price_paid' => $duration->price,
                     'status' => $status,
                 ]);
@@ -67,19 +59,20 @@ class PeriodSeeder extends Seeder
         $memberships->load(['periods', 'member']);
 
         $memberships->each(function ($membership) {
-            if ($membership->currentPeriod()->first()) {
+            if ($membership->recent_period->status === PeriodStatus::IN_PROGRESS) {
                 $membership->status = MembershipStatus::ACTIVE;
+                $membership->save();
                 $membership->member->status = MemberStatus::ACTIVE;
                 $membership->member->save();
-                $membership->save();
             } else {
-                // Membership status is EXPIRED by default
+                $membership->status = MembershipStatus::EXPIRED;
+                $membership->save();
                 $membership->member->status = MemberStatus::EXPIRED;
                 $membership->member->save();
             }
 
             // Set created_at to match first period start date
-            $firstPeriod = $membership->periods->sortBy('start_date')->first();
+            $firstPeriod = $membership->periods->last();
             $membership->created_at = $firstPeriod->start_date;
             $membership->save();
         });

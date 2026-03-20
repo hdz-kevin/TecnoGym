@@ -33,9 +33,9 @@ enum PeriodStatus: string
      */
     public static function fromDates(Carbon $startDate, Carbon $endDate): self
     {
-        $now = now()->startOfDay();
+        $now = now();
         
-        if ($now->isAfter($endDate->startOfDay())) {
+        if ($now->isAfter($endDate->endOfDay())) {
             return self::COMPLETED;
         }
 
