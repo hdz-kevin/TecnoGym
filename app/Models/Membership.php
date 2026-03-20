@@ -46,32 +46,15 @@ class Membership extends Model
      */
     public function periods()
     {
-        return $this->hasMany(Period::class)->orderBy('start_date', 'desc');
+        return $this->hasMany(Period::class)->orderBy('id', 'desc');
     }
 
     /**
-     * Get the current active period.
+     * Get the most recent period.
      *
-     * TODO: Refactor -> Why is a hasMany relationship used here?
-     *                   It should return a single period.
-     *
-     * @return HasMany
+     * @return Period
      */
-    public function currentPeriod()
-    {
-        // future memberships are included
-        return $this->hasMany(Period::class)
-                    // ->where('start_date', '<=', now())
-                    ->where('end_date', '>=', now())
-                    ->latest('start_date');
-    }
-
-    /**
-     * Get the last period.
-     *
-     * @return Period|null
-     */
-    public function getLastPeriodAttribute()
+    public function getRecentPeriodAttribute()
     {
         return $this->periods->first();
     }
@@ -79,20 +62,15 @@ class Membership extends Model
     /**
      * Get the formatted expiration time string.
      *
-     * @return string|null
+     * @return string
      */
-    public function getExpirationTimeAttribute(): ?string
+    public function getExpirationTimeAttribute(): string
     {
-        $lastPeriod = $this->last_period;
-
-        if (! $lastPeriod) {
-            return null;
-        }
-
-        $endDate = $lastPeriod->end_date;
+        $now = now();
+        $endDate = $this->recent_period->end_date;
 
         return $endDate->locale('es')
-                       ->diffForHumans(now(), [
+                       ->diffForHumans($now, [
                            'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
                            'parts' => 2,
                            'join' => true,
@@ -107,15 +85,5 @@ class Membership extends Model
     public function getTotalPaidAttribute()
     {
         return $this->periods->sum('price_paid');
-    }
-
-    /**
-     * Get the plan name.
-     *
-     * @return string
-     */
-    public function getPlanNameAttribute()
-    {
-        return $this->planType->name.' - '.$this->plan->name;
     }
 }
