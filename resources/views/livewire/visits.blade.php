@@ -2,26 +2,78 @@
 <x-slot:subtitle>Registro y control de visitas</x-slot:subtitle>
 
 <div class="p-6 pt-4 space-y-6">
-  <!-- Stats Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="font-medium text-gray-500">Hoy</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->today }}</div>
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="text-base font-medium text-gray-600 mb-3">Hoy</div>
+      <div class="flex items-center justify-between">
+        <div class="flex-1">
+          <div class="text-xl font-semibold text-gray-800 leading-none">
+            {{ $this->today['visits'] }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Visitas</div>
+        </div>
+        <div class="flex-1 text-right">
+          <div class="text-xl font-semibold text-green-700 leading-none">
+            ${{ number_format($this->today['winnings']) }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="font-medium text-gray-500">Esta semana</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisWeek }}</div>
+    <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="text-base font-medium text-gray-600 mb-3">Esta semana</div>
+      <div class="flex items-center justify-between">
+        <div class="flex-1">
+          <div class="text-xl font-semibold text-gray-800 leading-none">
+            {{ $this->thisWeek['visits'] }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Visitas</div>
+        </div>
+        <div class="flex-1 text-right">
+          <div class="text-xl font-semibold text-green-700 leading-none">
+            ${{ number_format($this->thisWeek['winnings']) }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="font-medium text-gray-500">Este mes</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisMonth }}</div>
+    <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="text-base font-medium text-gray-600 mb-3">Este mes</div>
+      <div class="flex items-center justify-between">
+        <div class="flex-1">
+          <div class="text-xl font-semibold text-gray-800 leading-none">
+            {{ $this->thisMonth['visits'] }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Visitas</div>
+        </div>
+        <div class="flex-1 text-right">
+          <div class="text-xl font-semibold text-green-700 leading-none">
+            ${{ number_format($this->thisMonth['winnings']) }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+        </div>
+      </div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="font-medium text-gray-500">Total</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->total }}</div>
+    <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
+      <div class="text-base font-medium text-gray-600 mb-3">Total</div>
+      <div class="flex items-center justify-between">
+        <div class="flex-1">
+          <div class="text-xl font-semibold text-gray-800 leading-none">
+            {{ $this->total['visits'] }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Visitas</div>
+        </div>
+        <div class="flex-1 text-right">
+          <div class="text-xl font-semibold text-green-700 leading-none">
+            ${{ number_format($this->total['winnings']) }}
+          </div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+        </div>
+      </div>
     </div>
   </div>
 
