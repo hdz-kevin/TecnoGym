@@ -100,7 +100,6 @@ class AddPeriod extends Component
 
         if ($this->editingPeriod) {
             $this->editingPeriod->update($periodData);
-            $this->membership->setUpdatedAt(now())->save();
 
             $flash = 'Periodo actualizado exitosamente';
         } else {
@@ -110,6 +109,8 @@ class AddPeriod extends Component
 
             $flash = 'Membresía renovada exitosamente';
         }
+
+        $this->membership->setUpdatedAt(now())->save();
 
         $this->closeModal();
 
