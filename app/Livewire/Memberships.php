@@ -143,7 +143,7 @@ class Memberships extends Component
         $membership->periods()->create([
             'duration_id' => $duration->id,
             'start_date' => $validated['start_date'],
-            'end_date' => Period::calculateEndDate(Carbon::parse($validated['start_date']), $duration),
+            'end_date' => Period::endDateFrom(Carbon::parse($validated['start_date']), $duration),
             'price_paid' => $duration->price,
             'status' => PeriodStatus::IN_PROGRESS,
         ]);

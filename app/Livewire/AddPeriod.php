@@ -88,7 +88,7 @@ class AddPeriod extends Component
         /** @var Duration */
         $duration = Duration::find($validated['duration_id']);
         $startDate = Carbon::parse($this->start_date);
-        $endDate = Period::calculateEndDate($startDate, $duration);
+        $endDate = Period::endDateFrom($startDate, $duration);
 
         $periodData = [
             'duration_id' => $duration->id,
