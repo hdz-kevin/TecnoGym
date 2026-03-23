@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Dashboard;
 use App\Livewire\Members;
 use App\Livewire\Memberships;
 use App\Livewire\Prices\Memberships as PricesMemberships;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
     Route::redirect('/', 'dashboard');
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', Dashboard::class)->name('dashboard');
     Route::get('members', Members::class)->name('members.index');
     Route::get('prices/memberships', PricesMemberships::class)->name('prices.memberships');
     Route::get('prices/visits', PricesVisits::class)->name('prices.visits');
