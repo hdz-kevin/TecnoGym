@@ -36,7 +36,7 @@ class PeriodSeeder extends Seeder
                 $status = PeriodStatus::fromDates($periodStartDate, $periodEndDate);
 
                 // Create Period
-                Period::create([
+                $period = Period::create([
                     'membership_id' => $membership->id,
                     'duration_id' => $duration->id,
                     'start_date' => $periodStartDate,
@@ -44,6 +44,9 @@ class PeriodSeeder extends Seeder
                     'price_paid' => $duration->price,
                     'status' => $status,
                 ]);
+
+                // Sync created_at to the period's start_date
+                Period::withoutTimestamps(fn () => $period->update(['created_at' => $periodStartDate->startOfDay()]));
 
                 // Start date of the next period
                 $startDate = $periodEndDate;
