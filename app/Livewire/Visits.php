@@ -52,7 +52,7 @@ class Visits extends Component
     {
         return Visit::with('visitType')
                     ->orderBy('visit_at', 'desc')
-                    ->paginate(10);
+                    ->paginate(8);
     }
 
     /**

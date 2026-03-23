@@ -158,7 +158,7 @@
                 <div class="flex items-center gap-1.5">
                   <flux:icon icon="credit-card" class="w-5 h-5 text-gray-500" />
                   <span class="font-medium text-gray-800">
-                    {{ $membership->membershipType->name }} - {{ $membership->id  }}
+                    {{ $membership->membershipType->name }}
                   </span>
                 </div>
               </div>

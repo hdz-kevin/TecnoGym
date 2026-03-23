@@ -193,17 +193,17 @@ class Memberships extends Component
             'membershipType',
             'periods',
         ])
-        ->when($this->search, function ($query) {
-            $query->whereHas('member', function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('code', 'like', $this->search . '%');
-            });
-        })
-        ->when($this->statusFilter, function ($query) {
-            $query->where('status', $this->statusFilter->value);
-        })
-        ->orderBy('updated_at', 'desc')
-        ->paginate(6);
+            ->when($this->search, function ($query) {
+                $query->whereHas('member', function ($q) {
+                    $q->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('code', 'like', $this->search . '%');
+                });
+            })
+            ->when($this->statusFilter, function ($query) {
+                $query->where('status', $this->statusFilter->value);
+            })
+            ->orderBy('updated_at', 'desc')
+            ->paginate(6);
     }
 
     /**
