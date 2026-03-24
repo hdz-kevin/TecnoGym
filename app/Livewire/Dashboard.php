@@ -14,69 +14,96 @@ use Livewire\Component;
 class Dashboard extends Component
 {
     /**
-     * Build a report array for a given date range.
-     * Returns visits earnings, new memberships and renewals count and income.
-     *
-     * @param  \Carbon\Carbon  $from
-     * @param  \Carbon\Carbon  $to
-     * @return array
+     * Period tabs
      */
-    private function reportFor($from, $to): array
-    {
-        // Visits in range
-        $visits = Visit::whereBetween('visit_at', [$from, $to]);
+    public array $periods = [
+        'today' => 'Hoy',
+        'week'  => 'Esta semana',
+        'month' => 'Este mes',
+    ];
+    
+    /**
+     * Selected period tab
+     */
+    public string $activePeriod = 'today';
 
-        // New memberships: periods in range whose membership had NO prior periods before the range
-        $newMembershipsQuery = Period::whereBetween('created_at', [$from, $to])
+    /**
+     * Set the active period tab
+     *
+     * @param string $period Period key
+     * @return void
+     */
+    public function setPeriod(string $period): void
+    {
+        $this->activePeriod = $period;
+    }
+
+    /**
+     * Get the date range for the active period
+     *
+     * @return array{0: \Carbon\Carbon, 1: \Carbon\Carbon}
+     */
+    private function dateRange(): array
+    {
+        return match ($this->activePeriod) {
+            'today' => [now()->startOfDay(), now()->endOfDay()],
+            'week'  => [now()->startOfWeek(), now()->endOfWeek()],
+            'month' => [now()->startOfMonth(), now()->endOfMonth()],
+        };
+    }
+
+    /**
+     * Visits in the active period
+     */
+    #[Computed]
+    public function visits()
+    {
+        [$from, $to] = $this->dateRange();
+
+        return Visit::with('visitType')
+                     ->whereBetween('visit_at', [$from, $to])
+                     ->orderBy('visit_at', 'desc')
+                     ->get();
+    }
+
+    /**
+     * New memberships in the active period.
+     * New memberships: periods in range whose membership had NO prior periods before the range.
+     */
+    #[Computed]
+    public function newMemberships()
+    {
+        [$from, $to] = $this->dateRange();
+
+        return Period::with(['membership.member', 'membership.membershipType', 'duration'])
+            ->whereBetween('created_at', [$from, $to])
             ->whereHas('membership', function ($q) use ($from) {
                 $q->whereDoesntHave('periods', function ($q2) use ($from) {
                     $q2->where('created_at', '<', $from);
                 });
-            });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
 
-        // Renewals: periods in range whose membership already had at least one period before the range
-        $renewalsQuery = Period::whereBetween('created_at', [$from, $to])
+    /**
+     * Renewals in the active period.
+     * Renewals: periods in range whose membership already had at least one period before the range.
+     */
+    #[Computed]
+    public function renewals()
+    {
+        [$from, $to] = $this->dateRange();
+
+        return Period::with(['membership.member', 'membership.membershipType', 'duration'])
+            ->whereBetween('created_at', [$from, $to])
             ->whereHas('membership', function ($q) use ($from) {
                 $q->whereHas('periods', function ($q2) use ($from) {
                     $q2->where('created_at', '<', $from);
                 });
-            });
-
-        return [
-            'visits_count'    => $visits->count(),
-            'visits_income'   => $visits->sum('price_paid'),
-            'new_count'       => $newMembershipsQuery->count(),
-            'new_income'      => $newMembershipsQuery->sum('price_paid'),
-            'renewals_count'  => $renewalsQuery->count(),
-            'renewals_income' => $renewalsQuery->sum('price_paid'),
-        ];
-    }
-
-    /**
-     * Report for today
-     */
-    #[Computed]
-    public function today(): array
-    {
-        return $this->reportFor(now()->startOfDay(), now()->endOfDay());
-    }
-
-    /**
-     * Report for the current week (Mon–Sun)
-     */
-    #[Computed]
-    public function thisWeek(): array
-    {
-        return $this->reportFor(now()->startOfWeek(), now()->endOfWeek());
-    }
-
-    /**
-     * Report for the current month
-     */
-    #[Computed]
-    public function thisMonth(): array
-    {
-        return $this->reportFor(now()->startOfMonth(), now()->endOfMonth());
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     /**
