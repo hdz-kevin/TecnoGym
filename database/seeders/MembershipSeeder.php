@@ -19,7 +19,7 @@ class MembershipSeeder extends Seeder
         $general = MembershipType::where('name', 'General')->first();
         $student = MembershipType::where('name', 'Estudiante')->first();
 
-        $members = Member::inRandomOrder()->limit(70)->get();
+        $members = Member::inRandomOrder()->limit(40)->get();
 
         // Create a membership for each member
         foreach ($members as $member) {
