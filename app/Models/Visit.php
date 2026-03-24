@@ -38,7 +38,7 @@ class Visit extends Model
     {
         $formatted = Carbon::parse($this->visit_at)
                            ->locale('es')
-                           ->translatedFormat('D d F Y - h:i a');
+                           ->translatedFormat('l j F, h:i a');
 
         return ucfirst($formatted);
     }
