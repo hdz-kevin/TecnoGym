@@ -58,7 +58,7 @@
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-semibold text-gray-900">{{ $title ?? 'Dashboard' }}</h1>
-        <p class="text-base text-gray-600 mt-0.5">{{ $subtitle ?? 'Resumen general de tu gimnasio' }}</p>
+        <p class="text-base text-gray-700 mt-1">{{ $subtitle ?? 'Resumen general de tu gimnasio' }}</p>
       </div>
       @isset($actions)
         <div class="flex items-center gap-3">

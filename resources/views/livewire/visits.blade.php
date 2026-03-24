@@ -17,7 +17,7 @@
           <div class="text-xl font-semibold text-green-700 leading-none">
             ${{ number_format($this->today['winnings']) }}
           </div>
-          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ingresos</div>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
           <div class="text-xl font-semibold text-green-700 leading-none">
             ${{ number_format($this->thisWeek['winnings']) }}
           </div>
-          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ingresos</div>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
           <div class="text-xl font-semibold text-green-700 leading-none">
             ${{ number_format($this->thisMonth['winnings']) }}
           </div>
-          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ingresos</div>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
           <div class="text-xl font-semibold text-green-700 leading-none">
             ${{ number_format($this->total['winnings']) }}
           </div>
-          <div class="text-sm font-medium text-gray-600 mt-1.5">Ganancias</div>
+          <div class="text-sm font-medium text-gray-600 mt-1.5">Ingresos</div>
         </div>
       </div>
     </div>
