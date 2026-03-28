@@ -1,7 +1,7 @@
 <x-slot:title>Dashboard</x-slot:title>
 <x-slot:subtitle>Corte de caja diario, semanal y mensual</x-slot:subtitle>
 
-<div class="p-4 py-3 space-y-6">
+<div class="p-1 space-y-6">
   {{-- Period Tabs --}}
   <div class="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
     @foreach ($periods as $key => $label)
@@ -10,7 +10,7 @@
         class="px-4 py-2 text-sm font-medium rounded-md transition-all
           {{ $activePeriod === $key
               ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900' }}"
+              : 'text-gray-600 hover:text-gray-900 hover:cursor-pointer' }}"
       >
         {{ $label }}
       </button>
@@ -168,16 +168,19 @@
                 <tr>
                   <td class="px-6 py-4">
                     <div class="flex items-center space-x-3">
-                      <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
-                        @if($period->membership->member->photo)
+                      <button
+                        wire:click="$dispatch('show-member-profile', { member: {{ $period->membership->member->id }} })"
+                        class="h-13 w-13 bg-gray-100 rounded-full flex items-center justify-center shrink-0 hover:ring-2 hover:ring-gray-400 transition cursor-pointer"
+                      >
+                        @if($photo = $period->membership->member->photo)
                           <img
-                            src="{{ Storage::url($period->membership->member->photo) }}"
-                            class="h-full w-full rounded-full object-cover" alt="{{ $period->membership->member->name }}"
+                            src="{{ Storage::url($photo) }}"
+                            class="h-full w-full rounded-full object-cover" alt="member-photo"
                           />
                         @else
                           <span class="text-sm font-semibold text-gray-600">{{ $period->membership->member->initials() }}</span>
                         @endif
-                      </div>
+                      </button>
                       <div class="min-w-0">
                         <div class="font-medium text-gray-800 truncate">{{ $period->membership->member->name }}</div>
                         <div class="text-sm text-gray-600 mt-0.5"># {{ $period->membership->member->code }}</div>
@@ -234,13 +237,16 @@
                 <tr>
                   <td class="px-6 py-4">
                     <div class="flex items-center space-x-3">
-                      <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
-                        @if($period->membership->member->photo)
-                          <img src="{{ Storage::url($period->membership->member->photo) }}" class="h-full w-full rounded-full object-cover" alt="{{ $period->membership->member->name }}" />
+                      <button
+                        wire:click="$dispatch('show-member-profile', { member: {{ $period->membership->member->id }} })"
+                        class="h-13 w-13 bg-gray-100 rounded-full flex items-center justify-center shrink-0 hover:ring-2 hover:ring-gray-400 transition cursor-pointer"
+                      >
+                        @if($photo = $period->membership->member->photo)
+                          <img src="{{ Storage::url($photo) }}" class="h-full w-full rounded-full object-cover" alt="member-photo" />
                         @else
                           <span class="text-sm font-semibold text-gray-600">{{ $period->membership->member->initials() }}</span>
                         @endif
-                      </div>
+                      </button>
                       <div class="min-w-0">
                         <div class="font-medium text-gray-800 truncate">{{ $period->membership->member->name }}</div>
                         <div class="text-sm mt-0.5 text-gray-600"># {{ $period->membership->member->code }}</div>
@@ -264,5 +270,7 @@
       </div>
     @endif
   </div>
+
+  <livewire:member-profile />
 
 </div>
