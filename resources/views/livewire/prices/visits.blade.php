@@ -1,7 +1,7 @@
 <x-slot:subtitle>Gestiona los precios de las visitas</x-slot:subtitle>
 
 <div>
-  <div class="pt-4 -mt-6 space-y-6">
+  <div class="p-1 space-y-6">
     @if ($visitTypes->count() > 0)
       <div class="flex justify-end">
         <flux:button variant="primary" icon="plus" wire:click="createModal">
