@@ -148,7 +148,13 @@
     @else
       <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
+          <table class="min-w-full table-fixed divide-y divide-gray-200">
+            <colgroup>
+              <col class="w-[40%]" />
+              <col class="w-[25%]" />
+              <col class="w-[20%]" />
+              <col class="w-[15%]" />
+            </colgroup>
             <thead class="bg-gray-50">
               <tr>
                 <th class="px-6 py-3 text-left font-medium text-gray-700">Socio</th>
@@ -160,9 +166,9 @@
             <tbody class="divide-y divide-gray-100">
               @foreach ($this->newMemberships as $period)
                 <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4">
                     <div class="flex items-center space-x-3">
-                      <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
                         @if($period->membership->member->photo)
                           <img
                             src="{{ Storage::url($period->membership->member->photo) }}"
@@ -172,8 +178,8 @@
                           <span class="text-sm font-semibold text-gray-600">{{ $period->membership->member->initials() }}</span>
                         @endif
                       </div>
-                      <div>
-                        <div class="font-medium text-gray-800">{{ $period->membership->member->name }}</div>
+                      <div class="min-w-0">
+                        <div class="font-medium text-gray-800 truncate">{{ $period->membership->member->name }}</div>
                         <div class="text-sm text-gray-600 mt-0.5"># {{ $period->membership->member->code }}</div>
                       </div>
                     </div>
@@ -208,7 +214,13 @@
     @else
       <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
+          <table class="min-w-full table-fixed divide-y divide-gray-200">
+            <colgroup>
+              <col class="w-[40%]" />
+              <col class="w-[25%]" />
+              <col class="w-[20%]" />
+              <col class="w-[15%]" />
+            </colgroup>
             <thead class="bg-gray-50">
               <tr>
                 <th class="px-6 py-3 text-left font-medium text-gray-700">Socio</th>
@@ -220,17 +232,17 @@
             <tbody class="divide-y divide-gray-100">
               @foreach ($this->renewals as $period)
                 <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4">
                     <div class="flex items-center space-x-3">
-                      <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
                         @if($period->membership->member->photo)
                           <img src="{{ Storage::url($period->membership->member->photo) }}" class="h-full w-full rounded-full object-cover" alt="{{ $period->membership->member->name }}" />
                         @else
                           <span class="text-sm font-semibold text-gray-600">{{ $period->membership->member->initials() }}</span>
                         @endif
                       </div>
-                      <div>
-                        <div class="font-medium text-gray-800">{{ $period->membership->member->name }}</div>
+                      <div class="min-w-0">
+                        <div class="font-medium text-gray-800 truncate">{{ $period->membership->member->name }}</div>
                         <div class="text-sm mt-0.5 text-gray-600"># {{ $period->membership->member->code }}</div>
                       </div>
                     </div>
