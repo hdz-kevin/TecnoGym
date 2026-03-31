@@ -16,6 +16,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/members', Members::class)->name('members.index');
     Route::get('/visits', Visits::class)->name('visits.index');
     Route::get('/verify-code', VerifyCode::class)->name('verify-code');
+
     Route::get('/prices/memberships', PricesMemberships::class)->name('prices.memberships');
     Route::get('/prices/visits', PricesVisits::class)->name('prices.visits');
 });

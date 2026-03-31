@@ -160,6 +160,7 @@ class Members extends Component
         $this->editingMember = null;
         $this->resetForm();
         $this->resetValidation();
+        $this->dispatch('close-modal');
     }
 
     /**
