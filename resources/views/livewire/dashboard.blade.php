@@ -18,7 +18,7 @@
   </div>
 
   {{-- Summary Cards --}}
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
     {{-- Visits --}}
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
         <div class="flex items-center">
