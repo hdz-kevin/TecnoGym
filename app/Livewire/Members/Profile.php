@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Members;
 
 use App\Models\Member;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class MemberProfile extends Component
+class Profile extends Component
 {
     public Member|null $member = null;
     public bool $show = false;
 
-    #[On('show-member-profile')]
+    #[On('show-profile')]
     public function showProfile(Member $member)
     {
         $this->member = $member;
@@ -26,6 +26,6 @@ class MemberProfile extends Component
 
     public function render()
     {
-        return view('livewire.member-profile');
+        return view('livewire.members.profile');
     }
 }

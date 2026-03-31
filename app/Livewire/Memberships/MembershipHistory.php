@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Memberships;
 
 use App\Models\Membership;
 use Livewire\Component;
@@ -79,6 +79,6 @@ class MembershipHistory extends Component
      */
     public function render()
     {
-        return view('livewire.membership-history');
+        return view('livewire.memberships.membership-history');
     }
 }

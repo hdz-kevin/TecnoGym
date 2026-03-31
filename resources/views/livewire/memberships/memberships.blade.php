@@ -190,7 +190,7 @@
               <flux:button
                 size="sm"
                 variant="{{ $membership->status == MembershipStatus::EXPIRED ? 'primary' : 'outline' }}"
-                wire:click="$dispatch('open-period-modal', { membership: {{ $membership->id }} })"
+                wire:click="$dispatch('open-renewal-modal', { membership: {{ $membership->id }} })"
               >
                 Renovar
               </flux:button>
@@ -284,23 +284,9 @@
     </div>
   @endif
 
-  <livewire:add-period />
+  <livewire:memberships.renew-membership />
 
-  <livewire:membership-history />
-
-  <script>
-    document.addEventListener('livewire:init', () => {
-      // Disable scroll when history modal opens
-      Livewire.on('disable-scroll', () => {
-        document.body.classList.add('overflow-hidden');
-      });
-
-      // Enable scroll when history modal closes
-      Livewire.on('enable-scroll', () => {
-        document.body.classList.remove('overflow-hidden');
-      });
-    });
-  </script>
+  <livewire:memberships.membership-history />
 
   <!-- Flash Messages -->
   @if (session()->has('message'))
@@ -326,4 +312,18 @@
       {{ session('error') }}
     </div>
   @endif
+
+  <script>
+    document.addEventListener('livewire:init', () => {
+      // Disable scroll when history modal opens
+      Livewire.on('disable-scroll', () => {
+        document.body.classList.add('overflow-hidden');
+      });
+
+      // Enable scroll when history modal closes
+      Livewire.on('enable-scroll', () => {
+        document.body.classList.remove('overflow-hidden');
+      });
+    });
+  </script>
 </div>

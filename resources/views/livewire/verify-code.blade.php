@@ -9,7 +9,7 @@
 
   <div class="w-full max-w-lg flex flex-col justify-center px-8 space-y-12">
     <div class="space-y-4 text-center">
-      <h1 class="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">Verificar Membresía</h1>
+      <h1 class="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">Verificar Socio</h1>
       <p class="text-gray-600 text-xl">
         Ingresa el código de un socio para verificar su membresía
       </p>
@@ -111,8 +111,8 @@
                         <flux:icon icon="information-circle" class="size-6" variant="mini" />
                         <span class="uppercase font-bold text-lg">Sin membresía</span>
                       </div>
-                      <p class="text-lg text-gray-600 mt-8 leading-relaxed">
-                        El socio aún no cuenta con una membresía.
+                      <p class="text-lg text-gray-600 mt-10 leading-relaxed">
+                        <span class="font-semibold">{{ $member->name }}</span> aún no cuenta con una membresía.
                       </p>
                     @endif
                   </div>
@@ -131,7 +131,7 @@
                 </div>
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Socio no encontrado</h2>
                 <p class="text-xl text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-8">
-                  Código no encontrado. Por favor verifique e intente nuevamente.
+                  No existe un socio con el código ingresado.
                 </p>
 
                 <flux:button wire:click="close" icon="x-mark">

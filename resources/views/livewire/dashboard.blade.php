@@ -169,7 +169,7 @@
                   <td class="px-6 py-4">
                     <div class="flex items-center space-x-3">
                       <button
-                        wire:click="$dispatch('show-member-profile', { member: {{ $period->membership->member->id }} })"
+                        wire:click="$dispatch('show-profile', { member: {{ $period->membership->member->id }} })"
                         class="h-13 w-13 bg-gray-100 rounded-full flex items-center justify-center shrink-0 hover:ring-2 hover:ring-gray-400 transition cursor-pointer"
                       >
                         @if($photo = $period->membership->member->photo)
@@ -238,7 +238,7 @@
                   <td class="px-6 py-4">
                     <div class="flex items-center space-x-3">
                       <button
-                        wire:click="$dispatch('show-member-profile', { member: {{ $period->membership->member->id }} })"
+                        wire:click="$dispatch('show-profile', { member: {{ $period->membership->member->id }} })"
                         class="h-13 w-13 bg-gray-100 rounded-full flex items-center justify-center shrink-0 hover:ring-2 hover:ring-gray-400 transition cursor-pointer"
                       >
                         @if($photo = $period->membership->member->photo)
@@ -271,6 +271,6 @@
     @endif
   </div>
 
-  <livewire:member-profile />
+  <livewire:members.profile />
 
 </div>

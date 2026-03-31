@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Memberships;
 
 use App\Models\Member;
 use App\Models\Membership;
@@ -256,6 +256,6 @@ class Memberships extends Component
         $membershipTypes = MembershipType::all();
         $members = Member::orderBy('name')->get();
 
-        return view('livewire.memberships', compact('members', 'membershipTypes'));
+        return view('livewire.memberships.memberships', compact('members', 'membershipTypes'));
     }
 }

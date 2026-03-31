@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Memberships;
 
 use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
@@ -16,7 +16,7 @@ use Livewire\Attributes\Rule;
 /**
  * This component handles the membership renewals by adding new periods, and period edition
  */
-class AddPeriod extends Component
+class RenewMembership extends Component
 {
     #[Rule('required', message: 'La fecha de inicio es obligatoria')]
     #[Rule('date', message: 'La fecha de inicio debe ser una fecha válida')]
@@ -53,7 +53,7 @@ class AddPeriod extends Component
      * @param Period|null $period - The period to edit if provided
      * @return void
      */
-    #[On('open-period-modal')]
+    #[On('open-renewal-modal')]
     public function openModal(Membership $membership, ?Period $period = null)
     {
         if ($period?->status == PeriodStatus::COMPLETED) {
@@ -140,6 +140,6 @@ class AddPeriod extends Component
      */
     public function render()
     {
-        return view('livewire.add-period');
+        return view('livewire.memberships.renew-membership');
     }
 }

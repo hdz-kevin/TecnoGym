@@ -11,10 +11,10 @@ use Livewire\Component;
 
 #[Layout('layouts.app')]
 #[Title('')]
-class VerifyMembership extends Component
+class VerifyCode extends Component
 {
     #[Rule('required', message: 'El código es obligatorio')]
-    #[Rule('size:5', message: 'El código debe tener 5 dígitos')]
+    #[Rule('size:5', message: 'El código debe ser de 5 dígitos')]
     public $code = '';
     public $member = null;
     public $membership = null;
@@ -52,6 +52,6 @@ class VerifyMembership extends Component
 
     public function render()
     {
-        return view('livewire.verify-membership');
+        return view('livewire.verify-code');
     }
 }

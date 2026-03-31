@@ -179,7 +179,7 @@
                 <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
                   Editar
                 </flux:button>
-                <flux:button size="sm" variant="primary" wire:click="$dispatch('show-member-profile', { member: {{ $member->id }} })">
+                <flux:button size="sm" variant="primary" wire:click="$dispatch('show-profile', { member: {{ $member->id }} })">
                   Ver
                 </flux:button>
               </div>
@@ -360,7 +360,7 @@
     </div>
   @endif
 
-  <livewire:member-profile />
+  <livewire:members.profile />
 
   <!-- Flash Messages -->
   @if (session()->has('message'))

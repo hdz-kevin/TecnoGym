@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Members;
 
 use App\Models\Member;
 use App\Enums\MemberStatus;
@@ -220,6 +220,6 @@ class Members extends Component
      */
     public function render()
     {
-        return view('livewire.members');
+        return view('livewire.members.members');
     }
 }

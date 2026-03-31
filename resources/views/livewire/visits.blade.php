@@ -5,7 +5,7 @@
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
     <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="text-base font-medium text-gray-600 mb-3">Hoy</div>
+      <div class="text-base font-medium text-gray-800 mb-3">Hoy</div>
       <div class="flex items-center justify-between">
         <div class="flex-1">
           <div class="text-xl font-semibold text-gray-800 leading-none">
@@ -23,7 +23,7 @@
     </div>
 
     <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="text-base font-medium text-gray-600 mb-3">Esta semana</div>
+      <div class="text-base font-medium text-gray-800 mb-3">Esta semana</div>
       <div class="flex items-center justify-between">
         <div class="flex-1">
           <div class="text-xl font-semibold text-gray-800 leading-none">
@@ -41,7 +41,7 @@
     </div>
 
     <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="text-base font-medium text-gray-600 mb-3">Este mes</div>
+      <div class="text-base font-medium text-gray-800 mb-3">Este mes</div>
       <div class="flex items-center justify-between">
         <div class="flex-1">
           <div class="text-xl font-semibold text-gray-800 leading-none">
@@ -59,7 +59,7 @@
     </div>
 
     <div class="bg-white py-3 px-5 rounded-lg border border-gray-200 shadow-sm">
-      <div class="text-base font-medium text-gray-600 mb-3">Total</div>
+      <div class="text-base font-medium text-gray-800 mb-3">Total</div>
       <div class="flex items-center justify-between">
         <div class="flex-1">
           <div class="text-xl font-semibold text-gray-800 leading-none">

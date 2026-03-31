@@ -31,7 +31,7 @@
           {{ __('Visitas') }}
         </flux:navlist.item>
 
-        <flux:navlist.item icon="qr-code" :href="route('verify-membership')" :current="request()->routeIs('verify-membership')" wire:navigate>
+        <flux:navlist.item icon="qr-code" :href="route('verify-code')" :current="request()->routeIs('verify-code')" wire:navigate>
           {{ __('Verificar') }}
         </flux:navlist.item>
       </flux:navlist.group>
