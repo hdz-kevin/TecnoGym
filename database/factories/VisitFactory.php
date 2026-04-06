@@ -16,10 +16,8 @@ class VisitFactory extends Factory
      */
     public function definition(): array
     {
-        $startDate = now()->subMonth();
-
         return [
-            'visit_at' => $startDate->addDays(rand(0, 30))->addHours(rand(0, 24)),
+            'visit_at' => fake()->dateTimeBetween('-1 month', 'now'),
             'price_paid' => 40,
         ];
     }
