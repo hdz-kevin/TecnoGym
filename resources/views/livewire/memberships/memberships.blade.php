@@ -127,7 +127,10 @@
             <!-- Card Header -->
             <div class="flex items-center mb-6">
               <div class="flex items-center space-x-4">
-                <div class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center">
+                <button
+                  wire:click="$dispatch('show-profile', { member: {{ $membership->member->id }} })"
+                  class="h-20 w-20 bg-gray-100 rounded-full flex items-center justify-center shrink-0 transition cursor-pointer"
+                >
                   @if($membership->member->photo)
                     <img
                       src="{{ Storage::url($membership->member->photo) }}"
@@ -139,7 +142,7 @@
                       {{ $membership->member->initials() }}
                     </span>
                   @endif
-                </div>
+                </button>
 
                 <div>
                   <h3 class="text-lg font-medium text-gray-900">{{ $membership->member->name }}</h3>
@@ -287,6 +290,8 @@
   <livewire:memberships.renew-membership />
 
   <livewire:memberships.membership-history />
+
+  <livewire:members.profile />
 
   <!-- Flash Messages -->
   @if (session()->has('message'))
