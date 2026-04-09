@@ -46,6 +46,10 @@
         </flux:navlist.item>
       </flux:navlist.group>
     </flux:navlist>
+
+    <div class="mt-auto border-zinc-200 mb-1">
+      <livewire:actions.sync-statuses-action />
+    </div>
   </flux:sidebar>
 
   <!-- Mobile User Menu -->
