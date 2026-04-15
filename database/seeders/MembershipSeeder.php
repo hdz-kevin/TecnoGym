@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\MembershipStatus;
 use App\Models\Member;
 use App\Models\Membership;
 use App\Models\MembershipType;
@@ -28,7 +27,6 @@ class MembershipSeeder extends Seeder
             Membership::create([
                 'member_id' => $member->id,
                 'membership_type_id' => $membershipType->id,
-                'status' => MembershipStatus::EXPIRED->value,
             ]);
         }
     }
