@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\PeriodStatus;
 use App\Models\Duration;
 use App\Models\Membership;
 use Illuminate\Database\Migrations\Migration;
@@ -18,11 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Membership::class)->constrained()->onDelete('restrict');
             $table->foreignIdFor(Duration::class)->constrained()->onDelete('restrict');
-
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('price_paid');
-            $table->enum('status', PeriodStatus::values())->default(PeriodStatus::IN_PROGRESS);
             $table->timestamps();
         });
     }

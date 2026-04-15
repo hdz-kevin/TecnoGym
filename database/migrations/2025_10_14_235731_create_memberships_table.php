@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\MembershipStatus;
 use App\Models\Member;
 use App\Models\MembershipType;
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Member::class)->constrained()->onDelete('restrict');
             $table->foreignIdFor(MembershipType::class)->constrained()->onDelete('restrict');
-
-            $table->enum('status', MembershipStatus::values())->default(MembershipStatus::ACTIVE->value);
             $table->timestamps();
         });
     }
