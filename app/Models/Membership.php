@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\MembershipStatus;
+use App\Enums\PeriodStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,12 +14,21 @@ class Membership extends Model
     protected $fillable = [
         'member_id',
         'membership_type_id',
-        'status',
     ];
 
-    protected $casts = [
-        'status' => MembershipStatus::class,
-    ];
+    /**
+     * Get the membership's status (computed from periods).
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->periods->contains(
+                fn ($period) => $period->status === PeriodStatus::IN_PROGRESS
+            )
+                ? MembershipStatus::ACTIVE
+                : MembershipStatus::EXPIRED,
+        );
+    }
 
     /**
      * Get the member that owns the membership.
@@ -61,8 +72,6 @@ class Membership extends Model
 
     /**
      * Get the formatted expiration time string.
-     *
-     * @return string
      */
     public function getExpirationTimeAttribute(): string
     {
@@ -70,11 +79,11 @@ class Membership extends Model
         $endDate = $this->recent_period->end_date;
 
         return $endDate->locale('es')
-                       ->diffForHumans($now, [
-                           'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
-                           'parts' => 2,
-                           'join' => true,
-                       ]);
+            ->diffForHumans($now, [
+                'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
+                'parts' => 2,
+                'join' => true,
+            ]);
     }
 
     /**
