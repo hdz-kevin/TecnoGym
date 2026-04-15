@@ -12,16 +12,6 @@ enum MemberStatus: int
     case NO_MEMBERSHIP = 3;
 
     /**
-     * Get all enum values as an array
-     *
-     * @return array<int>
-     */
-    public static function values(): array
-    {
-        return array_map(fn (self $case) => $case->value, self::cases());
-    }
-
-    /**
      * Get the label for the member status
      *
      * @return string

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\MemberGender;
 use App\Enums\MembershipStatus;
 use App\Enums\MemberStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,7 +18,6 @@ class Member extends Model
     protected $fillable = [
         'name',
         'code',
-        'status',
         'gender',
         'birth_date',
         'photo',
@@ -25,9 +25,28 @@ class Member extends Model
 
     protected $casts = [
         'birth_date' => 'date',
-        'status' => MemberStatus::class,
         'gender' => MemberGender::class,
     ];
+
+    /**
+     * Get the member's status (computed from memberships).
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->memberships->isEmpty()) {
+                    return MemberStatus::NO_MEMBERSHIP;
+                }
+
+                return $this->memberships->contains(
+                    fn ($m) => $m->status === MembershipStatus::ACTIVE
+                )
+                    ? MemberStatus::ACTIVE
+                    : MemberStatus::EXPIRED;
+            },
+        );
+    }
 
     /**
      * The "booted" method of the model.

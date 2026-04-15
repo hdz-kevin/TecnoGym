@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\DurationUnit;
 use App\Enums\PeriodStatus;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -16,14 +17,24 @@ class Period extends Model
         'start_date',
         'end_date',
         'price_paid',
-        'status',
     ];
 
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
-        'status' => PeriodStatus::class,
     ];
+
+    /**
+     * Get the period's status (computed from dates).
+     */
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => now()->isAfter($this->end_date)
+                ? PeriodStatus::COMPLETED
+                : PeriodStatus::IN_PROGRESS,
+        );
+    }
 
     /**
      * The "booted" method of the model.
@@ -36,7 +47,6 @@ class Period extends Model
     {
         static::saving(function (Period $period) {
             $period->start_date = $period->start_date->startOfDay();
-
             $period->end_date = $period->end_date->endOfDay();
         });
     }

@@ -5,8 +5,6 @@ namespace App\Livewire\Memberships;
 use App\Models\Member;
 use App\Models\Membership;
 use App\Enums\MembershipStatus;
-use App\Enums\MemberStatus;
-use App\Enums\PeriodStatus;
 use App\Models\Duration;
 use App\Models\MembershipType;
 use App\Models\Period;
@@ -134,7 +132,6 @@ class Memberships extends Component
         $membership = Membership::create([
             'member_id' => $validated['member_id'],
             'membership_type_id' => $validated['membership_type_id'],
-            'status' => MembershipStatus::ACTIVE,
         ]);
 
         $duration = Duration::find($validated['duration_id']);
@@ -145,11 +142,7 @@ class Memberships extends Component
             'start_date' => $validated['start_date'],
             'end_date' => Period::endDateFrom(Carbon::parse($validated['start_date']), $duration),
             'price_paid' => $duration->price,
-            'status' => PeriodStatus::IN_PROGRESS,
         ]);
-
-        // Update member status
-        $membership->member->update(['status' => MemberStatus::ACTIVE]);
 
         $this->closeCreateModal();
 
@@ -200,7 +193,15 @@ class Memberships extends Component
                 });
             })
             ->when($this->statusFilter, function ($query) {
-                $query->where('status', $this->statusFilter->value);
+                if ($this->statusFilter === MembershipStatus::ACTIVE) {
+                    $query->whereHas('periods', function ($q) {
+                        $q->where('end_date', '>=', now());
+                    });
+                } else {
+                    $query->whereDoesntHave('periods', function ($q) {
+                        $q->where('end_date', '>=', now());
+                    });
+                }
             })
             ->orderBy('updated_at', 'desc')
             ->paginate(6);
@@ -239,7 +240,7 @@ class Memberships extends Component
     #[Computed]
     public function stats()
     {
-        $allMemberships = Membership::all();
+        $allMemberships = Membership::with('periods')->get();
 
         return collect([
             'total' => $allMemberships->count(),

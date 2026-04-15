@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\MembershipStatus;
-use App\Enums\MemberStatus;
-use App\Enums\PeriodStatus;
 use App\Models\Membership;
 use App\Models\Period;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -32,8 +29,6 @@ class PeriodSeeder extends Seeder
                 // Calculate dates
                 $periodStartDate = $startDate;
                 $periodEndDate = Period::endDateFrom($periodStartDate, $duration);
-                // Set Status
-                $status = PeriodStatus::fromDates($periodStartDate, $periodEndDate);
 
                 // Create Period
                 $period = Period::create([
@@ -42,7 +37,6 @@ class PeriodSeeder extends Seeder
                     'start_date' => $periodStartDate,
                     'end_date' => $periodEndDate,
                     'price_paid' => $duration->price,
-                    'status' => $status,
                 ]);
 
                 // Sync created_at to the period's start_date
@@ -58,23 +52,10 @@ class PeriodSeeder extends Seeder
             }
         }
 
-        // Update Membership status
-        $memberships->load(['periods', 'member']);
+        // Set created_at on memberships to match first period start date
+        $memberships->load('periods');
 
         $memberships->each(function ($membership) {
-            if ($membership->recent_period->status === PeriodStatus::IN_PROGRESS) {
-                $membership->status = MembershipStatus::ACTIVE;
-                $membership->save();
-                $membership->member->status = MemberStatus::ACTIVE;
-                $membership->member->save();
-            } else {
-                $membership->status = MembershipStatus::EXPIRED;
-                $membership->save();
-                $membership->member->status = MemberStatus::EXPIRED;
-                $membership->member->save();
-            }
-
-            // Set created_at to match first period start date
             $firstPeriod = $membership->periods->last();
             $membership->created_at = $firstPeriod->start_date;
             $membership->save();

@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Memberships;
 
-use App\Enums\MembershipStatus;
-use App\Enums\MemberStatus;
 use App\Enums\PeriodStatus;
 use App\Models\Duration;
 use App\Models\Membership;
@@ -56,7 +54,9 @@ class RenewMembership extends Component
     #[On('open-renewal-modal')]
     public function openModal(Membership $membership, ?Period $period = null)
     {
-        if ($period?->status == PeriodStatus::COMPLETED) {
+        $isEditingPeriod = !empty($period->attributesToArray());
+
+        if ($isEditingPeriod && $period?->status == PeriodStatus::COMPLETED) {
             $this->dispatch('error-alert', 'No se pueden editar periodos completados');
             return;
         }
@@ -64,7 +64,7 @@ class RenewMembership extends Component
         $this->membership = $membership->load(['membershipType.durations']);
         $this->durations = $this->membership->membershipType->durations;
 
-        if (! empty($period->attributesToArray())) {
+        if ($isEditingPeriod) {
             $this->editingPeriod = $period;
             $this->duration_id = $period->duration_id;
             $this->start_date = $period->start_date->format('Y-m-d');
@@ -95,25 +95,19 @@ class RenewMembership extends Component
             'start_date' => $startDate,
             'end_date' => $endDate,
             'price_paid' => $duration->price,
-            'status' => PeriodStatus::IN_PROGRESS,
         ];
 
         if ($this->editingPeriod) {
             $this->editingPeriod->update($periodData);
-
             $flash = 'Periodo actualizado exitosamente';
         } else {
             $this->membership->periods()->create($periodData);
-            $this->membership->update(['status' => MembershipStatus::ACTIVE]);
-            $this->membership->member->update(['status' => MemberStatus::ACTIVE]);
-
             $flash = 'Membresía renovada exitosamente';
         }
 
         $this->membership->setUpdatedAt(now())->save();
 
         $this->closeModal();
-
         // Notify the Memberships and MembershipHistory that the membership has been renewed
         $this->dispatch('renewed-membership', $flash);
     }
