@@ -179,6 +179,20 @@ class Members extends Component
     }
 
     /**
+     * Delete a member if it doesn't have any memberships
+     */
+    public function deleteMember(Member $member)
+    {
+        if ($member->memberships->count() > 0) {
+            session()->flash('error', 'No se puede eliminar el socio porque tiene membresias');
+            return;
+        }
+
+        $member->delete();
+        session()->flash('message', 'Socio eliminado exitosamente');
+    }
+
+    /**
      * Get the members stats
      *
      * @return array<string, int>

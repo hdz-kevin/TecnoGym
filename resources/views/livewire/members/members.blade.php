@@ -176,6 +176,15 @@
 
               <!-- Actions -->
               <div class="flex items-center justify-end gap-3">
+                <flux:button
+                  size="sm"
+                  variant="outline"
+                  :disabled="$member->status != MemberStatus::NO_MEMBERSHIP"
+                  wire:confirm="¿Seguro que deseas eliminar este socio?"
+                  wire:click="deleteMember({{ $member->id }})"
+                >
+                  Eliminar
+                </flux:button>
                 <flux:button size="sm" variant="outline" wire:click="editMemberModal({{ $member->id }})">
                   Editar
                 </flux:button>
