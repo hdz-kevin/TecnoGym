@@ -188,9 +188,17 @@ class Members extends Component
     {
         return [
             'total' => Member::count(),
-            'active' => Member::where('status', MemberStatus::ACTIVE)->count(),
-            'expired' => Member::where('status', MemberStatus::EXPIRED)->count(),
-            'no_membership' => Member::where('status', MemberStatus::NO_MEMBERSHIP)->count(),
+
+            'active' => Member::whereHas('memberships.periods', function ($q) {
+                $q->where('end_date', '>=', now());
+            })->count(),
+
+            'expired' => Member::whereHas('memberships')
+                ->whereDoesntHave('memberships.periods', function ($q) {
+                    $q->where('end_date', '>=', now());
+                })->count(),
+
+            'no_membership' => Member::whereDoesntHave('memberships')->count(),
         ];
     }
 
@@ -202,9 +210,18 @@ class Members extends Component
     #[Computed]
     public function members()
     {
-        return Member::with('memberships')
+        return Member::with('memberships.periods')
             ->when($this->statusFilter, function ($query) {
-                $query->where('status', $this->statusFilter);
+                match ($this->statusFilter) {
+                    MemberStatus::ACTIVE => $query->whereHas('memberships.periods', function ($q) {
+                        $q->where('end_date', '>=', now());
+                    }),
+                    MemberStatus::EXPIRED => $query->whereHas('memberships')
+                        ->whereDoesntHave('memberships.periods', function ($q) {
+                            $q->where('end_date', '>=', now());
+                        }),
+                    MemberStatus::NO_MEMBERSHIP => $query->whereDoesntHave('memberships'),
+                };
             })
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
