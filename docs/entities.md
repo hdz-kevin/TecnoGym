@@ -12,7 +12,6 @@ Represents the system users (admins/staff).
 | id          | PK          | Primary key              |
 | email       | UQ          | Unique email address     |
 | name        |             | First name               |
-| last_name   |             | Last name                |
 | password    |             | Hashed password          |
 
 ---

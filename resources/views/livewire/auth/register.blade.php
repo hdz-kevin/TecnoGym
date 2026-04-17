@@ -16,15 +16,6 @@
             size="xl"
         />
 
-        <flux:input
-            wire:model="last_name"
-            :label="__('Apellido(s)')"
-            type="text"
-            autofocus
-            autocomplete="name"
-            :placeholder="__('Apellido(s)')"
-        />
-
         <!-- Email Address -->
         <flux:input
             wire:model="email"
