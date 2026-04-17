@@ -4,7 +4,7 @@
 
 <x-slot:subtitle>Gestiona los socios de tu gimnasio</x-slot:subtitle>
 
-<div class="p-1 space-y-6">
+<div class="space-y-6">
   {{-- Membership stats --}}
   @if($this->stats['total'] > 0)
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">

@@ -1,7 +1,7 @@
 <x-slot:subtitle>Gestiona los precios de las membresías y sus duraciones</x-slot:subtitle>
 
 <div>
-  <div class="p-1 space-y-6">
+  <div class="space-y-6">
     @if ($membershipTypes->count() > 0)
       <div class="flex justify-end">
         <flux:button variant="primary" icon="plus" wire:click="createMembershipTypeModal">

@@ -1,7 +1,7 @@
 <x-slot:title>Dashboard</x-slot:title>
 <x-slot:subtitle>Corte de caja diario, semanal y mensual</x-slot:subtitle>
 
-<div class="p-1 space-y-6">
+<div class="space-y-6">
   {{-- Period Tabs --}}
   <div class="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
     @foreach ($periods as $key => $label)

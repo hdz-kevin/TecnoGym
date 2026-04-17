@@ -1,7 +1,7 @@
 <x-slot:title>Visitas</x-slot:title>
 <x-slot:subtitle>Registro y control de visitas</x-slot:subtitle>
 
-<div class="p-1 space-y-6">
+<div class="space-y-6">
   <!-- Stats Cards -->
    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
     <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
