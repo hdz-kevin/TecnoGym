@@ -21,7 +21,8 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
     {{-- Visits --}}
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
-        <div class="flex items-center">
+      <div class="flex justify-between items-center">
+        <div class="flex justify-center items-center">
           <div class="p-2 bg-blue-100 rounded-lg">
             <flux:icon icon="arrow-right-end-on-rectangle" class="w-6 h-6 text-blue-600" />
           </div>
@@ -30,17 +31,16 @@
             <p class="text-2xl mt-0.5 font-bold text-gray-800">{{ $this->visits->count() }}</p>
           </div>
         </div>
-      <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-        <span class="text-[15px] font-medium text-gray-600">Ingresos</span>
-        <span class="text-xl font-semibold text-green-700">
+        <div class="text-xl font-semibold text-green-700">
           ${{ number_format($this->visits->sum('price_paid')) }}
-        </span>
+        </div>
       </div>
     </div>
 
     {{-- New Memberships --}}
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
-        <div class="flex items-center">
+      <div class="flex justify-between items-center">
+        <div class="flex justify-center items-center">
           <div class="p-2 bg-green-100 rounded-lg">
             <flux:icon icon="user-plus" class="w-6 h-6 text-green-600" />
           </div>
@@ -49,17 +49,16 @@
             <p class="text-2xl mt-0.5 font-bold text-gray-800">{{ $this->newMemberships->count() }}</p>
           </div>
         </div>
-      <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-        <span class="text-[15px] font-medium text-gray-600">Ingresos</span>
-        <span class="text-xl font-semibold text-green-700">
+        <div class="text-xl font-semibold text-green-700">
           ${{ number_format($this->newMemberships->sum('price_paid')) }}
-        </span>
+        </div>
       </div>
     </div>
 
     {{-- Renewals --}}
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
-        <div class="flex items-center">
+      <div class="flex justify-between items-center">
+        <div class="flex justify-center items-center">
           <div class="p-2 bg-amber-100 rounded-lg">
             <flux:icon icon="arrow-path" class="w-6 h-6 text-amber-600" />
           </div>
@@ -68,11 +67,9 @@
             <p class="text-2xl mt-0.5 font-bold text-gray-800">{{ $this->renewals->count() }}</p>
           </div>
         </div>
-      <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-        <span class="text-[15px] font-medium text-gray-600">Ingresos</span>
-        <span class="text-xl font-semibold text-green-700">
+        <div class="text-xl font-semibold text-green-700">
           ${{ number_format($this->renewals->sum('price_paid')) }}
-        </span>
+        </div>
       </div>
     </div>
   </div>
