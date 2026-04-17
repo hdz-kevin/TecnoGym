@@ -187,67 +187,50 @@ class Visits extends Component
     /** --> Statistics counters <-- */
 
     /**
-     * Get the number and total paid of visits today
+     * Get the number of visits today
      *
-     * @return array<string, int>
+     * @return int
      */
     #[Computed]
     public function today()
     {
-        $visits = Visit::whereDate('visit_at', Carbon::today());
-
-        return [
-            'visits' => $visits->count(),
-            'winnings' => $visits->sum('price_paid'),
-        ];
+        return Visit::whereDate('visit_at', Carbon::today())
+                    ->count();
     }
 
     /**
-     * Get the number and total paid of visits this week
+     * Get the number of visits this week
      *
-     * @return array<string, int>
+     * @return int
      */
     #[Computed]
     public function thisWeek()
     {
-        $visits = Visit::whereBetween('visit_at', [now()->startOfWeek(), now()->endOfWeek()]);
-
-        return [
-            'visits' => $visits->count(),
-            'winnings' => $visits->sum('price_paid'),
-        ];
+        return Visit::whereBetween('visit_at', [now()->startOfWeek(), now()->endOfWeek()])
+                    ->count();
     }
 
     /**
-     * Get the number and total paid of visits this week
+     * Get the number of visits this month
      *
-     * @return array<string, int>
+     * @return int
      */
     #[Computed]
     public function thisMonth()
     {
-        $visits = Visit::whereBetween('visit_at', [now()->startOfMonth(), now()->endOfMonth()]);
-
-        return [
-            'visits' => $visits->count(),
-            'winnings' => $visits->sum('price_paid'),
-        ];
+        return Visit::whereBetween('visit_at', [now()->startOfMonth(), now()->endOfMonth()])
+                    ->count();
     }
 
     /**
-     * Get the number and total paid of all visits
+     * Get the total number of visits
      *
-     * @return array<string, int>
+     * @return int
      */
     #[Computed]
     public function total()
     {
-        $visits = Visit::all();
-
-        return [
-            'visits' => $visits->count(),
-            'winnings' => $visits->sum('price_paid'),
-        ];
+        return Visit::count();
     }
 
     /**
