@@ -225,14 +225,105 @@
             <!-- Modal Body -->
             <form wire:submit.prevent="saveMembership">
               <div class="px-6 py-4 space-y-6">
-                {{-- Member  --}}
+                {{-- Member Search --}}
                 <flux:field>
                   <flux:label>Socio</flux:label>
-                  <flux:select wire:model="member_id" placeholder="Selecciona un socio">
-                    @foreach($members as $member)
-                      <flux:select.option value="{{ $member->id }}">{{ $member->name }}</flux:select.option>
-                    @endforeach
-                  </flux:select>
+
+                  @if($selectedMember)
+                    {{-- Selected member card --}}
+                    <div class="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                      <div class="flex items-center gap-3">
+                        <div class="h-14 w-14 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden shrink-0">
+                          @if($selectedMember->photo)
+                            <img
+                              src="{{ Storage::url($selectedMember->photo) }}"
+                              class="h-full w-full object-cover"
+                              alt="{{ $selectedMember->name }}"
+                            />
+                          @else
+                            <span class="text-sm font-semibold text-gray-600">
+                              {{ $selectedMember->initials() }}
+                            </span>
+                          @endif
+                        </div>
+                        <div>
+                          <p class="font-medium text-gray-800">{{ $selectedMember->name }}</p>
+                          <div class="flex items-center gap-0.5">
+                            <flux:icon icon="hashtag" variant="micro" class="text-gray-500" />
+                            <span class="text-sm text-gray-700">{{ $selectedMember->code }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button type="button" wire:click="clearSelectedMember" class="p-1 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
+                        <flux:icon icon="x-mark" variant="mini" />
+                      </button>
+                    </div>
+                  @else
+                    {{-- Search input with dropdown --}}
+                    <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                      <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                          </svg>
+                        </div>
+                        <input
+                          type="text"
+                          wire:model.live.debounce.300ms="memberSearch"
+                          @focus="open = true"
+                          @input="open = true"
+                          placeholder="Buscar por nombre o código..."
+                          autocomplete="off"
+                          class="block w-full pl-9 pr-3 py-2 text-sm border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500"
+                        />
+                      </div>
+
+                      {{-- Results dropdown --}}
+                      <div
+                        x-show="open && $wire.memberSearch.length > 0"
+                        x-transition:enter="transition ease-out duration-100"
+                        x-transition:enter-start="opacity-0 scale-95"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-95"
+                        class="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                      >
+                        @forelse($this->memberResults as $result)
+                          <button
+                            type="button"
+                            wire:key="member-result-{{ $result->id }}"
+                            wire:click="selectMember({{ $result->id }})"
+                            @click="open = false"
+                            class="w-full text-left px-3 py-2.5 hover:bg-gray-50 flex items-center gap-3 transition-colors cursor-pointer border-b border-gray-100 last:border-b-0"
+                          >
+                            <div class="h-14 w-14 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden shrink-0">
+                              @if($result->photo)
+                                <img src="{{ Storage::url($result->photo) }}" class="h-full w-full object-cover" alt="{{ $result->name }}" />
+                              @else
+                                <span class="text-sm font-semibold text-gray-600">
+                                  {{ $result->initials() }}
+                                </span>
+                              @endif
+                            </div>
+                            <div>
+                              <p class="font-medium text-gray-800">{{ $result->name }}</p>
+                              <div class="flex items-center gap-0.5">
+                                <flux:icon icon="hashtag" variant="micro" class="text-gray-500" />
+                                <span class="text-sm text-gray-700">{{ $result->code }}</span>
+                              </div>
+                            </div>
+                          </button>
+                        @empty
+                          <div class="px-3 py-4 text-sm text-gray-600 text-center">
+                            No se encontraron socios
+                          </div>
+                        @endforelse
+                      </div>
+                    </div>
+                  @endif
+
                   <flux:error name="member_id" />
                 </flux:field>
 

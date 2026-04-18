@@ -19,12 +19,12 @@
           {{ __('Dashboard') }}
         </flux:navlist.item>
 
-        <flux:navlist.item icon="credit-card" :href="route('memberships.index')" :current="request()->routeIs('memberships.index')" wire:navigate>
-          {{ __('Membresías') }}
-        </flux:navlist.item>
-
         <flux:navlist.item icon="users" :href="route('members.index')" :current="request()->routeIs('members.index')" wire:navigate>
           {{ __('Socios') }}
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="credit-card" :href="route('memberships.index')" :current="request()->routeIs('memberships.index')" wire:navigate>
+          {{ __('Membresías') }}
         </flux:navlist.item>
 
         <flux:navlist.item icon="calendar-days" :href="route('visits.index')" :current="request()->routeIs('visits.index')" wire:navigate>

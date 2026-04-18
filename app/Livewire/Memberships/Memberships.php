@@ -61,6 +61,16 @@ class Memberships extends Component
     public ?string $search = null;
 
     /**
+     * Member search input text
+     */
+    public string $memberSearch = '';
+
+    /**
+     * Selected member for new membership
+     */
+    public ?Member $selectedMember = null;
+
+    /**
      * Create-membership modal state
      */
     public bool $showCreateModal = false;
@@ -93,6 +103,45 @@ class Memberships extends Component
     {
         $this->statusFilter = null;
         $this->resetPage();
+    }
+
+    /**
+     * Get filtered member results for the autocomplete search
+     *
+     * @return \Illuminate\Support\Collection<Member>
+     */
+    #[Computed]
+    public function memberResults()
+    {
+        if (empty($this->memberSearch)) {
+            return collect([]);
+        }
+
+        return Member::where('name', 'like', '%' . $this->memberSearch . '%')
+                     ->orWhere('code', 'like', $this->memberSearch . '%')
+                     ->orderBy('name')
+                     ->limit(10)
+                     ->get();
+    }
+
+    /**
+     * Select a member from the search results
+     */
+    public function selectMember(Member $member)
+    {
+        $this->member_id = $member->id;
+        $this->selectedMember = $member;
+        $this->memberSearch = '';
+    }
+
+    /**
+     * Clear the selected member and allow searching again
+     */
+    public function clearSelectedMember()
+    {
+        $this->member_id = '';
+        $this->selectedMember = null;
+        $this->memberSearch = '';
     }
 
     /**
@@ -171,6 +220,8 @@ class Memberships extends Component
         $this->duration_id = '';
         $this->start_date = '';
         $this->durations = collect([]);
+        $this->memberSearch = '';
+        $this->selectedMember = null;
     }
 
     /**
@@ -255,8 +306,7 @@ class Memberships extends Component
     public function render()
     {
         $membershipTypes = MembershipType::all();
-        $members = Member::orderBy('name')->get();
 
-        return view('livewire.memberships.memberships', compact('members', 'membershipTypes'));
+        return view('livewire.memberships.memberships', compact('membershipTypes'));
     }
 }
