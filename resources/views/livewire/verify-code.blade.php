@@ -28,7 +28,6 @@
             placeholder="00000"
             class="block w-full text-center text-7xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-200 bg-transparent py-4 focus:ring-0 focus:border-indigo-600 transition-colors placeholder-gray-200 outline-none text-gray-900 "
             maxlength="5"
-            autofocus
             autocomplete="off"
           />
           <flux:error name="code" class="text-center text-lg!" />
@@ -151,6 +150,12 @@
 
   @script
     <script>
+      // Force focus on the code input every time this component initializes
+      const codeInput = document.getElementById('code');
+      if (codeInput) {
+        codeInput.focus();
+      }
+
       $wire.on('play-sound', (event) => {
         const status = event.status;
         const soundElement = document.getElementById(`sound-${status}`);
