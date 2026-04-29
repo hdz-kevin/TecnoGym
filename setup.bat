@@ -1,10 +1,10 @@
 @echo off
 chcp 65001 >nul
-title TecnoGym - Instalación
+title LocalDevGym - Instalación
 
 echo.
 echo ╔══════════════════════════════════════════╗
-echo ║       TecnoGym - Configuración          ║
+echo ║      LocalDevGym - Configuración         ║
 echo ╚══════════════════════════════════════════╝
 echo.
 
@@ -20,7 +20,7 @@ if %ERRORLEVEL% neq 0 (
 
 echo [1/7] Copiando configuración de producción...
 if not exist .env (
-    copy .env.production .env >nul
+    copy .env.prod .env >nul
     echo       OK
 ) else (
     echo       .env ya existe, saltando...
@@ -73,7 +73,7 @@ echo ║     ¡Instalación completada!            ║
 echo ╠══════════════════════════════════════════╣
 echo ║                                          ║
 echo ║  Abre tu navegador y ve a:               ║
-echo ║  http://tecnogym.test                    ║
+echo ║  http://LocalDevGym.test                    ║
 echo ║                                          ║
 echo ╚══════════════════════════════════════════╝
 echo.
@@ -83,18 +83,18 @@ echo ¿Deseas crear un acceso directo en el Escritorio? (S/N)
 set /p crear_acceso="> "
 if /i "%crear_acceso%"=="S" (
     echo Set objShell = CreateObject("WScript.Shell") > "%TEMP%\shortcut.vbs"
-    echo Set lnk = objShell.CreateShortcut(objShell.SpecialFolders("Desktop") ^& "\TecnoGym.lnk") >> "%TEMP%\shortcut.vbs"
+    echo Set lnk = objShell.CreateShortcut(objShell.SpecialFolders("Desktop") ^& "\LocalDevGym.lnk") >> "%TEMP%\shortcut.vbs"
 
     :: Intentar Chrome primero, luego Edge
     echo If CreateObject("Scripting.FileSystemObject").FileExists("C:\Program Files\Google\Chrome\Application\chrome.exe") Then >> "%TEMP%\shortcut.vbs"
     echo     lnk.TargetPath = "C:\Program Files\Google\Chrome\Application\chrome.exe" >> "%TEMP%\shortcut.vbs"
-    echo     lnk.Arguments = "--app=http://tecnogym.test --start-maximized" >> "%TEMP%\shortcut.vbs"
+    echo     lnk.Arguments = "--app=http://localdevgym.test --start-maximized" >> "%TEMP%\shortcut.vbs"
     echo Else >> "%TEMP%\shortcut.vbs"
     echo     lnk.TargetPath = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" >> "%TEMP%\shortcut.vbs"
-    echo     lnk.Arguments = "--app=http://tecnogym.test --start-maximized" >> "%TEMP%\shortcut.vbs"
+    echo     lnk.Arguments = "--app=http://localdevgym.test --start-maximized" >> "%TEMP%\shortcut.vbs"
     echo End If >> "%TEMP%\shortcut.vbs"
 
-    echo lnk.Description = "TecnoGym - Sistema de Gimnasio" >> "%TEMP%\shortcut.vbs"
+    echo lnk.Description = "LocalDevGym - Sistema de Gimnasio" >> "%TEMP%\shortcut.vbs"
     echo lnk.Save >> "%TEMP%\shortcut.vbs"
     cscript //nologo "%TEMP%\shortcut.vbs"
     del "%TEMP%\shortcut.vbs"
