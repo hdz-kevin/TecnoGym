@@ -13,4 +13,12 @@ class Product extends Model
         'stock',
         'is_active',
     ];
+
+    /**
+     * Get the sales details associated with the product.
+     */
+    public function productSales()
+    {
+        return $this->hasMany(ProductSale::class);
+    }
 }
