@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DurationSeeder::class,
             PeriodSeeder::class,
             VisitSeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }
