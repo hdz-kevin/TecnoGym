@@ -20,18 +20,6 @@ class ProductSeeder extends Seeder
                 'stock'       => 40,
             ],
             [
-                'name'        => 'Scoop de proteína sabor chocolate',
-                'price'       => 25,
-                'description' => null,
-                'stock'       => null,
-            ],
-            [
-                'name'        => 'Scoop de proteína sabor vainilla',
-                'price'       => 25,
-                'description' => null,
-                'stock'       => null,
-            ],
-            [
                 'name'        => 'Proteína Optimum Nutrition Gold Standard 500g',
                 'price'       => 550,
                 'description' => 'Proteína Whey Optimum Nutrition Gold Standard de 500g sabor chocolate',
@@ -56,9 +44,21 @@ class ProductSeeder extends Seeder
                 'stock'       => 15,
             ],
             [
-                'name'        => 'Barra proteica Quest Bar 21 g',
-                'price'       => 50,
+                'name'        => 'Scoop de proteína sabor chocolate',
+                'price'       => 25,
                 'description' => null,
+                'stock'       => null,
+            ],
+            [
+                'name'        => 'Scoop de proteína sabor vainilla',
+                'price'       => 25,
+                'description' => null,
+                'stock'       => null,
+            ],
+            [
+                'name'        => 'Barra proteica',
+                'price'       => 50,
+                'description' => 'Barra proteica Quest Bar 21 gramos',
                 'stock'       => 50,
             ],
             [
@@ -72,6 +72,7 @@ class ProductSeeder extends Seeder
                 'price'       => 280,
                 'description' => 'Aminoácidos de cadena ramificada (BCAA) en polvo, 200 gramos, sabor sandía',
                 'stock'       => 18,
+                'is_active'   => false,
             ],
         ]);
 
