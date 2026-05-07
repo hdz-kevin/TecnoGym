@@ -116,3 +116,48 @@ Records a single gym entry made by a person **without an active membership**. Si
 
 **Relations:**
 - `visit_type_id` → `visit_types.id` (Update: CASCADE, Delete: RESTRICT)
+
+---
+
+### Product
+Represents a product available for sale in the gym inventory.
+
+| Field       | Constraints | Description                   |
+|-------------|-------------|-------------------------------|
+| id          | PK          | Primary key                   |
+| name        |             | Product name                  |
+| price       |             | Current product price         |
+| description | NULL        | Optional product description  |
+| stock       | NULL        | Current available stock       |
+| is_active   |             | Product status (active or not)|
+
+---
+
+### Sale
+Represents a sale transaction. A sale can contain multiple products.
+
+| Field   | Constraints | Description                        |
+|---------|-------------|------------------------------------|
+| id      | PK          | Primary key                        |
+| total   |             | Total amount of the sale           |
+| sold_at |             | Timestamp of when the sale occurred|
+
+---
+
+### ProductSale
+Represents the intermediate entity connecting a Sale and a Product.
+It stores the price of the product at the time of the sale.
+
+| Field      | Constraints   | Description                                |
+|------------|---------------|--------------------------------------------|
+| id         | PK            | Primary key                                |
+| sale_id    | FK → Sale     | The sale this line belongs to              |
+| product_id | FK → Product  | The product being sold                     |
+| quantity   |               | Number of products sold                    |
+| unit_price |               | Product price at the time of sale          |
+| subtotal   |               | Total for this line (quantity * unit_price)|
+
+**Relations:**
+- `sale_id` → `sales.id` (Update: CASCADE, Delete: RESTRICT)
+- `product_id` → `products.id` (Update: CASCADE, Delete: RESTRICT)
+
