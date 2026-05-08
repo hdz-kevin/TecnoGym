@@ -20,6 +20,12 @@
     </div>
   </div>
 
+  <div class="flex justify-end mt-7">
+    <flux:button variant="primary" icon="plus" wire:click="create">
+      Nuevo Producto
+    </flux:button>
+  </div>
+
   <!-- Products List -->
   @if ($this->products->isEmpty())
     <div class="text-center py-20 bg-white rounded-lg border border-gray-200">
@@ -89,6 +95,91 @@
     <!-- Pagination -->
     <div class="mt-8">
       {{ $this->products->links('pagination.custom') }}
+    </div>
+  @endif
+
+  <!-- Create Product Modal -->
+  @if ($showFormModal)
+    <div class="fixed inset-0 m-0 bg-gray-900/50 backdrop-blur-sm transition-opacity z-50" wire:click="closeModal">
+      <div class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl"
+            wire:click.stop>
+
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h3 class="text-lg font-medium text-gray-900">
+                Nuevo Producto
+              </h3>
+            </div>
+
+            <form wire:submit.prevent="saveProduct">
+              <!-- Modal Body -->
+              <div class="px-6 py-4 space-y-5">
+                <!-- Name -->
+                <flux:field>
+                  <flux:label for="name">Nombre</flux:label>
+                  <flux:input wire:model="name" id="name" placeholder="Nombre del producto" />
+                  <flux:error name="name" />
+                </flux:field>
+
+                <!-- Price -->
+                <flux:field>
+                  <flux:label for="price">Precio</flux:label>
+                  <flux:input wire:model="price" id="price" type="number" step="0.01" min="0" placeholder="Precio del producto" />
+                  <flux:error name="price" />
+                </flux:field>
+
+                <!-- Description -->
+                <flux:field>
+                  <flux:label for="description">Descripción <span class="text-gray-500 font-normal ml-1"> (opcional)</span></flux:label>
+                  <flux:input wire:model="description" id="description" placeholder="Descripción del producto" />
+                  <flux:error name="description" />
+                </flux:field>
+
+                <!-- Stock -->
+                <flux:field>
+                  <flux:label for="stock">Stock <span class="text-gray-500 font-normal ml-1"> (opcional)</span></flux:label>
+                  <flux:input wire:model="stock" id="stock" type="number" min="0" step="1" placeholder="Stock disponible" />
+                  <flux:error name="stock" />
+                </flux:field>
+              </div>
+
+              <!-- Modal Footer -->
+              <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
+                <flux:button variant="ghost" wire:click="closeModal">Cancelar</flux:button>
+                <flux:button type="submit" variant="primary">Guardar</flux:button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
+
+  <!-- Flash Messages -->
+  @if (session()->has('message'))
+    <div
+      class="fixed font-medium top-5 right-5 bg-green-50 text-green-800 border border-green-300 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      wire:key="{{ Str::random() }}"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
+      {{ session('message') }}
+    </div>
+  @endif
+
+  @if (session()->has('error'))
+    <div
+      class="fixed font-medium top-5 right-5 bg-red-50 text-red-800 border border-red-300 px-6 py-2.5 rounded-lg shadow-lg z-50"
+      wire:key="{{ Str::random() }}"
+      x-data="{ show: true }"
+      x-show="show"
+      x-init="setTimeout(() => show = false, 3 * 1000)"
+    >
+      {{ session('error') }}
     </div>
   @endif
 </div>
