@@ -53,6 +53,9 @@
               <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
                 Estado
               </th>
+              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
+                Acciones
+              </th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
@@ -85,6 +88,12 @@
                     </span>
                   @endif
                 </td>
+                {{-- Actions --}}
+                <td class="px-6 py-5 whitespace-nowrap text-right">
+                  <flux:button size="sm" variant="outline" wire:click="edit({{ $product->id }})">
+                    Editar
+                  </flux:button>
+                </td>
               </tr>
             @endforeach
           </tbody>
@@ -110,7 +119,7 @@
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-gray-200">
               <h3 class="text-lg font-medium text-gray-900">
-                Nuevo Producto
+                {{ $editingProduct ? 'Editar Producto' : 'Nuevo Producto' }}
               </h3>
             </div>
 
@@ -144,12 +153,22 @@
                   <flux:input wire:model="stock" id="stock" type="number" min="0" step="1" placeholder="Stock disponible" />
                   <flux:error name="stock" />
                 </flux:field>
+
+                <!-- Estado -->
+                <flux:field>
+                  <flux:label>Estado</flux:label>
+                  <label class="inline-flex items-center gap-3 cursor-pointer" x-init="console.log($wire.is_active)">
+                    <input type="checkbox" wire:model="is_active" class="sr-only peer" />
+                    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <span class="text-sm font-medium text-gray-700" x-text="$wire.is_active ? 'Activo' : 'Inactivo'"></span>
+                  </label>
+                </flux:field>
               </div>
 
               <!-- Modal Footer -->
               <div class="flex items-center justify-end gap-3 px-6 py-4 bg-gray-50">
                 <flux:button variant="ghost" wire:click="closeModal">Cancelar</flux:button>
-                <flux:button type="submit" variant="primary">Guardar</flux:button>
+                <flux:button type="submit" variant="primary">{{ $editingProduct ? 'Guardar cambios' : 'Guardar' }}</flux:button>
               </div>
             </form>
           </div>

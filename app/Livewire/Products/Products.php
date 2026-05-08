@@ -36,8 +36,14 @@ class Products extends Component
     #[Rule('min:0', message: 'El stock no puede ser negativo')]
     public $stock = null;
 
+    #[Rule('boolean')]
+    public bool $is_active = true;
+
     /** Modal state */
     public $showFormModal = false;
+
+    /** Editing product instance or null (no editing by default) */
+    public Product|null $editingProduct = null;
 
     /**
      * Get all products
@@ -88,20 +94,44 @@ class Products extends Component
      */
     public function create()
     {
+        $this->editingProduct = null;
+        $this->is_active = true;
         $this->showFormModal = true;
     }
 
     /**
-     * Save a new product.
+     * Show the edit product modal.
+     */
+    public function edit(Product $product)
+    {
+        $this->editingProduct = $product;
+
+        $this->name = $product->name;
+        $this->price = $product->price;
+        $this->description = $product->description;
+        $this->stock = $product->stock;
+        $this->is_active = $product->is_active;
+
+        $this->showFormModal = true;
+    }
+
+    /**
+     * Save a new product or update an existing one.
      */
     public function saveProduct()
     {
         $validated = $this->validate();
 
-        Product::create($validated);
+        if ($this->editingProduct) {
+            $this->editingProduct->update($validated);
+            $flashMsg = 'Producto actualizado exitosamente';
+        } else {
+            Product::create($validated);
+            $flashMsg = 'Producto creado exitosamente';
+        }
 
         $this->closeModal();
-        session()->flash('message', 'Producto creado exitosamente');
+        session()->flash('message', $flashMsg);
     }
 
     /**
@@ -110,6 +140,7 @@ class Products extends Component
     public function closeModal()
     {
         $this->showFormModal = false;
+        $this->editingProduct = null;
         $this->resetForm();
         $this->resetValidation();
     }
@@ -123,6 +154,7 @@ class Products extends Component
         $this->price = '';
         $this->description = null;
         $this->stock = null;
+        $this->is_active = true;
     }
 
     /**
