@@ -65,7 +65,7 @@
                 <td class="pl-6 py-5">
                   <div class="font-medium text-lg text-gray-800">{{ $product->name }}</div>
                   @if ($product->description)
-                    <div class="text-gray-700 mt-1.5">{{ $product->description }}</div>
+                    <div class="mt-2 text-gray-700">{{ $product->description }}</div>
                   @endif
                 </td>
                 {{-- Price --}}
@@ -74,7 +74,13 @@
                 </td>
                 {{-- Stock --}}
                 <td class="px-6 py-5 whitespace-nowrap text-center">
-                  <span class="font-medium text-lg text-gray-800">{{ $product->stock ?? '—' }}</span>
+                  @if ($product->stock === 0)
+                    <span class="font-medium text-base text-red-700">Agotado</span>
+                  @else 
+                    <span class="font-medium text-gray-800 {{ $product->stock != null ? 'text-lg' : ''  }}">
+                      {{ $product->stock ?? 'No definido' }}
+                    </span>
+                  @endif
                 </td>
                 {{-- Status --}}
                 <td class="px-6 py-5 whitespace-nowrap text-right">

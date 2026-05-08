@@ -34,7 +34,7 @@ class Products extends Component
     #[Rule('nullable')]
     #[Rule('integer', message: 'El stock debe ser un número entero')]
     #[Rule('min:0', message: 'El stock no puede ser negativo')]
-    public $stock = null;
+    public int|null $stock = null;
 
     #[Rule('boolean')]
     public bool $is_active = true;
