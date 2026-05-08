@@ -1,29 +1,57 @@
 <x-slot:title>Productos</x-slot:title>
 <x-slot:subtitle>Inventario de productos</x-slot:subtitle>
 
-<div class="space-y-6">
+<div class="space-y-8">
   <!-- Stats Cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $statusFilter === null ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-300' }}"
+      wire:click="setStatusFilter(null)"
+    >
       <div class="font-medium text-gray-500">Total</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->totalProducts }}</div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $statusFilter === 'active' ? 'border-green-300 ring-1 ring-green-200' : 'border-gray-300' }}"
+      wire:click="setStatusFilter('active')"
+    >
       <div class="font-medium text-gray-500">Activos</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->activeProducts }}</div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $statusFilter === 'inactive' ? 'border-gray-400 ring-1 ring-gray-300' : 'border-gray-300' }}"
+      wire:click="setStatusFilter('inactive')"
+    >
       <div class="font-medium text-gray-500">Inactivos</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->inactiveProducts }}</div>
     </div>
   </div>
 
-  <div class="flex justify-end mt-7">
-    <flux:button variant="primary" icon="plus" wire:click="create">
-      Nuevo Producto
-    </flux:button>
+  <!-- Search and Actions -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div class="flex-1 max-w-3xl">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+        <input type="text" placeholder="Buscar por nombre..."
+          wire:model.live.debounce.300ms="search"
+          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600" />
+      </div>
+    </div>
+    <div>
+      <flux:button variant="primary" icon="plus" wire:click="create">
+        Nuevo Producto
+      </flux:button>
+    </div>
   </div>
 
   <!-- Products List -->
@@ -32,8 +60,13 @@
       <div class="text-gray-400 mb-3">
         <flux:icon icon="cube" class="mx-auto h-12 w-12" />
       </div>
-      <h3 class="mt-2 font-medium text-gray-900">No hay productos registrados</h3>
-      <p class="mt-1.5 text-sm text-gray-600">Comienza agregando un nuevo producto.</p>
+      @if ($statusFilter || $search)
+        <h3 class="mt-2 font-medium text-lg text-gray-800">No hay resultados</h3>
+        <p class="mt-1.5 text-gray-600">No hay productos que coincidan con tu búsqueda.</p>
+      @else
+        <h3 class="mt-2 font-medium text-lg text-gray-800">No hay productos registrados</h3>
+        <p class="mt-1.5 text-gray-600">Comienza agregando un nuevo producto.</p>
+      @endif
     </div>
   @else
     <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
@@ -75,7 +108,7 @@
                 {{-- Stock --}}
                 <td class="px-6 py-5 whitespace-nowrap text-center">
                   @if ($product->stock === 0)
-                    <span class="font-medium text-base text-red-700">Agotado</span>
+                    <span class="font-medium text-base {{ $product->is_active ? 'text-red-700' : 'text-gray-800'  }}">Agotado</span>
                   @else 
                     <span class="font-medium text-gray-800 {{ $product->stock != null ? 'text-lg' : ''  }}">
                       {{ $product->stock ?? 'No definido' }}

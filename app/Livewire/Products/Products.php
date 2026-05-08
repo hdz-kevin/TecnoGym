@@ -34,7 +34,7 @@ class Products extends Component
     #[Rule('nullable')]
     #[Rule('integer', message: 'El stock debe ser un número entero')]
     #[Rule('min:0', message: 'El stock no puede ser negativo')]
-    public int|null $stock = null;
+    public ?int $stock = null;
 
     #[Rule('boolean')]
     public bool $is_active = true;
@@ -43,17 +43,50 @@ class Products extends Component
     public $showFormModal = false;
 
     /** Editing product instance or null (no editing by default) */
-    public Product|null $editingProduct = null;
+    public ?Product $editingProduct = null;
+
+    /** Current status filter: 'active', 'inactive', or null (all) */
+    public ?string $statusFilter = null;
+
+    /** Product search by name */
+    public string $search = '';
 
     /**
-     * Get all products
+     * Update product status filter
+     */
+    public function setStatusFilter(?string $status = null)
+    {
+        $this->statusFilter = $status;
+        $this->search = '';
+        $this->resetPage();
+    }
+
+    /**
+     * Reset status filter when searching
+     */
+    public function updatedSearch()
+    {
+        $this->statusFilter = null;
+        $this->resetPage();
+    }
+
+    /**
+     * Get filtered products
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     #[Computed]
     public function products()
     {
-        return Product::paginate(15);
+        return Product::query()
+            ->when($this->statusFilter, function ($query) {
+                $query->where('is_active', $this->statusFilter === 'active');
+            })
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10);
     }
 
     /**

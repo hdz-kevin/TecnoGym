@@ -20,9 +20,9 @@ class ProductSeeder extends Seeder
                 'stock'       => 40,
             ],
             [
-                'name'        => 'Proteína Optimum Nutrition Gold Standard 500g',
+                'name'        => 'Proteína Optimum Gold Standard 500g',
                 'price'       => 550,
-                'description' => 'Proteína Whey Optimum Nutrition Gold Standard de 500g sabor chocolate',
+                'description' => 'Proteína Whey Optimum Gold Standard de 500g sabor chocolate',
                 'stock'       => 12,
             ],
             [
@@ -32,28 +32,35 @@ class ProductSeeder extends Seeder
                 'stock'       => 10,
             ],
             [
-                'name'        => 'Creatina Monohidratada 300g',
-                'price'       => 320,
-                'description' => null,
-                'stock'       => 20,
-            ],
-            [
                 'name'        => 'Pre-entreno C4 Original 30 servicios',
                 'price'       => 450,
                 'description' => 'Pre-entreno Cellucor C4 Original, 30 servicios, sabor fruit punch.',
-                'stock'       => 15,
+                'stock'       => 0,
+            ],
+            [
+                'name'        => 'Creatina Monohidratada 300g',
+                'price'       => 320,
+                'description' => 'Creatina Monohidratada Micronizada 300g sabor neutro',
+                'stock'       => 20,
             ],
             [
                 'name'        => 'Scoop de proteína sabor chocolate',
                 'price'       => 25,
                 'description' => null,
-                'stock'       => null,
+                'stock'       => 20,
             ],
             [
                 'name'        => 'Scoop de proteína sabor vainilla',
                 'price'       => 25,
                 'description' => null,
-                'stock'       => null,
+                'stock'       => 44,
+            ],
+            [
+                'name'        => 'Bebida energética Monster 473ml',
+                'price'       => 40,
+                'description' => null,
+                'stock'       => 0,
+                'is_active'   => false,
             ],
             [
                 'name'        => 'Barra proteica',
@@ -62,20 +69,14 @@ class ProductSeeder extends Seeder
                 'stock'       => 50,
             ],
             [
-                'name'        => 'Bebida energética Monster 473ml',
-                'price'       => 40,
-                'description' => null,
-                'stock'       => 36,
-            ],
-            [
                 'name'        => 'BCAA Aminoácidos en polvo 200g',
                 'price'       => 280,
                 'description' => 'Aminoácidos de cadena ramificada (BCAA) en polvo, 200 gramos, sabor sandía',
-                'stock'       => 18,
+                'stock'       => 2,
                 'is_active'   => false,
             ],
         ]);
 
-        $products->each(fn ($product) => Product::create($product));
+        $products->reverse()->each(fn ($product) => Product::create($product));
     }
 }
