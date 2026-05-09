@@ -5,7 +5,7 @@ use App\Livewire\Members\Members;
 use App\Livewire\Memberships\Memberships;
 use App\Livewire\Prices\Memberships as PricesMemberships;
 use App\Livewire\Prices\Visits as PricesVisits;
-use App\Livewire\Products\Products;
+use App\Livewire\Store\Products;
 use App\Livewire\VerifyCode;
 use App\Livewire\Visits;
 use Illuminate\Support\Facades\Route;
