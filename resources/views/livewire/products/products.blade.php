@@ -96,21 +96,21 @@
               <tr wire:key="{{ $product->id }}">
                 {{-- Name & Description --}}
                 <td class="pl-6 py-5">
-                  <div class="font-medium text-lg text-gray-800">{{ $product->name }}</div>
+                  <div class="font-medium text-lg {{ $product->is_active ? 'text-gray-800' : 'text-gray-500' }}">{{ $product->name }}</div>
                   @if ($product->description)
-                    <div class="mt-2 text-gray-700">{{ $product->description }}</div>
+                    <div class="mt-2 {{ $product->is_active ? 'text-gray-700' : 'text-gray-500' }}">{{ $product->description }}</div>
                   @endif
                 </td>
                 {{-- Price --}}
                 <td class="px-6 py-5 whitespace-nowrap text-left">
-                  <span class="font-medium text-lg text-gray-800">${{ number_format($product->price, 2) }}</span>
+                  <span class="font-medium text-lg {{ $product->is_active ? 'text-gray-800' : 'text-gray-500' }}">${{ number_format($product->price, 2) }}</span>
                 </td>
                 {{-- Stock --}}
                 <td class="px-6 py-5 whitespace-nowrap text-center">
                   @if ($product->stock === 0)
-                    <span class="font-medium text-base {{ $product->is_active ? 'text-red-700' : 'text-gray-800'  }}">Agotado</span>
+                    <span class="font-medium text-base {{ $product->is_active ? 'text-red-700' : 'text-gray-500' }}">Agotado</span>
                   @else 
-                    <span class="font-medium text-gray-800 {{ $product->stock != null ? 'text-lg' : ''  }}">
+                    <span class="font-medium {{ $product->is_active ? 'text-gray-800' : 'text-gray-500' }} {{ $product->stock != null ? 'text-lg' : ''  }}">
                       {{ $product->stock ?? 'No definido' }}
                     </span>
                   @endif

@@ -32,28 +32,28 @@ class ProductSeeder extends Seeder
                 'stock'       => 10,
             ],
             [
-                'name'        => 'Pre-entreno C4 Original 30 servicios',
+                'name'        => 'Pre entreno C4 Original 30 servicios',
                 'price'       => 450,
                 'description' => 'Pre-entreno Cellucor C4 Original, 30 servicios, sabor fruit punch.',
                 'stock'       => 0,
+            ],
+            [
+                'name'        => 'Scoop de proteína sabor chocolate',
+                'price'       => 25,
+                'description' => null,
+                'stock'       => null,
+            ],
+            [
+                'name'        => 'Scoop de proteína sabor vainilla',
+                'price'       => 25,
+                'description' => null,
+                'stock'       => null,
             ],
             [
                 'name'        => 'Creatina Monohidratada 300g',
                 'price'       => 320,
                 'description' => 'Creatina Monohidratada Micronizada 300g sabor neutro',
                 'stock'       => 20,
-            ],
-            [
-                'name'        => 'Scoop de proteína sabor chocolate',
-                'price'       => 25,
-                'description' => null,
-                'stock'       => 20,
-            ],
-            [
-                'name'        => 'Scoop de proteína sabor vainilla',
-                'price'       => 25,
-                'description' => null,
-                'stock'       => 44,
             ],
             [
                 'name'        => 'Bebida energética Monster 473ml',
