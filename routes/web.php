@@ -6,6 +6,7 @@ use App\Livewire\Memberships\Memberships;
 use App\Livewire\Prices\Memberships as PricesMemberships;
 use App\Livewire\Prices\Visits as PricesVisits;
 use App\Livewire\Store\Products;
+use App\Livewire\Store\Sales;
 use App\Livewire\VerifyCode;
 use App\Livewire\Visits;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/visits', Visits::class)->name('visits.index');
     Route::get('/verify-code', VerifyCode::class)->name('verify-code');
     Route::get('/products', Products::class)->name('products.index');
+    Route::get('/sales', Sales::class)->name('sales.index');
 
     Route::get('/prices/memberships', PricesMemberships::class)->name('prices.memberships');
     Route::get('/prices/visits', PricesVisits::class)->name('prices.visits');

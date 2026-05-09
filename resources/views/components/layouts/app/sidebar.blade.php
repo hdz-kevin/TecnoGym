@@ -50,6 +50,10 @@
         <flux:navlist.item icon="cube" :href="route('products.index')" :current="request()->routeIs('products.index')" wire:navigate>
           {{ __('Productos') }}
         </flux:navlist.item>
+
+        <flux:navlist.item icon="shopping-bag" :href="route('sales.index')" :current="request()->routeIs('sales.index')" wire:navigate>
+          {{ __('Ventas') }}
+        </flux:navlist.item>
       </flux:navlist.group>
     </flux:navlist>
   </flux:sidebar>
