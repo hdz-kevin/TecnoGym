@@ -50,9 +50,7 @@ class Visits extends Component
     #[Computed]
     public function visits()
     {
-        return Visit::with('visitType')
-                    ->orderBy('visit_at', 'desc')
-                    ->paginate(8);
+        return Visit::orderBy('visit_at', 'desc')->paginate(8);
     }
 
     /**

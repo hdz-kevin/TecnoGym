@@ -59,9 +59,6 @@
                 Precio
               </th>
               <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
-                Tipo de Visita
-              </th>
-              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
                 Acciones
               </th>
             </tr>
@@ -70,41 +67,39 @@
             @foreach ($this->visits as $visit)
               <tr wire:key="{{ $visit->id }}">
                 {{-- DateTime --}}
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex flex-row gap-2 font-medium text-gray-800">
+                <td class="px-6 py-5 whitespace-nowrap">
+                  <div class="flex flex-col gap-2 font-medium text-gray-800">
                     <span>
-                      {{ $visit->formatted_visit_at }}
+                      {{ $visit->formatted_date }}
+                    </span>
+                    <span>
+                      {{ $visit->formatted_time }}
                     </span>
                   </div>
                 </td>
                 {{-- Price --}}
-                <td class="px-6 py-4 whitespace-nowrap text-left">
-                  <span class="font-medium text-gray-800">${{ number_format($visit->price_paid) }}</span>
-                </td>
-                {{-- Visit Type --}}
-                <td class="px-6 py-4 whitespace-nowrap text-right">
-                  <span class="font-medium text-gray-800 text-sm uppercase tracking-wide">
-                    {{ $visit->visitType->name }}
-                  </span>
+                <td class="px-6 py-5 whitespace-nowrap text-left">
+                  <span class="font-medium text-gray-800">${{ number_format($visit->price, 2) }}</span>
                 </td>
                 {{-- Actions --}}
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex items-center justify-end gap-2">
                     <flux:button
                       variant="ghost"
                       size="sm"
-                      icon="pencil-square"
-                      class="text-indigo-700!"
                       wire:click="edit({{ $visit->id }})"
-                    />
+                    >
+                      Editar
+                    </flux:button>
+
                     <flux:button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      icon="trash"
-                      class="text-red-700!"
                       wire:click="delete({{ $visit->id }})"
                       wire:confirm="¿Seguro que deseas eliminar esta visita?"
-                    />
+                    >
+                      Eliminar
+                    </flux:button>
                   </div>
                 </td>
               </tr>

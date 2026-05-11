@@ -20,16 +20,27 @@ class Visit extends Model
     ];
 
     /**
-     * Get the formatted visit at attribute.
+     * Get the formatted date attribute.
      *
      * @return string
      */
-    public function getFormattedVisitAtAttribute()
+    public function getFormattedDateAttribute()
     {
         $formatted = Carbon::parse($this->visit_at)
                            ->locale('es')
-                           ->translatedFormat('l j F, h:i a');
+                           ->translatedFormat('l j \d\e F Y');
 
         return ucfirst($formatted);
     }
+
+    /**
+     * Get the formatted time attribute.
+     *
+     * @return string
+     */
+    public function getFormattedTimeAttribute()
+    {
+        return Carbon::parse($this->visit_at)->format('h:i A');
+    }
+
 }
