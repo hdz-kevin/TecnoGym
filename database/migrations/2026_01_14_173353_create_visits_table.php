@@ -14,9 +14,8 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(VisitType::class)->constrained()->onDelete('restrict');
             $table->dateTime('visit_at');
-            $table->integer('price_paid');
+            $table->integer('price');
             $table->timestamps();
         });
     }
