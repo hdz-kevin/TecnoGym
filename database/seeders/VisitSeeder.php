@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Visit;
-use App\Models\VisitType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,14 +13,13 @@ class VisitSeeder extends Seeder
      */
     public function run(): void
     {
-        $visitType = VisitType::create([
-            'name' => 'General',
-            'price' => 40,
-        ]);
-
-        Visit::factory(15)->create([
-            'visit_type_id' => $visitType->id,
-            'price_paid' => $visitType->price,
-        ]);
+        Visit::factory(45)
+            ->create()
+            ->each(function (Visit $visit) {
+                Visit::withoutTimestamps(fn () => $visit->update([
+                    'created_at' => $visit->visit_at,
+                    'updated_at' => $visit->visit_at,
+                ]));
+            });
     }
 }

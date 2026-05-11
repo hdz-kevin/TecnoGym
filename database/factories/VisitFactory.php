@@ -17,8 +17,8 @@ class VisitFactory extends Factory
     public function definition(): array
     {
         return [
-            'visit_at' => fake()->dateTimeBetween('-1 month', 'now'),
-            'price_paid' => 40,
+            'visit_at' => fake()->dateTimeBetween('-1 month', 'tomorrow'),
+            'price' => 40,
         ];
     }
 }
