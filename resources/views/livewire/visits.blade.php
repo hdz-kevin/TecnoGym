@@ -1,32 +1,62 @@
 <x-slot:title>Visitas</x-slot:title>
 <x-slot:subtitle>Registro y control de visitas</x-slot:subtitle>
 
-<div class="space-y-6">
+<div class="space-y-8">
   <!-- Stats Cards -->
-   <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $dateFilter === 'today' ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-300' }}"
+      wire:click="setDateFilter('today')"
+    >
       <div class="font-medium text-gray-500">Hoy</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->today }}</div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $dateFilter === 'week' ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-300' }}"
+      wire:click="setDateFilter('week')"
+    >
       <div class="font-medium text-gray-500">Esta semana</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisWeek }}</div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $dateFilter === 'month' ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-300' }}"
+      wire:click="setDateFilter('month')"
+    >
       <div class="font-medium text-gray-500">Este mes</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisMonth }}</div>
     </div>
 
-    <div class="bg-white py-4 px-5 rounded-lg border border-gray-200 shadow-sm">
+    <div
+      class="bg-white py-4 px-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer
+        {{ $dateFilter === 'all' ? 'border-blue-300 ring-1 ring-blue-200' : 'border-gray-300' }}"
+      wire:click="setDateFilter('all')"
+    >
       <div class="font-medium text-gray-500">Total</div>
       <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->total }}</div>
     </div>
   </div>
   
-  <!-- Action Bar -->
-  <div class="flex justify-end">
+  <!-- Search & Action Bar -->
+  <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div class="flex-1 max-w-3xl">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </div>
+        <input type="date" placeholder="Buscar por fecha..."
+          wire:model.live.debounce.300ms="search"
+          class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600" />
+      </div>
+    </div>
+
     <flux:button variant="primary" icon="plus" wire:click="create">
       Registrar Visita
     </flux:button>
@@ -38,13 +68,13 @@
       <div class="text-gray-400 mb-3">
         <flux:icon icon="calendar-days" class="mx-auto h-12 w-12" />
       </div>
-      <h3 class="mt-2 font-medium text-gray-900">No hay visitas registradas</h3>
-      <p class="mt-1.5 text-sm text-gray-600">Comienza registrando una nueva visita.</p>
-      <div class="mt-6">
-        <flux:button variant="primary" icon="plus" wire:click="create">
-          Registrar Visita
-        </flux:button>
-      </div>
+      @if ($this->total > 0)
+        <h3 class="mt-2 font-medium text-gray-800">No hay resultados</h3>
+        <p class="mt-1.5 text-gray-700">No hay visitas que coincidan con tu búsqueda.</p>
+      @else
+        <h3 class="mt-2 font-medium text-gray-800">No hay visitas registradas</h3>
+        <p class="mt-1.5 text-gray-700">Comienza registrando una primer visita.</p>
+      @endif
     </div>
   @else
     <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
@@ -59,9 +89,6 @@
                 Precio
               </th>
               <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
-                Tipo de Visita
-              </th>
-              <th scope="col" class="px-6 py-3 text-right font-medium text-gray-700">
                 Acciones
               </th>
             </tr>
@@ -70,41 +97,39 @@
             @foreach ($this->visits as $visit)
               <tr wire:key="{{ $visit->id }}">
                 {{-- DateTime --}}
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex flex-row gap-2 font-medium text-gray-800">
+                <td class="px-6 py-5 whitespace-nowrap">
+                  <div class="flex flex-col gap-2 font-medium text-gray-800">
                     <span>
-                      {{ $visit->formatted_visit_at }}
+                      {{ $visit->formatted_date }}
+                    </span>
+                    <span>
+                      {{ $visit->formatted_time }}
                     </span>
                   </div>
                 </td>
                 {{-- Price --}}
-                <td class="px-6 py-4 whitespace-nowrap text-left">
-                  <span class="font-medium text-gray-800">${{ number_format($visit->price_paid) }}</span>
-                </td>
-                {{-- Visit Type --}}
-                <td class="px-6 py-4 whitespace-nowrap text-right">
-                  <span class="font-medium text-gray-800 text-sm uppercase tracking-wide">
-                    {{ $visit->visitType->name }}
-                  </span>
+                <td class="px-6 py-5 whitespace-nowrap text-left">
+                  <span class="font-medium text-gray-800">${{ number_format($visit->price, 2) }}</span>
                 </td>
                 {{-- Actions --}}
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex items-center justify-end gap-2">
                     <flux:button
                       variant="ghost"
                       size="sm"
-                      icon="pencil-square"
-                      class="text-indigo-700!"
                       wire:click="edit({{ $visit->id }})"
-                    />
+                    >
+                      Editar
+                    </flux:button>
+
                     <flux:button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
-                      icon="trash"
-                      class="text-red-700!"
                       wire:click="delete({{ $visit->id }})"
                       wire:confirm="¿Seguro que deseas eliminar esta visita?"
-                    />
+                    >
+                      Eliminar
+                    </flux:button>
                   </div>
                 </td>
               </tr>
@@ -137,17 +162,6 @@
 
             <form wire:submit.prevent="save">
               <div class="px-6 py-4 pt-5 space-y-4">
-                <!-- Visit Type -->
-                <flux:field>
-                  <flux:label>Tipo de Visita</flux:label>
-                  <flux:select wire:model.live="visit_type_id" placeholder="Selecciona un tipo">
-                    @foreach ($this->visitTypes as $type)
-                      <flux:select.option value="{{ $type->id }}">{{ $type->name }}</flux:select.option>
-                    @endforeach
-                  </flux:select>
-                  <flux:error name="visit_type_id" />
-                </flux:field>
-
                 <div class="grid grid-cols-2 gap-4">
                   <!-- Date -->
                   <flux:field>
@@ -166,9 +180,9 @@
 
                 <!-- Price -->
                 <flux:field>
-                  <flux:label>Precio Pagado</flux:label>
-                  <flux:input type="number" step="0.01" wire:model="price_paid" prefix="$" />
-                  <flux:error name="price_paid" />
+                  <flux:label>Precio</flux:label>
+                  <flux:input type="number" wire:model="price" />
+                  <flux:error name="price" />
                 </flux:field>
               </div>
 

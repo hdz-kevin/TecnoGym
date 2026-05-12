@@ -5,16 +5,14 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Visit extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'visit_type_id',
         'visit_at',
-        'price_paid',
+        'price',
     ];
 
     protected $casts = [
@@ -22,24 +20,27 @@ class Visit extends Model
     ];
 
     /**
-     * Get the visit type associated with the visit.
-     */
-    public function visitType(): BelongsTo
-    {
-        return $this->belongsTo(VisitType::class);
-    }
-
-    /**
-     * Get the formatted visit at attribute.
+     * Get the formatted date attribute.
      *
      * @return string
      */
-    public function getFormattedVisitAtAttribute()
+    public function getFormattedDateAttribute()
     {
         $formatted = Carbon::parse($this->visit_at)
                            ->locale('es')
-                           ->translatedFormat('l j F, h:i a');
+                           ->translatedFormat('l j \d\e F Y');
 
         return ucfirst($formatted);
     }
+
+    /**
+     * Get the formatted time attribute.
+     *
+     * @return string
+     */
+    public function getFormattedTimeAttribute()
+    {
+        return Carbon::parse($this->visit_at)->format('h:i A');
+    }
+
 }

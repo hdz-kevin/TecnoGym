@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Visit;
-use App\Models\VisitType;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -17,10 +16,6 @@ class Visits extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    #[Validate('required', message: 'Elige un tipo de visita')]
-    #[Validate('exists:visit_types,id', message: 'Elige un tipo de visita válido')]
-    public $visit_type_id;
-
     #[Validate('required', message: 'La fecha es obligatoria')]
     #[Validate('date', message: 'La fecha debe ser una fecha válida')]
     public $visit_date;
@@ -31,7 +26,7 @@ class Visits extends Component
 
     #[Validate('required', message: 'El precio es obligatorio')]
     #[Validate('numeric', message: 'El precio debe ser un número')]
-    public $price_paid;
+    public $price;
 
     /** Visit date and time */
     public ?Carbon $visit_at = null;
@@ -43,27 +38,57 @@ class Visits extends Component
     public ?Visit $editingVisit = null;
 
     /**
-     * Get the visits ordered by visit_at desc
+     * Default price for new visits
+     */
+    public int $defaultPrice = 40;
+
+    /** Date filter: 'today', 'week', 'month', 'all' */
+    public string $dateFilter = 'today';
+
+    /** Search by date */
+    public string $search = '';
+
+    /**
+     * Set the date filter and reset pagination
+     */
+    public function setDateFilter(string $filter)
+    {
+        $this->dateFilter = $filter;
+        $this->search = '';
+        $this->resetPage();
+    }
+
+    /**
+     * Reset date filter when searching by date
+     */
+    public function updatedSearch()
+    {
+        $this->dateFilter = 'all';
+        $this->resetPage();
+    }
+
+    /**
+     * Get all visits filtered by date and ordered by visit_at desc
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     #[Computed]
     public function visits()
     {
-        return Visit::with('visitType')
-                    ->orderBy('visit_at', 'desc')
-                    ->paginate(8);
-    }
-
-    /**
-     * Cached visit types
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    #[Computed]
-    public function visitTypes()
-    {
-        return VisitType::all();
+        return Visit::query()
+            ->when($this->dateFilter, function ($query) {
+                match ($this->dateFilter) {
+                    'today' => $query->whereDate('visit_at', Carbon::today()),
+                    'week'  => $query->whereBetween('visit_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]),
+                    'month' => $query->whereBetween('visit_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]),
+                    default => null,
+                };
+            })
+            ->when($this->search, function ($query) {
+                $query->whereDate('visit_at', $this->search);
+            })
+            ->orderBy('visit_at', 'desc')
+            ->paginate(6);
     }
 
     /**
@@ -77,12 +102,7 @@ class Visits extends Component
         $this->visit_at = Carbon::now();
         $this->visit_date = $this->visit_at->format('Y-m-d');
         $this->visit_time = $this->visit_at->format('H:i');
-
-        // Set first visit type id and price
-        if ($firstType = $this->visitTypes()->first()) {
-            $this->visit_type_id = $firstType->id;
-            $this->price_paid = $firstType->price;
-        }
+        $this->price = $this->defaultPrice;
 
         $this->showFormModal = true;
     }
@@ -97,23 +117,11 @@ class Visits extends Component
     {
         $this->editingVisit = $visit;
 
-        $this->visit_type_id = $visit->visit_type_id;
         $this->visit_date = $visit->visit_at->format('Y-m-d');
         $this->visit_time = $visit->visit_at->format('H:i');
-        $this->price_paid = $visit->price_paid;
+        $this->price = $visit->price;
 
         $this->showFormModal = true;
-    }
-
-    /**
-     * Update price when visit type changes
-     *
-     * @param VisitType $visitType
-     * @return void
-     */
-    public function updatedVisitTypeId(VisitType $visitType)
-    {
-        $this->price_paid = $visitType->price;
     }
 
     /**
@@ -129,16 +137,14 @@ class Visits extends Component
 
         if ($this->editingVisit) {
             $this->editingVisit->update([
-                'visit_type_id' => $this->visit_type_id,
                 'visit_at' => $dateTime,
-                'price_paid' => $this->price_paid,
+                'price' => $this->price,
             ]);
             $flashMsg = 'Visita actualizada exitosamente';
         } else {
             Visit::create([
-                'visit_type_id' => $this->visit_type_id,
                 'visit_at' => $dateTime,
-                'price_paid' => $this->price_paid,
+                'price' => $this->price,
             ]);
             $flashMsg = 'Visita registrada exitosamente';
         }
@@ -168,6 +174,7 @@ class Visits extends Component
      */
     public function closeModal()
     {
+        $this->visit_at = null;
         $this->showFormModal = false;
         $this->editingVisit = null;
         $this->resetForm();
@@ -180,7 +187,7 @@ class Visits extends Component
      */
     private function resetForm()
     {
-        $this->reset(['visit_type_id', 'visit_at', 'price_paid', 'visit_date', 'visit_time']);
+        $this->reset(['visit_date', 'visit_time', 'price']);
         $this->resetValidation();
     }
 

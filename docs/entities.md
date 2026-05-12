@@ -93,29 +93,14 @@ Represents a paid period of a membership. Each time a member renews or starts th
 
 ---
 
-### VisitType
-Catalog of visit types used to configure the price of a single gym entry. This entity is **independent of memberships** — it applies only to people who do not have an active membership. The price stored here acts as the default for new visits; editing it does not affect previously registered visits.
-
-| Field | Constraints | Description               |
-|-------|-------------|---------------------------|
-| id    | PK          | Primary key               |
-| name  |             | Visit type name           |
-| price |             | Price for this visit type |
-
----
-
 ### Visit
-Records a single gym entry made by a person **without an active membership**. Since they are not members, they pay per visit. The `price_paid` field stores the price at the time of the visit, so future changes to the visit type's price do not affect past records.
+Records a single gym entry made by a **person without an active membership**. Since they are not members, they pay per visit.
 
-| Field         | Constraints        | Description                      |
-|---------------|--------------------|----------------------------------|
-| id            | PK                 | Primary key                      |
-| visit_type_id | FK → VisitType     | The type of visit                |
-| visit_at      |                    | Timestamp of the visit           |
-| price_paid    |                    | Actual amount paid for the visit |
-
-**Relations:**
-- `visit_type_id` → `visit_types.id` (Update: CASCADE, Delete: RESTRICT)
+| Field    | Constraints | Description            |
+|----------|-------------|------------------------|
+| id       | PK          | Primary key            |
+| visit_at |             | Timestamp of the visit |
+| price    |             | Price of the visit     |
 
 ---
 
