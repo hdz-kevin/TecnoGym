@@ -42,15 +42,53 @@ class Visits extends Component
      */
     public int $defaultPrice = 40;
 
+    /** Date filter: 'today', 'week', 'month', 'all' */
+    public string $dateFilter = 'today';
+
+    /** Search by date */
+    public string $search = '';
+
     /**
-     * Get the visits ordered by visit_at desc
+     * Set the date filter and reset pagination
+     */
+    public function setDateFilter(string $filter)
+    {
+        $this->dateFilter = $filter;
+        $this->search = '';
+        $this->resetPage();
+    }
+
+    /**
+     * Reset date filter when searching by date
+     */
+    public function updatedSearch()
+    {
+        $this->dateFilter = 'all';
+        $this->resetPage();
+    }
+
+    /**
+     * Get all visits filtered by date and ordered by visit_at desc
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     #[Computed]
     public function visits()
     {
-        return Visit::orderBy('visit_at', 'desc')->paginate(8);
+        return Visit::query()
+            ->when($this->dateFilter, function ($query) {
+                match ($this->dateFilter) {
+                    'today' => $query->whereDate('visit_at', Carbon::today()),
+                    'week'  => $query->whereBetween('visit_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]),
+                    'month' => $query->whereBetween('visit_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]),
+                    default => null,
+                };
+            })
+            ->when($this->search, function ($query) {
+                $query->whereDate('visit_at', $this->search);
+            })
+            ->orderBy('visit_at', 'desc')
+            ->paginate(6);
     }
 
     /**
