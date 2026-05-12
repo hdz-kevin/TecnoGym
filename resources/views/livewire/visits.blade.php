@@ -132,17 +132,6 @@
 
             <form wire:submit.prevent="save">
               <div class="px-6 py-4 pt-5 space-y-4">
-                <!-- Visit Type -->
-                <flux:field>
-                  <flux:label>Tipo de Visita</flux:label>
-                  <flux:select wire:model.live="visit_type_id" placeholder="Selecciona un tipo">
-                    @foreach ($this->visitTypes as $type)
-                      <flux:select.option value="{{ $type->id }}">{{ $type->name }}</flux:select.option>
-                    @endforeach
-                  </flux:select>
-                  <flux:error name="visit_type_id" />
-                </flux:field>
-
                 <div class="grid grid-cols-2 gap-4">
                   <!-- Date -->
                   <flux:field>
@@ -161,9 +150,9 @@
 
                 <!-- Price -->
                 <flux:field>
-                  <flux:label>Precio Pagado</flux:label>
-                  <flux:input type="number" step="0.01" wire:model="price_paid" prefix="$" />
-                  <flux:error name="price_paid" />
+                  <flux:label>Precio</flux:label>
+                  <flux:input type="number" wire:model="price" />
+                  <flux:error name="price" />
                 </flux:field>
               </div>
 
