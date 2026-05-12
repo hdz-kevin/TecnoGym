@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Livewire\Prices;
+namespace App\Livewire\Memberships;
 
 use App\Enums\DurationUnit;
 use App\Models\Duration;
 use App\Models\MembershipType;
-use App\Models\PeriodDuration;
-use App\Models\PeriodType;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
@@ -20,7 +18,7 @@ use Livewire\Component;
  */
 #[Layout('layouts.app')]
 #[Title('Precios de Membresías')]
-class Memberships extends Component
+class Prices extends Component
 {
     #[Rule('required', message: 'El nombre es obligatorio')]
     #[Rule('max:255', message: 'El nombre es muy largo')]
@@ -232,6 +230,6 @@ class Memberships extends Component
     {
         $membershipTypes = MembershipType::with(['durations.periods'])->get();
 
-        return view('livewire.prices.memberships', compact('membershipTypes'));
+        return view('livewire.memberships.prices', compact('membershipTypes'));
     }
 }

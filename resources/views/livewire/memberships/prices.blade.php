@@ -1,4 +1,4 @@
-<x-slot:subtitle>Gestiona los precios de las membresías y sus duraciones</x-slot:subtitle>
+<x-slot:subtitle>Gestiona los precios de las membresías y sus diferentes duraciones</x-slot:subtitle>
 
 <div>
   <div class="space-y-6">
