@@ -10,7 +10,7 @@
       wire:click="setDateFilter('today')"
     >
       <div class="font-medium text-gray-500">Hoy</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->todaySales }}</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->today }}</div>
     </div>
 
     <div
@@ -19,7 +19,7 @@
       wire:click="setDateFilter('week')"
     >
       <div class="font-medium text-gray-500">Esta semana</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->weekSales }}</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisWeek }}</div>
     </div>
 
     <div
@@ -28,7 +28,7 @@
       wire:click="setDateFilter('month')"
     >
       <div class="font-medium text-gray-500">Este mes</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->monthSales }}</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->thisMonth }}</div>
     </div>
 
     <div
@@ -37,7 +37,7 @@
       wire:click="setDateFilter('all')"
     >
       <div class="font-medium text-gray-500">Total</div>
-      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->totalSales }}</div>
+      <div class="mt-1 text-2xl font-semibold text-gray-800">{{ $this->total }}</div>
     </div>
   </div>
 
@@ -64,12 +64,12 @@
       <div class="text-gray-400 mb-3">
         <flux:icon icon="shopping-bag" class="mx-auto h-12 w-12" />
       </div>
-      @if ($dateFilter || $search)
+      @if ($this->total > 0)
         <h3 class="mt-2 font-medium text-lg text-gray-800">No hay resultados</h3>
         <p class="mt-1.5 text-gray-600">No hay ventas que coincidan con tu búsqueda.</p>
       @else
         <h3 class="mt-2 font-medium text-lg text-gray-800">No hay ventas registradas</h3>
-        <p class="mt-1.5 text-gray-600">Las ventas aparecerán aquí cuando se registren.</p>
+        <p class="mt-1.5 text-gray-600">Comienza registrando tu primer venta.</p>
       @endif
     </div>
   @else
@@ -108,7 +108,7 @@
                 </td>
                 {{-- Product Count --}}
                 <td class="px-6 py-5 whitespace-nowrap text-center">
-                  <span class="inline-flex items-center px-3.5 py-1 rounded-full font-medium bg-gray-200/60 text-gray-800">
+                  <span class="inline-flex items-center px-3.5 py-1 rounded-full font-medium bg-blue-100 text-blue-800">
                     {{ $sale->product_sales_count }} {{ $sale->product_sales_count === 1 ? 'producto' : 'productos' }}
                   </span>
                 </td>

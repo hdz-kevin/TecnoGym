@@ -15,11 +15,11 @@ class Sales extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    /** Search by date */
-    public string $search = '';
-
     /** Date filter: 'today', 'week', 'month', all */
     public string $dateFilter = 'today';
+
+    /** Search by date */
+    public string $search = '';
 
     /**
      * Set the date filter
@@ -54,8 +54,7 @@ class Sales extends Component
                 match ($this->dateFilter) {
                     'today' => $query->whereDate('sold_at', Carbon::today()),
                     'week'  => $query->whereBetween('sold_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]),
-                    'month' => $query->whereMonth('sold_at', Carbon::now()->month)
-                                     ->whereYear('sold_at', Carbon::now()->year),
+                    'month' => $query->whereBetween('sold_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]),
                     default => null,
                 };
             })
@@ -72,7 +71,7 @@ class Sales extends Component
      * @return int
      */
     #[Computed]
-    public function totalSales()
+    public function total()
     {
         return Sale::count();
     }
@@ -83,7 +82,7 @@ class Sales extends Component
      * @return int
      */
     #[Computed]
-    public function todaySales()
+    public function today()
     {
         return Sale::whereDate('sold_at', Carbon::today())->count();
     }
@@ -94,7 +93,7 @@ class Sales extends Component
      * @return int
      */
     #[Computed]
-    public function weekSales()
+    public function thisWeek()
     {
         return Sale::whereBetween('sold_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
     }
@@ -105,7 +104,7 @@ class Sales extends Component
      * @return int
      */
     #[Computed]
-    public function monthSales()
+    public function thisMonth()
     {
         return Sale::whereMonth('sold_at', Carbon::now()->month)
                     ->whereYear('sold_at', Carbon::now()->year)
