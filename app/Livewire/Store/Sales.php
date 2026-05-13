@@ -63,7 +63,7 @@ class Sales extends Component
                 $query->whereDate('sold_at', $this->search);
             })
             ->orderBy('sold_at', 'desc')
-            ->paginate(10);
+            ->paginate(6);
     }
 
     /**

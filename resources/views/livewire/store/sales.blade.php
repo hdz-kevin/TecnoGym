@@ -79,7 +79,7 @@
           <thead class="bg-gray-50">
             <tr>
               <th scope="col" class="px-6 py-3 text-left font-medium text-gray-700">
-                Fecha
+                Fecha y Hora
               </th>
               <th scope="col" class="px-6 py-3 text-center font-medium text-gray-700">
                 Productos
@@ -96,24 +96,30 @@
             @foreach ($this->sales as $sale)
               <tr wire:key="{{ $sale->id }}">
                 {{-- Date --}}
-                <td class="px-6 py-5 whitespace-nowrap text-left">
-                  <div class="font-medium text-gray-800">{{ \Carbon\Carbon::parse($sale->sold_at)->format('d/m/Y') }}</div>
-                  <div class="mt-1 text-sm text-gray-500">{{ \Carbon\Carbon::parse($sale->sold_at)->format('h:i A') }}</div>
+                <td class="px-6 py-5 whitespace-nowrap">
+                  <div class="flex flex-col gap-2 font-medium text-gray-800">
+                    <span>
+                      {{ $sale->formatted_date }}
+                    </span>
+                    <span>
+                      {{ $sale->formatted_time }}
+                    </span>
+                  </div>
                 </td>
                 {{-- Product Count --}}
                 <td class="px-6 py-5 whitespace-nowrap text-center">
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                  <span class="inline-flex items-center px-3.5 py-1 rounded-full font-medium bg-gray-200/60 text-gray-800">
                     {{ $sale->product_sales_count }} {{ $sale->product_sales_count === 1 ? 'producto' : 'productos' }}
                   </span>
                 </td>
                 {{-- Total --}}
                 <td class="px-6 py-5 whitespace-nowrap text-right">
-                  <span class="font-semibold text-lg text-gray-800">${{ number_format($sale->total, 2) }}</span>
+                  <span class="font-medium text-gray-800">${{ number_format($sale->total, 2) }}</span>
                 </td>
                 {{-- Actions --}}
                 <td class="px-6 py-5 whitespace-nowrap text-right">
                   <flux:button size="sm" variant="outline" wire:click="showDetail({{ $sale->id }})">
-                    Ver detalle
+                    Detalles
                   </flux:button>
                 </td>
               </tr>
