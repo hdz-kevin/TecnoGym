@@ -133,16 +133,16 @@ Represents a sale transaction. A sale can contain multiple products.
 Represents the intermediate entity connecting a Sale and a Product.
 It stores the price of the product at the time of the sale.
 
-| Field      | Constraints   | Description                                |
-|------------|---------------|--------------------------------------------|
-| id         | PK            | Primary key                                |
-| sale_id    | FK → Sale     | The sale this line belongs to              |
-| product_id | FK → Product  | The product being sold                     |
-| quantity   |               | Number of products sold                    |
-| unit_price |               | Product price at the time of sale          |
-| subtotal   |               | Total for this line (quantity * unit_price)|
+| Field         | Constraints   | Description                                   |
+|---------------|---------------|-----------------------------------------------|
+| id            | PK            | Primary key                                   |
+| sale_id       | FK → Sale     | The sale this line belongs to                 |
+| product_id    | FK → Product  | The product being sold                        |
+| product_price |               | Product price at the time of sale             |
+| product_name  |               | Product name at the time of sale              |
+| quantity      |               | Number of products sold                       |
+| subtotal      |               | Total for this line (quantity * product_price)|
 
 **Relations:**
 - `sale_id` → `sales.id` (Update: CASCADE, Delete: RESTRICT)
 - `product_id` → `products.id` (Update: CASCADE, Delete: RESTRICT)
-
