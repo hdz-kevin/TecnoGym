@@ -28,6 +28,9 @@
                         wire:model.live.debounce.300ms="productSearch"
                         @focus="open = true"
                         @input="open = true"
+                        x-init="setTimeout(() => $el.focus(), 100)"
+                        x-on:keydown.escape="open = false"
+                        id="search-input"
                         placeholder="Buscar productos por su nombre"
                         autocomplete="off"
                         class="block w-full pl-9 pr-3 py-2 text-base border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-500"
@@ -174,4 +177,5 @@
       </div>
     </div>
   @endif
+
 </div>
