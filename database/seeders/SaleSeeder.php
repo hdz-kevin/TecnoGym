@@ -15,14 +15,14 @@ class SaleSeeder extends Seeder
      */
     public function run(): void
     {
-        $salesToCreate = 50;
+        $salesToCreate = 60;
         $products = Product::all();
 
         for ($i = 0; $i < $salesToCreate; $i++) {
             /** @var Sale $sale */
             $sale = Sale::create([
-                'total'   => 0,
-                'sold_at' => Carbon::now()->subDays(rand(0, 20))->subHours(rand(0, 23))->subMinutes(rand(0, 59)),
+                'total' => 0,
+                'sold_at' => Carbon::now()->subDays(rand(0, 15))->subHours(rand(0, 23))->subMinutes(rand(0, 59)),
             ]);
 
             $randomProducts = $products->random(rand(1, 3));
@@ -31,11 +31,12 @@ class SaleSeeder extends Seeder
                 $quantity = rand(1, 3);
 
                 ProductSale::create([
-                    'sale_id'    => $sale->id,
-                    'product_id' => $product->id,
-                    'quantity'   => $quantity,
-                    'unit_price' => $product->price,
-                    'subtotal'   => $product->price * $quantity,
+                    'sale_id'       => $sale->id,
+                    'product_id'    => $product->id,
+                    'product_price' => $product->price,
+                    'product_name'  => $product->name,
+                    'quantity'      => $quantity,
+                    'subtotal'      => $product->price * $quantity,
                 ]);
             }
 

@@ -6,6 +6,7 @@ use App\Models\Sale;
 use Carbon\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -20,6 +21,14 @@ class Sales extends Component
 
     /** Search by date */
     public string $search = '';
+
+    /**
+     * Open create sale modal
+     */
+    public function createSale()
+    {
+        $this->dispatch('open-create-sale-modal');
+    }
 
     /**
      * Set the date filter
@@ -109,6 +118,18 @@ class Sales extends Component
         return Sale::whereMonth('sold_at', Carbon::now()->month)
                     ->whereYear('sold_at', Carbon::now()->year)
                     ->count();
+    }
+
+    /**
+     * Listen for created sale
+     *
+     * @return void
+     */
+    #[On('sale-created')]
+    public function saleCreated(string $message)
+    {
+        $this->resetPage();
+        session()->flash('message', $message);
     }
 
     /**
