@@ -56,6 +56,11 @@
           class="block w-full pl-10 pr-3 py-[7px] text-[16px] border border-gray-300 shadow-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500 bg-white placeholder-gray-600" />
       </div>
     </div>
+    <div>
+      <flux:button variant="primary" icon="plus" wire:click="createSale">
+        Nueva Venta
+      </flux:button>
+    </div>
   </div>
 
   <!-- Sales List -->
@@ -134,6 +139,8 @@
       {{ $this->sales->links('pagination.custom') }}
     </div>
   @endif
+
+  <livewire:store.create-sale />
 
   <!-- Flash Messages -->
   @if (session()->has('message'))
