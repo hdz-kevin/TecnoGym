@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
-#[Title('')]
+#[Title('Bienvenida')]
 class VerifyCode extends Component
 {
     #[Rule('required', message: 'El código es obligatorio')]
@@ -18,7 +18,7 @@ class VerifyCode extends Component
     public $code = '';
     public $member = null;
     public $membership = null;
-    public $showModal = false;
+    public bool $showResult = false;
 
     public function check()
     {
@@ -27,7 +27,7 @@ class VerifyCode extends Component
         $member = Member::where('code', $this->code)->first();
 
         if (! $member) {
-            $this->showModal = true;
+            $this->showResult = true;
             $this->dispatch('play-sound', status: 'error');
             return;
         }
@@ -41,17 +41,22 @@ class VerifyCode extends Component
             $this->dispatch('play-sound', status: 'success');
         }
 
-        $this->showModal = true;
+        $this->showResult = true;
     }
 
-    public function close()
+    public function clear()
     {
-        $this->showModal = false;
+        $this->showResult = false;
         $this->reset(['code', 'member', 'membership']);
+        $this->resetValidation();
+        $this->dispatch('focus-code-input');
     }
 
     public function render()
     {
-        return view('livewire.verify-code');
+        return view('livewire.verify-code', [
+            'gymName'    => config('gym.name'),
+            'gymAddress' => config('gym.address'),
+        ]);
     }
 }
