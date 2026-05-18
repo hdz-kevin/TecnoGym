@@ -121,6 +121,14 @@ class Sales extends Component
     }
 
     /**
+     * Dispatch event to open the sale detail modal.
+     */
+    public function showSaleDetail(int $saleId): void
+    {
+        $this->dispatch('open-sale-detail-modal', sale: $saleId);
+    }
+
+    /**
      * Listen for created sale
      *
      * @return void
