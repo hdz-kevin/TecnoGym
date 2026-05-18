@@ -11,7 +11,7 @@ use App\Livewire\Store\Sales;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest'])->group(function () {
-    Route::redirect('/', 'dashboard');
+    Route::redirect('/', 'verify-code');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/memberships', Memberships::class)->name('memberships.index');
     Route::get('/members', Members::class)->name('members.index');

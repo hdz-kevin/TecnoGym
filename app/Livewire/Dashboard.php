@@ -60,8 +60,7 @@ class Dashboard extends Component
     {
         [$from, $to] = $this->dateRange();
 
-        return Visit::with('visitType')
-                     ->whereBetween('visit_at', [$from, $to])
+        return Visit::whereBetween('visit_at', [$from, $to])
                      ->orderBy('visit_at', 'desc')
                      ->get();
     }
@@ -104,6 +103,19 @@ class Dashboard extends Component
             })
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    /**
+     * Get total earnings
+     *
+     * @return float
+     */
+    #[Computed]
+    public function totalEarnings(): float
+    {
+        return $this->newMemberships->sum('price_paid')
+             + $this->renewals->sum('price_paid')
+             + $this->visits->sum('price');
     }
 
     /**

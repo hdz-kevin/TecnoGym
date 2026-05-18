@@ -9,14 +9,18 @@
   <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
-    <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+    <a href="{{ route('verify-code') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
       <x-app-logo />
     </a>
 
     <flux:navlist variant="outline">
       <flux:navlist.group :heading="__('Principal')" expandable class="grid">
-        <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-          {{ __('Dashboard') }}
+        <flux:navlist.item icon="home" :href="route('verify-code')" :current="request()->routeIs('verify-code')" wire:navigate>
+          {{ __('Bienvenida') }}
+        </flux:navlist.item>
+
+        <flux:navlist.item icon="chart-bar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+          {{ __('Corte de caja') }}
         </flux:navlist.item>
 
         <flux:navlist.item icon="users" :href="route('members.index')" :current="request()->routeIs('members.index')" wire:navigate>
@@ -33,10 +37,6 @@
 
         <flux:navlist.item icon="banknotes" :href="route('memberships.prices')" :current="request()->routeIs('memberships.prices')" wire:navigate>
           {{ __('Precios') }}
-        </flux:navlist.item>
-
-        <flux:navlist.item icon="qr-code" :href="route('verify-code')" :current="request()->routeIs('verify-code')" wire:navigate>
-          {{ __('Verificar') }}
         </flux:navlist.item>
       </flux:navlist.group>
 

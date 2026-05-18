@@ -123,7 +123,7 @@
                 </td>
                 {{-- Actions --}}
                 <td class="px-6 py-5 whitespace-nowrap text-right">
-                  <flux:button size="sm" variant="outline" wire:click="showDetail({{ $sale->id }})">
+                  <flux:button size="sm" variant="outline" wire:click="showSaleDetail({{ $sale->id }})">
                     Detalles
                   </flux:button>
                 </td>
@@ -140,7 +140,11 @@
     </div>
   @endif
 
+  {{-- Create Sale Modal --}}
   <livewire:store.create-sale />
+
+  {{-- Sale Detail Modal --}}
+  <livewire:store.sale-detail />
 
   <!-- Flash Messages -->
   @if (session()->has('message'))
