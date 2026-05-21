@@ -5,8 +5,7 @@
 <x-slot:title></x-slot:title>
 <x-slot:subtitle></x-slot:subtitle>
 
-<div class="flex flex-col min-h-[calc(100vh-4rem)] w-full mx-auto">
-
+<div class="flex flex-col min-h-[calc(100vh-4rem)] w-full mx-auto" wire:keydown.window.escape="clear">
   {{-- 2-column layout --}}
   <div class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-8 p-4 items-center">
     {{-- Left Column: gym name + verification form --}}
