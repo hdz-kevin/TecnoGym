@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Enums\MembershipStatus;
 use App\Models\Member;
+use App\Models\Membership;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Title;
@@ -16,11 +17,26 @@ class VerifyCode extends Component
     #[Rule('required', message: 'El código es obligatorio')]
     #[Rule('size:5', message: 'El código debe ser de 5 dígitos')]
     public $code = '';
-    public $member = null;
-    public $membership = null;
+
+    /**
+     * The member that owns the code.
+     */
+    public ?Member $member = null;
+
+    /**
+     * The latest membership of the member.
+     */
+    public ?Membership $membership = null;
+
+    /**
+     * Indicates whether the verification result should be shown.
+     */
     public bool $showResult = false;
 
-    public function check()
+    /**
+     * Verifies the entered code and shows the result.
+     */
+    public function check(): void
     {
         $this->validate();
 
@@ -44,7 +60,10 @@ class VerifyCode extends Component
         $this->showResult = true;
     }
 
-    public function clear()
+    /**
+     * Clears the form and resets the result.
+     */
+    public function clear(): void
     {
         $this->showResult = false;
         $this->reset(['code', 'member', 'membership']);
@@ -52,6 +71,9 @@ class VerifyCode extends Component
         $this->dispatch('focus-code-input');
     }
 
+    /**
+     * Renders the verify code view.
+     */
     public function render()
     {
         return view('livewire.verify-code', [
