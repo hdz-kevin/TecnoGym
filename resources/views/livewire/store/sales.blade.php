@@ -114,7 +114,10 @@
                 {{-- Product Count --}}
                 <td class="px-6 py-5 whitespace-nowrap text-center">
                   <span class="inline-flex items-center px-3.5 py-1 rounded-full font-medium bg-blue-100 text-blue-800">
-                    {{ $sale->product_sales_count }} {{ $sale->product_sales_count === 1 ? 'producto' : 'productos' }}
+                    @php
+                      $totalProducts = (int) $sale->product_sales_sum_quantity;
+                    @endphp
+                    {{ $totalProducts }} {{ $totalProducts === 1 ? 'producto' : 'productos' }}
                   </span>
                 </td>
                 {{-- Total --}}

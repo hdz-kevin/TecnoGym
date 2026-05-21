@@ -58,7 +58,7 @@ class Sales extends Component
     public function sales()
     {
         return Sale::query()
-            ->withCount('productSales')
+            ->withSum('productSales', 'quantity')
             ->when($this->dateFilter, function ($query) {
                 match ($this->dateFilter) {
                     'today' => $query->whereDate('sold_at', Carbon::today()),

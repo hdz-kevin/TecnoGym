@@ -8,26 +8,38 @@
             wire:click.stop>
 
             {{-- Modal Header --}}
-            <div class="px-6 py-4 border-b border-gray-200">
-              <h3 class="text-lg font-medium text-gray-800">Detalles de Venta</h3>
+            <div class="px-6 py-5 border-b border-gray-200">
+              <h3 class="text-lg font-medium text-gray-900">Detalles de Venta</h3>
             </div>
 
             {{-- Modal Body --}}
-            <div class="p-6 space-y-8">
+            <div class="p-7 pb-8 space-y-8">
               {{-- Sale Info --}}
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="flex justify-between items-center gap-4">
                 <div>
-                  <p class="font-medium text-gray-600 mb-0.5">Fecha</p>
-                  <p class="text-base font-medium text-gray-800">{{ $sale->formatted_date }}</p>
+                  <p class="font-medium text-gray-600 mb-0.5">Fecha y Hora</p>
+                    <div class="flex gap-2 font-medium text-gray-800 text-lg">
+                      <span>
+                        {{ $sale->formatted_date }}
+                      </span>
+                      <span class="text-gray-500">•</span>
+                      <span>
+                        {{ $sale->formatted_time }}
+                      </span>
+                    </div>
                 </div>
                 <div>
-                  <p class="font-medium text-gray-600 mb-0.5">Hora</p>
-                  <p class="text-base font-medium text-gray-800">{{ $sale->formatted_time }}</p>
+                  <p class="font-medium text-gray-600 mb-0.5">Productos</p>
+                  <p class="font-medium text-gray-800 text-lg">
+                    {{ $sale->productSales->sum('quantity') }}
+                  </p>
                 </div>
                 <div>
                   <p class="font-medium text-gray-600 mb-0.5">Total</p>
-                  <p class="text-base font-medium text-gray-800">${{ number_format($sale->total, 2) }}</p>
+                  <p class="font-medium text-gray-800 text-lg">${{ number_format($sale->total, 2) }}</p>
                 </div>
+                {{-- empty div for spacing --}}
+                <div></div>
               </div>
 
               {{-- Products Table --}}
@@ -60,16 +72,6 @@
                         </tr>
                       @endforeach
                     </tbody>
-                    <tfoot class="bg-gray-50 border-t border-gray-200">
-                      <tr>
-                        <th scope="row" colspan="3" class="p-4 text-right text-base font-medium text-gray-800">
-                          Total:
-                        </th>
-                        <td class="px-4 py-4 text-right text-lg font-semibold text-gray-800">
-                          ${{ number_format($sale->total, 2) }}
-                        </td>
-                      </tr>
-                    </tfoot>
                   </table>
                 </div>
               </div>
