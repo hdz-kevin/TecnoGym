@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Period;
+use App\Models\Sale;
 use App\Models\Visit;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -66,6 +67,20 @@ class Dashboard extends Component
     }
 
     /**
+     * Sales in the active period
+     */
+    #[Computed]
+    public function sales()
+    {
+        [$from, $to] = $this->dateRange();
+
+        return Sale::whereBetween('sold_at', [$from, $to])
+                     ->with('productSales')
+                     ->orderBy('sold_at', 'desc')
+                     ->get();
+    }
+
+    /**
      * New memberships in the active period.
      * New memberships: periods in range whose membership had NO prior periods before the range.
      */
@@ -115,7 +130,8 @@ class Dashboard extends Component
     {
         return $this->newMemberships->sum('price_paid')
              + $this->renewals->sum('price_paid')
-             + $this->visits->sum('price');
+             + $this->visits->sum('price')
+             + $this->sales->sum('total');
     }
 
     /**

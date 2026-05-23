@@ -18,20 +18,20 @@
   </div>
 
   {{-- Summary Cards --}}
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
     {{-- New Memberships --}}
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
       <div class="flex justify-between items-center">
         <div class="flex justify-center items-center">
-          <div class="p-2 bg-green-100 rounded-lg">
-            <flux:icon icon="user-plus" class="w-6 h-6 text-green-600" />
+          <div class="p-2 bg-green-100/80 rounded-lg">
+            <flux:icon icon="credit-card" class="w-6 h-6 text-green-700" />
           </div>
           <div class="ml-4">
-            <p class="font-medium text-gray-800">Membresías nuevas</p>
-            <p class="text-2xl mt-0.5 font-bold text-gray-800">{{ $this->newMemberships->count() }}</p>
+            <p class="font-medium text-gray-900">Membresías nuevas</p>
+            <p class="text-2xl mt-1 font-bold text-gray-800">{{ $this->newMemberships->count() }}</p>
           </div>
         </div>
-        <div class="text-xl font-semibold text-green-700">
+        <div class="text-xl mt-1 font-semibold text-green-700">
           ${{ number_format($this->newMemberships->sum('price_paid'), 2) }}
         </div>
       </div>
@@ -41,15 +41,15 @@
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
       <div class="flex justify-between items-center">
         <div class="flex justify-center items-center">
-          <div class="p-2 bg-amber-100 rounded-lg">
-            <flux:icon icon="arrow-path" class="w-6 h-6 text-amber-600" />
+          <div class="p-2 bg-amber-100/80 rounded-lg">
+            <flux:icon icon="arrow-path" class="w-6 h-6 text-amber-700" />
           </div>
           <div class="ml-4">
-            <p class="font-medium text-gray-800">Renovaciones</p>
-            <p class="text-2xl mt-0.5 font-bold text-gray-800">{{ $this->renewals->count() }}</p>
+            <p class="font-medium text-gray-900">Renovaciones</p>
+            <p class="text-2xl mt-1 font-bold text-gray-800">{{ $this->renewals->count() }}</p>
           </div>
         </div>
-        <div class="text-xl font-semibold text-green-700">
+        <div class="text-xl mt-1 font-semibold text-green-700">
           ${{ number_format($this->renewals->sum('price_paid'), 2) }}
         </div>
       </div>
@@ -59,16 +59,34 @@
     <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
       <div class="flex justify-between items-center">
         <div class="flex justify-center items-center">
-          <div class="p-2 bg-blue-100 rounded-lg">
-            <flux:icon icon="arrow-right-end-on-rectangle" class="w-6 h-6 text-blue-600" />
+          <div class="p-2 bg-blue-100/80 rounded-lg">
+            <flux:icon icon="arrow-right-end-on-rectangle" class="w-6 h-6 text-blue-700" />
           </div>
           <div class="ml-4">
-            <p class="font-medium text-gray-800">Visitas</p>
-            <p class="text-2xl mt-0.5 font-bold text-gray-800">{{ $this->visits->count() }}</p>
+            <p class="font-medium text-gray-900">Visitas</p>
+            <p class="text-2xl mt-1 font-bold text-gray-800">{{ $this->visits->count() }}</p>
           </div>
         </div>
-        <div class="text-xl font-semibold text-green-700">
+        <div class="text-xl mt-1 font-semibold text-green-700">
           ${{ number_format($this->visits->sum('price'), 2) }}
+        </div>
+      </div>
+    </div>
+
+    {{-- Sales --}}
+    <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-200 transition-all hover:shadow-md">
+      <div class="flex justify-between items-center">
+        <div class="flex justify-center items-center">
+          <div class="p-2 bg-green-100/80 rounded-lg">
+            <flux:icon icon="shopping-cart" class="w-6 h-6 text-green-700" />
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Ventas</p>
+            <p class="text-2xl mt-1 font-bold text-gray-800">{{ $this->sales->count() }}</p>
+          </div>
+        </div>
+        <div class="text-xl mt-1 font-semibold text-green-700">
+          ${{ number_format($this->sales->sum('total'), 2) }}
         </div>
       </div>
     </div>
@@ -76,7 +94,7 @@
 
   {{-- Total --}}
   <div class="flex justify-end">
-    <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg">
+    <div class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg">
       <span class="text-gray-800 font-medium">Total: </span>
       <span class="text-lg font-semibold text-gray-800">
         ${{ number_format($this->totalEarnings, 2) }}
@@ -92,7 +110,7 @@
 
     @if ($this->newMemberships->isEmpty())
       <div class="bg-white rounded-lg border border-gray-200 p-8 text-center">
-        <flux:icon icon="user-plus" class="mx-auto h-8 w-8 text-gray-400" />
+        <flux:icon icon="credit-card" class="mx-auto h-8 w-8 text-gray-400" />
         <p class="mt-2.5 text-gray-500">No se han registrado nuevas membresías</p>
       </div>
     @else
@@ -256,6 +274,62 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right">
                     <span class="font-medium text-gray-800">${{ number_format($visit->price, 2) }}</span>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+    @endif
+  </div> {{-- end of visits --}}
+
+  {{-- Sales Table --}}
+  <div class="mt-10">
+    <p class="text-sm font-semibold text-gray-800 uppercase tracking-wider mb-3.5">Ventas</p>
+
+    @if ($this->sales->isEmpty())
+      <div class="bg-white rounded-lg border border-gray-200 p-8 text-center">
+        <flux:icon icon="shopping-cart" class="mx-auto h-8 w-8 text-gray-400" />
+        <p class="mt-2.5 text-gray-500">No hay ventas registradas</p>
+      </div>
+    @else
+      <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left font-medium text-gray-700">Fecha y Hora</th>
+                <th class="px-6 py-3 text-left font-medium text-gray-700">Productos</th>
+                <th class="px-6 py-3 text-right font-medium text-gray-700">Ingreso</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              @foreach ($this->sales as $sale)
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex gap-2 font-medium text-gray-800">
+                      <span>
+                        {{ $sale->formatted_date }}
+                      </span>
+                      <span class="text-gray-500">•</span>
+                      <span>
+                        {{ $sale->formatted_time }}
+                      </span>
+                    </div>
+                  </td>
+
+                  <td class="px-4 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-3.5 py-1 rounded-full font-medium bg-blue-100 text-blue-800">
+                      @php
+                        $totalProducts = (int) $sale->productSales->sum('quantity');
+                      @endphp
+                      {{ $totalProducts }} {{ $totalProducts === 1 ? 'producto' : 'productos' }}
+                    </span>
+                  </td>
+
+                  <td class="px-6 py-4 whitespace-nowrap text-right">
+                    <span class="font-medium text-gray-800">${{ number_format($sale->total, 2) }}</span>
                   </td>
                 </tr>
               @endforeach

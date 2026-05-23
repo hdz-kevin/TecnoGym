@@ -14,13 +14,10 @@
     </a>
 
     <flux:navlist variant="outline">
+      {{-- main group --}}
       <flux:navlist.group :heading="__('Principal')" expandable class="grid">
         <flux:navlist.item icon="home" :href="route('verify-code')" :current="request()->routeIs('verify-code')" wire:navigate>
           {{ __('Bienvenida') }}
-        </flux:navlist.item>
-
-        <flux:navlist.item icon="chart-bar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-          {{ __('Corte de caja') }}
         </flux:navlist.item>
 
         <flux:navlist.item icon="users" :href="route('members.index')" :current="request()->routeIs('members.index')" wire:navigate>
@@ -38,8 +35,13 @@
         <flux:navlist.item icon="banknotes" :href="route('memberships.prices')" :current="request()->routeIs('memberships.prices')" wire:navigate>
           {{ __('Precios') }}
         </flux:navlist.item>
+
+        <flux:navlist.item icon="chart-bar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+          {{ __('Corte de caja') }}
+        </flux:navlist.item>
       </flux:navlist.group>
 
+      {{-- store group --}}
       <flux:navlist.group :heading="__('Tienda')" expandable class="grid">
         <flux:navlist.item icon="cube" :href="route('products.index')" :current="request()->routeIs('products.index')" wire:navigate>
           {{ __('Productos') }}
