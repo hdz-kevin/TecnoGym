@@ -129,6 +129,15 @@ class CreateSale extends Component
     }
 
     /**
+     * Get the total number of products in the cart
+     */
+    #[Computed]
+    public function totalProducts(): int
+    {
+        return collect($this->cart)->pluck('quantity')->sum();
+    }
+
+    /**
      * Computed total for the current cart.
      */
     #[Computed]

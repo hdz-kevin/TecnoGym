@@ -72,7 +72,7 @@
                           @endif
                         </button>
                       @empty
-                        <div class="px-4 py-4 text-sm text-gray-600 text-center">
+                        <div class="px-4 py-4 text-gray-700 text-center">
                           No se encontraron productos activos
                         </div>
                       @endforelse
@@ -84,8 +84,8 @@
                 <div>
                   <div class="flex items-center justify-between mb-2">
                     <flux:label class="text-lg">Productos agregados</flux:label>
-                    @php $cartCount = count($cart); @endphp
-                    <span class="font-medium text-gray-700">{{ $cartCount }} {{ $cartCount === 1 ? 'item' : 'items' }}</span>
+                    @php $totalProducts = $this->totalProducts; @endphp
+                    <span class="font-medium text-gray-700">{{ $totalProducts }} {{ $totalProducts === 1 ? 'producto' : 'productos' }}</span>
                   </div>
 
                   @if(empty($cart))
