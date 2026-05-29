@@ -40,7 +40,7 @@
               id="code"
               wire:model="code"
               placeholder="00000"
-              class="block w-full text-center text-6xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-200 bg-transparent py-4 focus:ring-0 focus:border-gray-600 transition-colors placeholder-gray-200 outline-none text-gray-800"
+              class="block w-full text-center text-6xl font-mono font-bold tracking-widest border-0 border-b-2 border-zinc-400 bg-transparent py-4 focus:ring-0 focus:border-gray-600 transition-colors placeholder-gray-200 outline-none text-gray-800"
               maxlength="5"
               autocomplete="off"
             />
